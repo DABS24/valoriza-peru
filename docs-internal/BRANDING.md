@@ -40,10 +40,24 @@ sobrio, y se distingue del verde de Don Gato Efectivo.
 
 | Token | Claro | Oscuro | Uso |
 |---|---|---|---|
-| `primary` | `13 148 136` | `45 212 191` | Acción principal, acento tipográfico |
-| `primary-hover` | `15 118 110` | `94 234 212` | Hover |
+| `primary` | `15 118 110` | `45 212 191` | Acción principal, acento tipográfico |
+| `primary-hover` | `13 94 88` | `94 234 212` | Hover |
 | `primary-soft` | `204 251 241` | `19 78 74` | Fondos de énfasis |
-| `primary-ink` | `17 94 89` | `153 246 228` | Texto sobre `primary` |
+| `primary-ink` | `17 94 89` | `153 246 228` | Texto sobre `primary-soft` |
+
+🔴 **El teal claro se oscureció el 2026-07-25 por contraste, no por gusto.** El
+valor anterior (`13 148 136`) daba **3.74:1** con texto blanco encima y **3.52:1**
+como texto sobre fondo claro: los dos por debajo del **4.5:1** que exige WCAG AA
+para texto normal. Es decir, todos los botones primarios y todas las etiquetas en
+acento estaban por debajo del mínimo. Con el valor actual quedan en **5.5:1** y
+**6.6:1**.
+
+⚠️ **Sobre `primary` va texto BLANCO, nunca `primary-ink`.** Esa combinación da
+**2.03:1** y es ilegible — pasó en el logo y en el botón de la landing.
+`primary-ink` es para texto sobre `primary-soft`, que es un fondo claro.
+
+**El contraste se mide, no se estima:** en la página real y con la fórmula de
+luminancia relativa. Si estos valores cambian, se vuelve a medir.
 
 **Los valores viven en `lib/portales/tema.ts`.** Se declaran en canales RGB
 sueltos para poder aplicar opacidad (`bg-portal-primary/10`), y se inyectan como

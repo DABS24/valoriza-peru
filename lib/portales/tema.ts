@@ -89,11 +89,24 @@ const BASE_OSCURO: TemaBase = {
 
 // ── Acento de la marca (se cambia SOLO acá) ──────────────────────────────────
 // ValorizaPeru: TEAL (obra pública / crecimiento).
+//
+// 🔴 El teal claro se oscureció el 2026-07-25 por CONTRASTE, no por gusto. El
+// valor anterior (`13 148 136`) daba **3.74:1** con texto blanco encima y
+// **3.52:1** como texto sobre fondo claro — los dos por debajo del 4.5:1 que
+// exige WCAG AA para texto normal. O sea: todos los botones primarios de la app
+// y todas las etiquetas en acento estaban por debajo del mínimo.
+//
+// Con `15 118 110` el botón queda en **5.47:1** y la etiqueta en **6.6:1**.
+// Medido en la página real con la fórmula de luminancia relativa, no estimado a
+// ojo — ver `references/08-responsive-a11y.md`: el contraste se mide.
+//
+// Visualmente es el mismo teal, apenas más profundo. Un acento que no se puede
+// leer no es una decisión de marca, es un defecto.
 const ACENTOS: Record<PortalSlug, { claro: Acento; oscuro: Acento }> = {
   contratista: {
     claro: {
-      primary: "13 148 136",
-      primaryHover: "15 118 110",
+      primary: "15 118 110",
+      primaryHover: "13 94 88",
       primarySoft: "204 251 241",
       primaryInk: "17 94 89",
     },

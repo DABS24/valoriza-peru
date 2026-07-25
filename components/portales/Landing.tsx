@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Reveal } from "@/components/portales/Reveal";
+import { PButton } from "@/components/portales/ui/PButton";
 import { APP } from "@/lib/constants";
 import { COPY } from "@/lib/copy";
 import { PORTAL, PORTAL_SLUG, waPortal } from "@/lib/portales/config";
@@ -76,17 +77,23 @@ export default function Landing() {
       <header className="sticky top-0 z-20 border-b border-portal-line/70 bg-portal-bg/80 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4 sm:px-8">
           <span className="flex items-center gap-2.5 font-portal text-base font-extrabold tracking-tight">
+            {/* Texto blanco sobre el acento, no `primary-ink`: esa combinación
+                daba 2.03:1 y es ilegible. Ver el comentario de `tema.ts`. */}
             <span
               aria-hidden="true"
-              className="grid size-7 place-items-center rounded-portal-sm bg-portal-primary text-portal-primary-ink"
+              className="grid size-7 place-items-center rounded-portal-sm bg-portal-primary text-white"
             >
               <span className="text-xs font-black">V</span>
             </span>
             {PORTAL.nombre}
           </span>
+          {/* `min-h-11` = 44px: es el mínimo táctil, y en móvil este enlace se
+              quedaba en 36px. Va como enlace de texto y no como PButton a
+              propósito — el CTA del hero es la acción primaria, y dos botones
+              sólidos competirían. */}
           <Link
             href={login}
-            className="rounded-portal-sm px-4 py-2 text-sm font-bold text-portal-ink transition-colors hover:bg-portal-primary-soft hover:text-portal-primary-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary"
+            className="inline-flex min-h-11 items-center rounded-portal-sm px-4 text-sm font-bold text-portal-ink transition-colors hover:bg-portal-primary-soft hover:text-portal-primary-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary"
           >
             {T.nav.acceder}
           </Link>
@@ -117,18 +124,14 @@ export default function Landing() {
             {T.hero.sub}
           </p>
           <div className="mt-10 flex flex-col items-start gap-4 motion-safe:animate-fade-up motion-safe:[animation-delay:270ms] sm:flex-row sm:items-center">
-            <Link
-              href={login}
-              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-portal-sm bg-portal-primary px-7 py-3.5 text-sm font-bold text-portal-primary-ink shadow-portal transition-all hover:bg-portal-primary-hover hover:shadow-portal-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary motion-safe:hover:-translate-y-0.5"
-            >
+            {/* El primitivo del portal, no un botón a mano: si el estilo del
+                botón cambia, la landing no se queda atrás. La primera versión de
+                esta landing lo reimplementaba y por eso divergía en color y en
+                contraste. */}
+            <PButton as="link" href={login} size="lg" className="min-h-11">
               {T.hero.cta}
-              <span
-                aria-hidden="true"
-                className="transition-transform motion-safe:group-hover:translate-x-0.5"
-              >
-                →
-              </span>
-            </Link>
+              <span aria-hidden="true">→</span>
+            </PButton>
             <p className="max-w-xs text-sm leading-relaxed text-portal-muted">{T.hero.nota}</p>
           </div>
         </Seccion>
@@ -236,14 +239,18 @@ export default function Landing() {
                   {T.contacto.texto}
                 </p>
               </div>
-              <a
+              {/* `external` ya pone target y rel="noopener noreferrer": no hace
+                  falta repetirlo (ni olvidarlo) en cada enlace saliente. */}
+              <PButton
+                as="link"
                 href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-portal-sm border border-portal-line bg-portal-bg px-7 py-3.5 text-sm font-bold transition-all hover:border-portal-primary hover:text-portal-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary motion-safe:hover:-translate-y-0.5"
+                external
+                variant="ghost"
+                size="lg"
+                className="min-h-11 shrink-0"
               >
                 {T.contacto.cta}
-              </a>
+              </PButton>
             </div>
           </Reveal>
         </Seccion>
@@ -257,28 +264,34 @@ export default function Landing() {
               <p>
                 {T.pie.operadoPor} <strong className="font-bold text-portal-ink">{APP.legalName}</strong>
               </p>
+              {/* `min-h-11` en los enlaces del pie: medían 16-20px de alto, por
+                  debajo del mínimo táctil. Un enlace legal que no se puede tocar
+                  en el celular no cumple su función, que es justamente que el
+                  usuario llegue a leerlo. */}
               <a
                 href={APP.sunatConsultaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-block text-2xs text-portal-muted underline underline-offset-4 transition-colors hover:text-portal-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary"
+                className="mt-1 inline-flex min-h-11 items-center text-2xs text-portal-muted underline underline-offset-4 transition-colors hover:text-portal-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary"
               >
                 {T.pie.verificar}
               </a>
             </div>
-            <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2.5 text-sm">
-              <Link href="/legal/terminos" className="transition-colors hover:text-portal-primary">
-                {T.pie.links.terminos}
-              </Link>
-              <Link href="/legal/privacidad" className="transition-colors hover:text-portal-primary">
-                {T.pie.links.privacidad}
-              </Link>
-              <Link href="/legal/cookies" className="transition-colors hover:text-portal-primary">
-                {T.pie.links.cookies}
-              </Link>
-              <Link href="/libro-reclamaciones" className="transition-colors hover:text-portal-primary">
-                {T.pie.links.libro}
-              </Link>
+            <nav aria-label="Legal" className="-my-2 flex flex-wrap gap-x-6 text-sm">
+              {[
+                { href: "/legal/terminos", label: T.pie.links.terminos },
+                { href: "/legal/privacidad", label: T.pie.links.privacidad },
+                { href: "/legal/cookies", label: T.pie.links.cookies },
+                { href: "/libro-reclamaciones", label: T.pie.links.libro },
+              ].map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="inline-flex min-h-11 items-center transition-colors hover:text-portal-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-portal-primary"
+                >
+                  {label}
+                </Link>
+              ))}
             </nav>
           </div>
           <p className="mt-10 max-w-4xl border-t border-portal-line pt-7 text-2xs leading-relaxed text-portal-muted">
