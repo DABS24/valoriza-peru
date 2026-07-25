@@ -65,6 +65,18 @@ export const PInput = forwardRef<
   InputHTMLAttributes<HTMLInputElement> & CommonProps & { leadingIcon?: ReactNode }
 >(function PInput({ label, hint, error, requiredMark, leadingIcon, className, id, ...rest }, ref) {
   const inputId = id ?? rest.name;
+  /**
+   * El teclado correcto por default. En el celular, un campo de monto que abre
+   * el teclado alfabético se siente web; el numérico se siente app — y es un
+   * atributo, no una feature.
+   *
+   * Va acá y no en cada llamada porque había 12 campos numéricos y ninguno lo
+   * declaraba: si el default del primitivo es el correcto, no hay nada que
+   * recordar. Quien necesite otro teclado lo pasa y gana, porque `rest` se
+   * expande después. Ver `references/31-movil-app.md` §5.
+   */
+  const inputMode =
+    rest.inputMode ?? (rest.type === "number" ? "decimal" : rest.type === "tel" ? "tel" : undefined);
   return (
     <div className="w-full">
       {label && (
@@ -82,6 +94,7 @@ export const PInput = forwardRef<
           ref={ref}
           id={inputId}
           aria-invalid={!!error}
+          inputMode={inputMode}
           className={cn(FIELD_BASE, FIELD_BORDE(error), leadingIcon && "pl-10", className)}
           {...rest}
         />

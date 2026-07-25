@@ -37,6 +37,20 @@
     overflow-x: clip;
     /* Safe area en iPhone con notch/dynamic island */
     padding-bottom: env(safe-area-inset-bottom);
+    /* Sin doble-tap para hacer zoom: elimina la espera de ~300ms que el
+       navegador se toma para ver si viene un segundo toque. Es la diferencia
+       entre "responde al toque" y "responde tarde". El pinch-zoom sigue
+       funcionando: lo único que se desactiva es el doble-tap. */
+    touch-action: manipulation;
+    /* Sin el recuadro gris al tocar: es la marca visual de "esto es una web". */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Barra de scroll fina y en el color del tema, en vez de la gris del sistema
+     metida dentro de los paneles de la app. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--pt-line2, 210 216 228)) transparent;
   }
 
   h1,
@@ -78,5 +92,35 @@
   .num {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum", "ss01";
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   🔴 Zoom de iOS al enfocar un campo — FUERA de `@layer` a propósito.
+   ───────────────────────────────────────────────────────────────────────────
+   iOS Safari hace zoom automático al enfocar un input con letra menor a 16px, y
+   después deja la página desencuadrada. Es lo que más delata que algo no es una
+   app nativa.
+
+   La escala fluida del proyecto usa clamp() y en 375px daba 15.28px: el
+   problema estaba en TODOS los formularios, no en uno.
+
+   ⚠️ Dos intentos fallidos antes de este, y los dos se veían razonables:
+     1. Dentro de `@layer base` → no aplica. La clase `text-base` de Tailwind le
+        gana a un selector de tipo como `input`.
+     2. Fuera de toda capa, esperando que el CSS sin capa gane → tampoco. La
+        directiva `@layer` de Tailwind v3 se COMPILA y desaparece: no quedan
+        cascade layers reales, así que manda la especificidad y punto.
+
+   `:root input` suma la pseudo-clase (0,1,0) al elemento (0,0,1) = **(0,1,1)**,
+   que le gana a `.text-base` **(0,1,0)** sin necesidad de `!important`.
+
+   Solo en pantallas chicas: en escritorio manda la escala tipográfica.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  :root input,
+  :root select,
+  :root textarea {
+    font-size: 16px;
   }
 }
