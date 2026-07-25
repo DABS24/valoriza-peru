@@ -24,9 +24,23 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ["lucide-react", "motion"],
     viewTransition: true,
     // Caché de router del cliente: volver a una pestaña ya visitada NO re-fetchea
-    // por 30s (Next 15 trae dynamic=0 por defecto). Las mutaciones llaman
+    // (Next 15 trae dynamic=0 por defecto). Las mutaciones llaman
     // router.refresh(), así que nunca se muestra data vieja tras una acción.
-    staleTimes: { dynamic: 30 },
+    //
+    // 🔴 Subido de 30s a 120s por un síntoma reportado y muy reconocible: entrás
+    // a Inicio, te movés por otras secciones, volvés a Inicio y **vuelve a
+    // cargar**; lo repetís enseguida y ya no. No era lentitud —Inicio hace un
+    // solo Promise.all— era esta ventana: el primer regreso caía FUERA de los
+    // 30s y el segundo adentro.
+    //
+    // Por qué 120s es seguro acá: lo que cambia los datos del inversionista es
+    // el asesor confirmando o liberando una reserva, algo que pasa en minutos u
+    // horas, no en segundos. Y lo que hace el propio usuario ya dispara
+    // `router.refresh()`.
+    // ⚠️ Aun con datos de hasta 2 minutos, reservar es atómico en la base
+    // (índice único, migración 0088): el peor caso es un error claro al
+    // reservar algo ya tomado, nunca dos personas creyéndose la contraparte.
+    staleTimes: { dynamic: 120 },
   },
   async headers() {
     return [
