@@ -91,7 +91,28 @@ export function PortalLogin({ portal }: { portal: PortalSlug }) {
         password,
       });
       if (error || !data.user) {
-        toast.error(T.errorCredenciales);
+        /**
+         * 🔴 Distingue "la clave está mal" de "esto no está funcionando".
+         *
+         * Antes, CUALQUIER fallo —clave de API inválida, variables de entorno
+         * mal puestas, red caída, límite de intentos— salía como "correo o
+         * contraseña incorrectos". El resultado real: alguien con la contraseña
+         * correcta la reescribe diez veces mientras el problema es de
+         * configuración, y desde la pantalla no hay forma de notarlo.
+         *
+         * Lo que NO cambia: ante credenciales de verdad inválidas el mensaje
+         * sigue siendo el mismo para "correo inexistente" y "contraseña
+         * errada". Eso es a propósito — distinguirlos permitiría averiguar qué
+         * correos existen (`references/02-seguridad.md`, anti-enumeración).
+         */
+        const credencialInvalida =
+          error?.status === 400 || /invalid login credentials/i.test(error?.message ?? "");
+        if (credencialInvalida) {
+          toast.error(T.errorCredenciales);
+        } else {
+          toast.error(T.errorServicio);
+          console.error("[login] fallo NO atribuible a las credenciales:", error);
+        }
         setLoading(false);
         return;
       }

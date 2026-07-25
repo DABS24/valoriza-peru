@@ -151,6 +151,8 @@ const portales = {
     faltaCredenciales: "Ingresa tu correo y contraseña.",
     errorCredenciales: "Correo o contraseña incorrectos.",
     sinAcceso: "No tienes acceso a este portal.",
+    /** El problema NO es la contraseña: no mandes al usuario a reescribirla. */
+    errorServicio: "No pudimos conectarnos. No es tu contraseña: vuelve a intentar en un momento.",
     errorGenerico: "No pudimos iniciar sesión. Intenta de nuevo.",
     nota: "Este es un portal privado. Si te invitamos, entra con el correo que te dimos.",
     // El tope de sesión (1 hora) también rige en los portales: si no se dice, la
