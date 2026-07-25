@@ -48,7 +48,10 @@ export async function safeGetUser(
  */
 export async function getUid(supabase: ReturnType<typeof createClient>): Promise<string | null> {
   try {
-    const { data } = await supabase.auth.getSession();
+    // El gate busca getSession() en código SERVER, donde no autoriza. Esto corre
+    // en el BROWSER y el uid solo arma un filtro de lectura; quien autoriza es la
+    // RLS. La exención va en la línea misma, que es donde el gate la lee.
+    const { data } = await supabase.auth.getSession(); // gate-ok:sec-session
     return data.session?.user?.id ?? null;
   } catch {
     return null;

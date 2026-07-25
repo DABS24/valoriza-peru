@@ -45,8 +45,12 @@ data OSCE/SEACE. Está vacío por una razón dura: **cobrar al Estado es lento/l
 exige opinión SMV+SBS. Detalle en el plan.
 
 ## Correr local
-Mismo seed y cuentas que GarantizaPeru (ver [`GARANTIZAPERU.md`](GARANTIZAPERU.md)); el
-seed crea 5 contratistas demo con historial.
+El seed crea 5 contratistas demo con historial. Cuentas:
+`admin | asesor | cliente .portales.demo@dongato.pe` — la contraseña **no se
+versiona**: vive en `.env.local` como `PORTALES_DEMO_PASSWORD`.
+
+> El doc de GarantizaPeru al que esto apuntaba **ya no existe**: esa vertical se
+> eliminó el 2026-07-25 y solo queda en el historial de git de `don-gato`.
 
 ## Estado
 Core funcionando. Pendiente: notificaciones, ciclo post-reserva, gate legal.
