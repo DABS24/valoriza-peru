@@ -95,7 +95,7 @@ export function PortalLogin({ portal }: { portal: PortalSlug }) {
          * 🔴 Distingue "la clave está mal" de "esto no está funcionando".
          *
          * Antes, CUALQUIER fallo —clave de API inválida, variables de entorno
-         * mal puestas, red caída, límite de intentos— salía como "correo o
+         * mal puestas, red caída, límite de intentos— terminaba como "correo o
          * contraseña incorrectos". El resultado real: alguien con la contraseña
          * correcta la reescribe diez veces mientras el problema es de
          * configuración, y desde la pantalla no hay forma de notarlo.
