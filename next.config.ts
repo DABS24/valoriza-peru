@@ -28,10 +28,10 @@ const nextConfig: NextConfig = {
     // router.refresh(), así que nunca se muestra data vieja tras una acción.
     //
     // 🔴 Subido de 30s a 120s por un síntoma reportado y muy reconocible: entrás
-    // a Inicio, te movés por otras secciones, volvés a Inicio y **vuelve a
-    // cargar**; lo repetís enseguida y ya no. No era lentitud —Inicio hace un
-    // solo Promise.all— era esta ventana: el primer regreso caía FUERA de los
-    // 30s y el segundo adentro.
+    // a Inicio, se navega a otras secciones, se vuelve a Inicio y **vuelve a
+    // cargar**; al repetirlo enseguida, ya no. No era lentitud —Inicio resuelve
+    // sus consultas en un solo Promise.all— era esta ventana: el primer regreso
+    // caía FUERA de los 30s y el segundo, adentro.
     //
     // Por qué 120s es seguro acá: lo que cambia los datos del inversionista es
     // el asesor confirmando o liberando una reserva, algo que pasa en minutos u

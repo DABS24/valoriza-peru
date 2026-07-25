@@ -3,12 +3,18 @@
  *
  * 🔴 Existe por un incidente real (2026-07-25): en producción el login fallaba y
  * el mensaje decía "correo o contraseña incorrectos" con una contraseña que era
- * correcta. La causa: `NEXT_PUBLIC_SUPABASE_URL` no llegó al build de Netlify,
- * así que el cliente se creaba con `undefined` y toda petición moría.
+ * correcta. La causa final fue otra —la clave pública era de OTRO proyecto
+ * Supabase, y el servidor devolvía `401 Invalid API key`— pero el camino hasta
+ * encontrarla estuvo lleno de humo justamente porque nada validaba la
+ * configuración: cada hipótesis sobre variables faltantes era plausible y no
+ * había forma de descartarla desde el código.
  *
- * Lo que lo hizo invisible fue el `!` de TypeScript:
+ * Para que las claves sean del mismo proyecto: `scripts/verificar-claves.mjs`.
+ * Lo de acá es lo otro: que una variable AUSENTE se note al instante.
  *
- *     createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, …)
+ * Porque `!` de TypeScript no lo nota:
+ *
+ *     createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, …)  // gate-ok:env-bang
  *
  * El `!` no comprueba nada — solo le dice al compilador "confía en mí". En
  * ejecución el valor es `undefined`, el cliente se construye igual, y el fallo
