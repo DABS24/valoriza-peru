@@ -10,11 +10,11 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { User } from "@supabase/supabase-js";
 
+import { supabaseAnonKey, supabaseUrl } from "./env";
+
 export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  // Verificadas, no afirmadas con `!`. Ver el porqué en `./env.ts`.
+  return createBrowserClient(supabaseUrl(), supabaseAnonKey());
 }
 
 /**
