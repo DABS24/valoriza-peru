@@ -147,6 +147,10 @@ importan al leerlo o modificarlo:
 
 ## 🚩 Pendientes conocidos
 
+- **Sin site en Netlify ni dominio.** Cuando se conecte: *production branch* = `main`,
+  y **branch deploys y deploy previews DESACTIVADOS**. Si se activan, cada push a
+  `desarrollo` dispara un build y consume cuota de build minutes — iterar tiene que
+  ser gratis: se prueba en `localhost` y solo el merge a `main` construye.
 - **Dominio propio en Resend** sin verificar: los correos salen con la dirección
   heredada de la cuenta. Se corrige verificando el dominio y seteando `RESEND_FROM_PORTAL`.
 - `tailwind.config.ts` conserva tokens de la paleta anterior que este repo no usa
