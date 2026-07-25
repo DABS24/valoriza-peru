@@ -1,0 +1,69 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+coverage/
+.nyc_output/
+
+# next.js
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# production
+build/
+dist/
+
+# misc
+.DS_Store
+*.pem
+Thumbs.db
+
+# worktrees de agentes en background (residuales, no versionar)
+.claude/worktrees/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env
+.env
+.env*.local
+.env.local
+
+# vercel
+.vercel
+
+# turbo
+.turbo
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# docs-internal benchmarks (scrapes pesados, no van a git)
+docs-internal/benchmarks/
+
+# docs-internal branding originals (PNGs grandes, optimizadas viven en public/mochi)
+docs-internal/branding/mochi-originals/
+
+# Sentry
+.sentryclirc
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+
+# docs-internal scratch (dumps temporales de trabajo, no van a git)
+docs-internal/_scratch/
+
+# Artefactos de trabajo (PDFs/PNGs generados, scratch) — nunca al repo
+tmp/
+output/

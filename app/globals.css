@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Base global del portal.
+
+   El TEMA (colores, tipografía, radios, sombras) NO vive acá: lo estampa
+   `PortalTema` como variables CSS scopeadas en `.portal-theme`, desde
+   lib/portales/tema.ts. Este archivo es solo el reset y el comportamiento base
+   del documento — lo que no depende de la marca.
+   ============================================================ */
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    @apply antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern", "liga", "calt";
+    /* Bloquea el rebote/bounce de scroll en iOS Safari y Android Chrome. */
+    overscroll-behavior: none;
+    /* `clip` (no `hidden`): corta el desborde horizontal SIN crear un contenedor
+       de scroll — así el trackpad/rueda siguen moviendo la página con normalidad. */
+    overflow-x: clip;
+  }
+
+  body {
+    /* Fondo neutro: el color real lo pone `.portal-theme`, que cubre toda la
+       altura. Este blanco solo evita el flash del fondo del navegador. */
+    @apply min-h-dvh bg-white;
+    overscroll-behavior: none;
+    overflow-x: clip;
+    /* Safe area en iPhone con notch/dynamic island */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Tap targets accesibles en mobile (≥ 44x44 según WCAG 2.5.5) */
+  @media (pointer: coarse) {
+    button,
+    a[role="button"],
+    [type="button"],
+    [type="submit"] {
+      min-height: 44px;
+    }
+  }
+
+  /* Reduce motion (accesibilidad) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Montos que no saltan al cambiar de dígito. */
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum", "ss01";
+  }
+}
