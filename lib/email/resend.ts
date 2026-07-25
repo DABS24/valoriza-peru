@@ -1,21 +1,26 @@
 /**
- * Envío de correo vía Resend (API REST, sin dependencia npm).
- * Solo server-side. Lee RESEND_API_KEY y EMAIL_FROM del entorno.
+ * Envío de correo vía Resend (API REST, sin dependencia npm). Solo server-side.
  *
- * RESEND_FROM_EMAIL: mientras no verifiques dongato.pe en Resend, usa el remitente
- * de prueba "onboarding@resend.dev" (solo entrega al correo dueño de la cuenta).
- * Cuando verifiques el dominio, ponlo en "Don Gato <no-reply@dongato.pe>".
- * (Se acepta EMAIL_FROM como alias legacy, pero la variable canónica —la de
- * .env.example— es RESEND_FROM_EMAIL. Antes el código leía EMAIL_FROM y el
- * remitente configurado se ignoraba, cayendo siempre al sender de prueba.)
+ * `RESEND_FROM_EMAIL` es la variable canónica del remitente (`EMAIL_FROM` se acepta
+ * como alias legacy). Mientras no haya dominio propio verificado en Resend, se usa
+ * el remitente de prueba de la cuenta; cuando se verifique, va
+ * "ValorizaPeru <no-reply@valorizaperu.com>".
+ *
+ * ⚠️ EL FALLBACK LLEVA LA MARCA DE ESTE PORTAL, no la del producto de donde salió
+ * este archivo. Si el entorno se olvida de setear la variable —y en un deploy nuevo
+ * es exactamente lo que pasa—, el default no puede firmar los correos de este portal
+ * con el nombre de otro negocio: sería la fuga de marca más visible que existe,
+ * porque viaja fuera del navegador de quien la recibe.
  */
 
 import "server-only";
 
+import { APP } from "@/lib/constants";
+
 const FROM =
   process.env.RESEND_FROM_EMAIL ??
   process.env.EMAIL_FROM ??
-  "Don Gato Efectivo <no-reply@dongatoefectivo.com>";
+  `${APP.brand} <onboarding@resend.dev>`;
 
 /** Extrae la dirección de un remitente con formato `Nombre <correo@dominio>`. */
 function direccionDe(remitente: string): string {
