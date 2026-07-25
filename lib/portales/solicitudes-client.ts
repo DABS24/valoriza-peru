@@ -76,10 +76,10 @@ export async function subirDocSolicitud(args: {
   form.append("tipo", args.tipo);
   form.append("nombre", args.file.name);
 
-  const res = await fetch(
-    `/api/solicitudes/${args.solicitudId}/docs`,
-    { method: "POST", body: form },
-  );
+  const res = await fetch(`/api/solicitudes/${args.solicitudId}/docs`, {
+    method: "POST",
+    body: form,
+  });
   if (!res.ok) return null;
   const payload = (await res.json().catch(() => ({}))) as { doc?: DocPortalRef };
   return payload.doc ?? null;

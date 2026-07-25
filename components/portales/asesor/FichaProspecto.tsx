@@ -36,7 +36,14 @@ export function FichaProspecto({ portal, ficha }: { portal: PortalSlug; ficha: P
 
   return (
     <div>
-      <PButton as="link" href={`${base}/asesor/clientes`} variant="ghost" size="sm" pill className="mb-5">
+      <PButton
+        as="link"
+        href={`${base}/asesor/clientes`}
+        variant="ghost"
+        size="sm"
+        pill
+        className="mb-5"
+      >
         {P.fichaVolver}
       </PButton>
 
@@ -49,7 +56,9 @@ export function FichaProspecto({ portal, ficha }: { portal: PortalSlug; ficha: P
             {prospecto.convertido ? P.convertido : P.badge}
           </PPill>
         </div>
-        <p className="mt-1 text-sm text-portal-muted">{P.fichaDesde(toDate(prospecto.createdAt))}</p>
+        <p className="mt-1 text-sm text-portal-muted">
+          {P.fichaDesde(toDate(prospecto.createdAt))}
+        </p>
       </header>
 
       {prospecto.convertido && (
@@ -127,12 +136,10 @@ export function FichaProspecto({ portal, ficha }: { portal: PortalSlug; ficha: P
               return (
                 <PCard key={r.reservaId} className="flex flex-col">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="min-w-0 font-portal text-base font-bold text-portal-ink line-clamp-2">
+                    <h3 className="line-clamp-2 min-w-0 font-portal text-base font-bold text-portal-ink">
                       {r.titulo}
                     </h3>
-                    <PPill tone={TONO_RESERVA[r.estado]} className="shrink-0">
-                      {E[r.estado]}
-                    </PPill>
+                    <PPill tone={TONO_RESERVA[r.estado]}>{E[r.estado]}</PPill>
                   </div>
 
                   <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -166,10 +173,7 @@ export function FichaProspecto({ portal, ficha }: { portal: PortalSlug; ficha: P
       </div>
 
       {/* La misma libreta interna que la de un cliente: el inversionista nunca la ve. */}
-      <NotasCliente
-        sujeto={{ tipo: "prospecto", id: prospecto.id }}
-        notas={ficha.notas}
-      />
+      <NotasCliente sujeto={{ tipo: "prospecto", id: prospecto.id }} notas={ficha.notas} />
     </div>
   );
 }

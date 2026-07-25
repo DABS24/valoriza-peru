@@ -82,7 +82,10 @@ export function SimuladorEmpresario({
         </p>
         <dl className="divide-y divide-portal-line">
           {filas.map((f) => (
-            <div key={f.label} className="flex flex-wrap items-baseline justify-between gap-2 px-3.5 py-2.5">
+            <div
+              key={f.label}
+              className="flex flex-wrap items-baseline justify-between gap-2 px-3.5 py-2.5"
+            >
               <dt className="text-sm text-portal-ink2">{f.label}</dt>
               <dd className="font-portal text-sm font-bold tabular-nums text-portal-ink">
                 {f.value}

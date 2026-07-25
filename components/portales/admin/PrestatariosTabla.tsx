@@ -49,11 +49,7 @@ const VACIO: FormState = {
   telefono: "",
 };
 
-export function PrestatariosTabla({
-  prestatarios,
-}: {
-  prestatarios: PrestatarioLite[];
-}) {
+export function PrestatariosTabla({ prestatarios }: { prestatarios: PrestatarioLite[] }) {
   const P = COPY.portales.admin.prestatarios;
   const TE = COPY.portales.estados;
   const router = useRouter();
@@ -118,7 +114,11 @@ export function PrestatariosTabla({
     }
     const data = await res.json().catch(() => ({}));
     toast.success(
-      data?.reusado ? P.cuentaVinculada : data?.correoEnviado ? P.cuentaCreada : P.cuentaCreadaSinCorreo,
+      data?.reusado
+        ? P.cuentaVinculada
+        : data?.correoEnviado
+          ? P.cuentaCreada
+          : P.cuentaCreadaSinCorreo,
     );
     return true;
   }
@@ -126,14 +126,13 @@ export function PrestatariosTabla({
   async function guardar() {
     if (guardando || !form) return;
     if (form.nombre.trim().length < 2) return void toast.error(P.faltaNombre);
-    if (form.ruc.trim() && !/^\d{11}$/.test(form.ruc.trim())) return void toast.error(P.rucInvalido);
+    if (form.ruc.trim() && !/^\d{11}$/.test(form.ruc.trim()))
+      return void toast.error(P.rucInvalido);
     const conCuenta = form.crearCuenta && !form.yaTieneCuenta;
     setGuardando(true);
     try {
       const editando = !!form.id;
-      const url = editando
-        ? `/api/prestatarios/${form.id}`
-        : `/api/prestatarios`;
+      const url = editando ? `/api/prestatarios/${form.id}` : `/api/prestatarios`;
       const res = await fetch(url, {
         method: editando ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -170,7 +169,9 @@ export function PrestatariosTabla({
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{P.titulo}</h1>
+          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+            {P.titulo}
+          </h1>
           <p className="mt-1 max-w-2xl text-sm text-portal-muted">{P.sub}</p>
         </div>
         <PButton pill leadingIcon={<UserPlus className="size-4" />} onClick={abrirNuevo}>
@@ -200,8 +201,12 @@ export function PrestatariosTabla({
                     <span className="font-semibold text-portal-ink">{p.nombre}</span>
                     {p.rating && <p className="text-xs text-portal-muted">Rating {p.rating}</p>}
                   </td>
-                  <td className="px-5 py-3 font-mono text-sm tabular-nums text-portal-ink2">{p.ruc ?? "—"}</td>
-                  <td className="px-5 py-3">{p.nivelRiesgo ? <RiesgoBadge nivel={p.nivelRiesgo} size="sm" /> : "—"}</td>
+                  <td className="px-5 py-3 font-mono text-sm tabular-nums text-portal-ink2">
+                    {p.ruc ?? "—"}
+                  </td>
+                  <td className="px-5 py-3">
+                    {p.nivelRiesgo ? <RiesgoBadge nivel={p.nivelRiesgo} size="sm" /> : "—"}
+                  </td>
                   <td className="px-5 py-3 font-mono text-sm font-bold tabular-nums text-portal-ink">
                     {p.scoringPago != null ? p.scoringPago : P.sinScoring}
                   </td>
@@ -237,10 +242,25 @@ export function PrestatariosTabla({
       >
         {form && (
           <div className="space-y-4">
-            <PInput label={P.nombre} value={form.nombre} onChange={(e) => set({ nombre: e.target.value })} requiredMark />
-            <PInput label={P.ruc} inputMode="numeric" hint={P.rucHint} value={form.ruc} onChange={(e) => set({ ruc: e.target.value })} />
+            <PInput
+              label={P.nombre}
+              value={form.nombre}
+              onChange={(e) => set({ nombre: e.target.value })}
+              requiredMark
+            />
+            <PInput
+              label={P.ruc}
+              inputMode="numeric"
+              hint={P.rucHint}
+              value={form.ruc}
+              onChange={(e) => set({ ruc: e.target.value })}
+            />
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <PSelect label={P.nivelRiesgo} value={form.nivel} onChange={(e) => set({ nivel: e.target.value })}>
+              <PSelect
+                label={P.nivelRiesgo}
+                value={form.nivel}
+                onChange={(e) => set({ nivel: e.target.value })}
+              >
                 <option value="">{P.sinRiesgo}</option>
                 {NIVELES_RIESGO.map((n) => (
                   <option key={n.id} value={n.id}>
@@ -256,7 +276,11 @@ export function PrestatariosTabla({
                 value={form.scoring}
                 onChange={(e) => set({ scoring: e.target.value })}
               />
-              <PSelect label={P.rating} value={form.rating} onChange={(e) => set({ rating: e.target.value })}>
+              <PSelect
+                label={P.rating}
+                value={form.rating}
+                onChange={(e) => set({ rating: e.target.value })}
+              >
                 <option value="">{P.sinRating}</option>
                 {RATINGS.map((r) => (
                   <option key={r} value={r}>
@@ -273,7 +297,12 @@ export function PrestatariosTabla({
                 <option value="inactivo">{TE.inactivo}</option>
               </PSelect>
             </div>
-            <PTextarea label={P.notasInternas} hint={P.notasHint} value={form.notas} onChange={(e) => set({ notas: e.target.value })} />
+            <PTextarea
+              label={P.notasInternas}
+              hint={P.notasHint}
+              value={form.notas}
+              onChange={(e) => set({ notas: e.target.value })}
+            />
 
             {/* ── Cuenta de acceso (empresario) ── */}
             <div className="rounded-portal-sm border border-portal-line bg-portal-subtle/50 p-4">
@@ -292,7 +321,9 @@ export function PrestatariosTabla({
                       className="mt-0.5 size-4 shrink-0 accent-portal-primary"
                     />
                     <span className="min-w-0">
-                      <span className="block text-sm font-semibold text-portal-ink">{P.cuentaToggle}</span>
+                      <span className="block text-sm font-semibold text-portal-ink">
+                        {P.cuentaToggle}
+                      </span>
                       <span className="mt-0.5 block text-xs text-portal-muted">{P.cuentaSub}</span>
                     </span>
                   </label>
@@ -325,7 +356,13 @@ export function PrestatariosTabla({
           <PButton pill fullWidth loading={guardando} disabled={guardando} onClick={guardar}>
             {guardando ? P.guardando : P.guardar}
           </PButton>
-          <PButton variant="ghost" pill fullWidth disabled={guardando} onClick={() => setForm(null)}>
+          <PButton
+            variant="ghost"
+            pill
+            fullWidth
+            disabled={guardando}
+            onClick={() => setForm(null)}
+          >
             {COPY.portales.comun.cancelar}
           </PButton>
         </div>

@@ -75,7 +75,11 @@ export function MisClientes({
                   </td>
                   <td
                     className="px-5 py-3 text-right font-semibold tabular-nums text-portal-ink"
-                    title={c.multiMoneda ? COPY.portales.multiMonedaNota(c.moneda) : toMoneda(c.montoComprometido, c.moneda)}
+                    title={
+                      c.multiMoneda
+                        ? COPY.portales.multiMonedaNota(c.moneda)
+                        : toMoneda(c.montoComprometido, c.moneda)
+                    }
                   >
                     {c.montoComprometido > 0 ? toMonedaKpi(c.montoComprometido, c.moneda) : "—"}
                     {c.multiMoneda && <span className="text-portal-muted"> *</span>}
@@ -128,9 +132,7 @@ export function MisClientes({
                         {P.badge}
                       </PPill>
                     </td>
-                    <td className="px-5 py-3 text-portal-muted">
-                      {p.documento ?? P.sinDocumento}
-                    </td>
+                    <td className="px-5 py-3 text-portal-muted">{p.documento ?? P.sinDocumento}</td>
                     <td className="px-5 py-3 text-right tabular-nums text-portal-ink2">
                       {p.numReservas}
                     </td>

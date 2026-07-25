@@ -23,7 +23,7 @@ export function RiesgoBadge({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-chip font-semibold",
-        size === "sm" ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs",
+        size === "sm" ? "px-2.5 py-0.5 text-2xs" : "px-3 py-1 text-xs",
         def.badge,
         className,
       )}

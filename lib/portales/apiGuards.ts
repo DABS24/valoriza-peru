@@ -61,7 +61,10 @@ export async function requirePortalStaffApi(portal: PortalSlug): Promise<GuardOk
     const r = await resolverMiembro(portal);
     if (!r.ok) return r;
     if (!esStaffPortal(r.rol)) {
-      return { ok: false, response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }) };
+      return {
+        ok: false,
+        response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }),
+      };
     }
     return r;
   } catch {
@@ -75,7 +78,10 @@ export async function requirePortalAdminApi(portal: PortalSlug): Promise<GuardOk
     const r = await resolverMiembro(portal);
     if (!r.ok) return r;
     if (!esAdminPortal(r.rol)) {
-      return { ok: false, response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }) };
+      return {
+        ok: false,
+        response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }),
+      };
     }
     return r;
   } catch {
@@ -93,7 +99,10 @@ export async function requirePortalEmpresarioApi(portal: PortalSlug): Promise<Gu
     const r = await resolverMiembro(portal);
     if (!r.ok) return r;
     if (!esEmpresario(r.rol)) {
-      return { ok: false, response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }) };
+      return {
+        ok: false,
+        response: NextResponse.json({ error: "no_autorizado" }, { status: 403 }),
+      };
     }
     return r;
   } catch {

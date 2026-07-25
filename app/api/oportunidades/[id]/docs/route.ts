@@ -22,10 +22,7 @@ import { registrarEventoPortal } from "@/lib/portales/auditoria";
 
 const err = (code: string, status = 400) => NextResponse.json({ error: code }, { status });
 
-export async function POST(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 
@@ -93,7 +90,10 @@ export async function POST(
 
   if (error || !data) {
     // Rollback del binario huérfano si la fila no entró.
-    await supabase.storage.from(PORTAL_MEDIA_BUCKET).remove([subida.path]).catch(() => {});
+    await supabase.storage
+      .from(PORTAL_MEDIA_BUCKET)
+      .remove([subida.path])
+      .catch(() => {});
     return err("error_guardar", 500);
   }
 
@@ -123,10 +123,7 @@ export async function POST(
   });
 }
 
-export async function DELETE(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 
@@ -149,7 +146,10 @@ export async function DELETE(
 
   const { error } = await supabase.from("portal_oportunidad_docs").delete().eq("id", docId);
   if (error) return err("error_borrar", 500);
-  await supabase.storage.from(PORTAL_MEDIA_BUCKET).remove([doc.path as string]).catch(() => {});
+  await supabase.storage
+    .from(PORTAL_MEDIA_BUCKET)
+    .remove([doc.path as string])
+    .catch(() => {});
 
   await registrarEventoPortal({
     portal,

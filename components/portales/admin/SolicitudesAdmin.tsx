@@ -57,7 +57,12 @@ export function SolicitudesAdmin({
   const conteo = (e: EstadoSolicitud) => lista.filter((s) => s.estado === e).length;
   const tabs: PTab<Filtro>[] = [
     { id: "todas", label: S.tabs.todas, contador: lista.length },
-    { id: "en_evaluacion", label: S.tabs.en_evaluacion, contador: conteo("en_evaluacion"), contadorTono: "alerta" },
+    {
+      id: "en_evaluacion",
+      label: S.tabs.en_evaluacion,
+      contador: conteo("en_evaluacion"),
+      contadorTono: "alerta",
+    },
     { id: "aprobada", label: S.tabs.aprobada, contador: conteo("aprobada") },
     { id: "rechazada", label: S.tabs.rechazada, contador: conteo("rechazada") },
     { id: "convertida", label: S.tabs.convertida, contador: conteo("convertida") },
@@ -156,7 +161,9 @@ export function SolicitudesAdmin({
               <th className="px-5 py-3">{S.plazoLabel}</th>
               <th className="px-5 py-3">{S.fechaLabel}</th>
               <th className="px-5 py-3">{COPY.portales.historial.colEstado}</th>
-              <th className="px-5 py-3 text-right">{COPY.portales.admin.prestatarios.colAcciones}</th>
+              <th className="px-5 py-3 text-right">
+                {COPY.portales.admin.prestatarios.colAcciones}
+              </th>
             </PTHead>
             <tbody className="divide-y divide-portal-line">
               {filtradas.map((s) => (
@@ -187,7 +194,11 @@ export function SolicitudesAdmin({
       </PCard>
 
       {/* Detalle + acciones */}
-      <Dialog open={!!detalle} onClose={() => (busy ? undefined : setDetalle(null))} title={S.detalleTitulo}>
+      <Dialog
+        open={!!detalle}
+        onClose={() => (busy ? undefined : setDetalle(null))}
+        title={S.detalleTitulo}
+      >
         {detalle && (
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -343,7 +354,13 @@ export function SolicitudesAdmin({
               ? S.rechazando
               : S.rechazoConfirmar}
           </PButton>
-          <PButton variant="ghost" pill fullWidth disabled={busy} onClick={() => setRechazando(null)}>
+          <PButton
+            variant="ghost"
+            pill
+            fullWidth
+            disabled={busy}
+            onClick={() => setRechazando(null)}
+          >
             {COPY.portales.comun.cancelar}
           </PButton>
         </div>

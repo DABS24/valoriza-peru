@@ -33,10 +33,10 @@ export async function subirFotoPortal(args: {
   const form = new FormData();
   form.append("file", listo);
 
-  const res = await fetch(
-    `/api/oportunidades/${args.oportunidadId}/fotos`,
-    { method: "POST", body: form },
-  );
+  const res = await fetch(`/api/oportunidades/${args.oportunidadId}/fotos`, {
+    method: "POST",
+    body: form,
+  });
   if (!res.ok) return null;
   const payload = (await res.json().catch(() => ({}))) as { foto?: FotoPortalRef };
   return payload.foto ?? null;

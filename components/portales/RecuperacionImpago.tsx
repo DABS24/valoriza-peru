@@ -47,7 +47,10 @@ export function RecuperacionImpago({ portal }: { portal: PortalSlug }) {
           </span>
         </span>
         <ChevronDown
-          className={cn("mt-1 size-5 shrink-0 text-portal-muted transition", abierto && "rotate-180")}
+          className={cn(
+            "mt-1 size-5 shrink-0 text-portal-muted transition",
+            abierto && "rotate-180",
+          )}
           aria-hidden
         />
       </button>
@@ -99,8 +102,14 @@ export function RecuperacionImpago({ portal }: { portal: PortalSlug }) {
             </h3>
             <ul className="mt-3 space-y-2.5">
               {R.limites.map((l, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm leading-relaxed text-portal-ink2">
-                  <AlertTriangle className="mt-0.5 size-4 shrink-0 text-portal-warning" aria-hidden />
+                <li
+                  key={i}
+                  className="flex items-start gap-2 text-sm leading-relaxed text-portal-ink2"
+                >
+                  <AlertTriangle
+                    className="mt-0.5 size-4 shrink-0 text-portal-warning"
+                    aria-hidden
+                  />
                   <span className="min-w-0">{l}</span>
                 </li>
               ))}

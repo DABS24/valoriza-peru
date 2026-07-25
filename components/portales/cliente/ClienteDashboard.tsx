@@ -71,7 +71,9 @@ export function ClienteDashboard({
           <h2 className="mt-4 font-portal text-lg font-bold text-portal-ink">
             {C.inicioSinReservasTitulo}
           </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm text-portal-ink2">{C.inicioSinReservasTexto}</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-portal-ink2">
+            {C.inicioSinReservasTexto}
+          </p>
           <PButton
             as="link"
             href={`${base}/cliente/oportunidades`}
@@ -85,7 +87,9 @@ export function ClienteDashboard({
       ) : (
         <section className="mt-8">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <h2 className="font-portal text-lg font-bold text-portal-ink">{C.inicioReservasTitulo}</h2>
+            <h2 className="font-portal text-lg font-bold text-portal-ink">
+              {C.inicioReservasTitulo}
+            </h2>
             <PButton as="link" href={`${base}/cliente/historial`} variant="ghost" size="sm" pill>
               {C.inicioVerHistorial}
             </PButton>
@@ -98,7 +102,7 @@ export function ClienteDashboard({
                 : waPortal(portal, TR.waMensaje(r.oportunidadTitulo));
               return (
                 <PCard key={r.id} className="flex flex-col">
-                  <h3 className="font-portal text-base font-bold text-portal-ink line-clamp-2">
+                  <h3 className="line-clamp-2 font-portal text-base font-bold text-portal-ink">
                     {r.oportunidadTitulo}
                   </h3>
                   {r.estado === "activa" ? (

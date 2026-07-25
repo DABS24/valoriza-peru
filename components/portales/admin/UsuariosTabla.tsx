@@ -99,7 +99,8 @@ export function UsuariosTabla({
   async function crear() {
     if (busy) return;
     if (fNombre.trim().length < 2) return void toast.error(T.nombreCorto);
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fEmail.trim())) return void toast.error(T.correoInvalido);
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fEmail.trim()))
+      return void toast.error(T.correoInvalido);
     setAccion("crear");
     try {
       const res = await fetch(`/api/usuarios`, {
@@ -183,10 +184,16 @@ export function UsuariosTabla({
     <div>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{T.titulo}</h1>
+          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+            {T.titulo}
+          </h1>
           <p className="mt-1 max-w-2xl text-sm text-portal-muted">{T.sub}</p>
         </div>
-        <PButton pill leadingIcon={<UserPlus className="size-4" />} onClick={() => setCrearAbierto(true)}>
+        <PButton
+          pill
+          leadingIcon={<UserPlus className="size-4" />}
+          onClick={() => setCrearAbierto(true)}
+        >
           {T.crear}
         </PButton>
       </div>
@@ -209,7 +216,7 @@ export function UsuariosTabla({
                   <td className="px-5 py-3">
                     <span className="font-semibold text-portal-ink">{m.nombre}</span>
                     {m.userId === miId && (
-                      <span className="ml-2 rounded-chip bg-portal-primary-soft px-2 py-0.5 text-[10px] font-bold text-portal-primary-ink">
+                      <span className="ml-2 rounded-chip bg-portal-primary-soft px-2 py-0.5 text-3xs font-bold text-portal-primary-ink">
                         {T.tuMismo}
                       </span>
                     )}
@@ -225,7 +232,7 @@ export function UsuariosTabla({
                     <PPill tone={m.estado === "activo" ? "money" : "neutral"}>
                       {m.estado === "activo" ? TE.activo : TE.inactivo}
                     </PPill>
-                    <p className="mt-1 text-[11px] text-portal-muted">{toDate(m.createdAt)}</p>
+                    <p className="mt-1 text-2xs text-portal-muted">{toDate(m.createdAt)}</p>
                   </td>
                   <td className="px-5 py-3">
                     <div className="flex flex-wrap justify-end gap-2">
@@ -262,7 +269,11 @@ export function UsuariosTabla({
       </PCard>
 
       {/* Crear usuario */}
-      <Dialog open={crearAbierto} onClose={() => (busy ? undefined : setCrearAbierto(false))} title={T.crearTitulo}>
+      <Dialog
+        open={crearAbierto}
+        onClose={() => (busy ? undefined : setCrearAbierto(false))}
+        title={T.crearTitulo}
+      >
         <div className="space-y-4">
           {/* Conversión: la cuenta se crea para alguien que el asesor ya trabajaba.
               Al elegirlo se precarga su ficha y su historial queda ligado. */}
@@ -281,7 +292,12 @@ export function UsuariosTabla({
               ))}
             </PSelect>
           )}
-          <PInput label={T.nombre} value={fNombre} onChange={(e) => setFNombre(e.target.value)} requiredMark />
+          <PInput
+            label={T.nombre}
+            value={fNombre}
+            onChange={(e) => setFNombre(e.target.value)}
+            requiredMark
+          />
           <PInput
             label={T.correo}
             type="email"
@@ -290,13 +306,21 @@ export function UsuariosTabla({
             requiredMark
           />
           <PInput label={T.telefono} value={fTel} onChange={(e) => setFTel(e.target.value)} />
-          <PSelect label={T.rol} value={fRol} onChange={(e) => setFRol(e.target.value as PortalRol)}>
+          <PSelect
+            label={T.rol}
+            value={fRol}
+            onChange={(e) => setFRol(e.target.value as PortalRol)}
+          >
             <option value="cliente">{TR.cliente}</option>
             <option value="asesor">{TR.asesor}</option>
             <option value="admin">{TR.admin}</option>
           </PSelect>
           {fRol === "cliente" && (
-            <PSelect label={T.asesorAsignado} value={fAsesor} onChange={(e) => setFAsesor(e.target.value)}>
+            <PSelect
+              label={T.asesorAsignado}
+              value={fAsesor}
+              onChange={(e) => setFAsesor(e.target.value)}
+            >
               <option value="">{T.sinAsesor}</option>
               {asesores.map((a) => (
                 <option key={a.userId} value={a.userId}>
@@ -310,14 +334,24 @@ export function UsuariosTabla({
           <PButton pill fullWidth loading={accion === "crear"} disabled={busy} onClick={crear}>
             {accion === "crear" ? T.creando : T.crearCta}
           </PButton>
-          <PButton variant="ghost" pill fullWidth disabled={busy} onClick={() => setCrearAbierto(false)}>
+          <PButton
+            variant="ghost"
+            pill
+            fullWidth
+            disabled={busy}
+            onClick={() => setCrearAbierto(false)}
+          >
             {COPY.portales.comun.cancelar}
           </PButton>
         </div>
       </Dialog>
 
       {/* Reasignar asesor */}
-      <Dialog open={!!reasignar} onClose={() => (busy ? undefined : setReasignar(null))} title={T.reasignarTitulo}>
+      <Dialog
+        open={!!reasignar}
+        onClose={() => (busy ? undefined : setReasignar(null))}
+        title={T.reasignarTitulo}
+      >
         {reasignar && (
           <div className="space-y-4">
             <p className="text-sm text-portal-ink2">{reasignar.nombre}</p>
@@ -337,7 +371,13 @@ export function UsuariosTabla({
           </div>
         )}
         <div className="mt-6">
-          <PButton variant="ghost" pill fullWidth disabled={busy} onClick={() => setReasignar(null)}>
+          <PButton
+            variant="ghost"
+            pill
+            fullWidth
+            disabled={busy}
+            onClick={() => setReasignar(null)}
+          >
             {COPY.portales.comun.cancelar}
           </PButton>
         </div>

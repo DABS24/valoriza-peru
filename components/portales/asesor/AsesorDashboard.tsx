@@ -34,7 +34,9 @@ export function AsesorDashboard({
   return (
     <div>
       <header className="mb-6">
-        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{T.titulo}</h1>
+        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+          {T.titulo}
+        </h1>
         <p className="mt-1 max-w-2xl text-sm text-portal-muted">{T.sub}</p>
       </header>
 
@@ -49,7 +51,11 @@ export function AsesorDashboard({
         {/* Los titulares sin cuenta van en su propia cifra: sumarlos a "clientes"
             contaría como usuarios del portal a gente que no puede iniciar sesión. */}
         <PStat label={T.kpiProspectos} value={toInt(kpis.prospectos)} sub={T.kpiProspectosSub} />
-        <PStat label={T.kpiReservasPendientes} value={toInt(kpis.reservasPendientes)} tone="primary" />
+        <PStat
+          label={T.kpiReservasPendientes}
+          value={toInt(kpis.reservasPendientes)}
+          tone="primary"
+        />
         <PStat label={T.kpiDisponibles} value={toInt(kpis.disponibles)} tone="positive" />
       </div>
 
@@ -71,18 +77,27 @@ export function AsesorDashboard({
             tone="positive"
             title={toMoneda(kpis.comisionEstimada, kpis.moneda)}
           />
-          <PStat label={T.kpiCerradas} value={toInt(kpis.cerradas)} sub={T.kpiCerradasSub} tone="primary" />
+          <PStat
+            label={T.kpiCerradas}
+            value={toInt(kpis.cerradas)}
+            sub={T.kpiCerradasSub}
+            tone="primary"
+          />
         </div>
         <p className="mt-2 text-xs text-portal-muted">{T.kpiDineroNota}</p>
         {kpis.multiMoneda && (
-          <p className="mt-1 text-xs font-medium text-portal-muted">{COPY.portales.multiMonedaNota(kpis.moneda)}</p>
+          <p className="mt-1 text-xs font-medium text-portal-muted">
+            {COPY.portales.multiMonedaNota(kpis.moneda)}
+          </p>
         )}
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <PCard className="flex flex-col items-start">
           <CalendarCheck className="size-6 text-portal-primary" aria-hidden />
-          <h2 className="mt-3 font-portal text-lg font-bold text-portal-ink">{T.kpiReservasPendientes}</h2>
+          <h2 className="mt-3 font-portal text-lg font-bold text-portal-ink">
+            {T.kpiReservasPendientes}
+          </h2>
           <p className="mt-1 flex-1 text-sm text-portal-muted">{T.reservas.sub}</p>
           <PButton
             as="link"
@@ -97,7 +112,9 @@ export function AsesorDashboard({
 
         <PCard className="flex flex-col items-start">
           <Users className="size-6 text-portal-ink" aria-hidden />
-          <h2 className="mt-3 font-portal text-lg font-bold text-portal-ink">{T.clientesPageTitulo}</h2>
+          <h2 className="mt-3 font-portal text-lg font-bold text-portal-ink">
+            {T.clientesPageTitulo}
+          </h2>
           <p className="mt-1 flex-1 text-sm text-portal-muted">{T.clientesPageSub}</p>
           <PButton
             as="link"

@@ -54,7 +54,11 @@ export const oportunidadComunSchema = z.object({
   /** Prestatario (contratista) al que pertenece la operación. "" ⇒ ninguno. */
   prestatario_id: z.string().uuid().optional().or(z.literal("")),
   nivel_riesgo: nivelRiesgoEnum.optional(),
-  rating: z.string().regex(/^[A-G]$/).optional().or(z.literal("")),
+  rating: z
+    .string()
+    .regex(/^[A-G]$/)
+    .optional()
+    .or(z.literal("")),
   notas_internas: z.string().trim().max(8000).optional().or(z.literal("")),
   estado_publicacion: z
     .enum(["borrador", "disponible", "reservada", "cerrada"])
@@ -78,7 +82,11 @@ export const prestatarioBodySchema = z.object({
     .or(z.literal("")),
   nivel_riesgo: nivelRiesgoEnum.optional().or(z.literal("")),
   scoring_pago: z.coerce.number().int().min(0).max(100).optional(),
-  rating: z.string().regex(/^[A-G]$/).optional().or(z.literal("")),
+  rating: z
+    .string()
+    .regex(/^[A-G]$/)
+    .optional()
+    .or(z.literal("")),
   notas_internas: z.string().trim().max(8000).optional().or(z.literal("")),
   estado: z.enum(["activo", "inactivo"]).default("activo"),
 });

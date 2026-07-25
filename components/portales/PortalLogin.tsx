@@ -161,7 +161,7 @@ export function PortalLogin({ portal }: { portal: PortalSlug }) {
             {T.nota}
           </PNota>
 
-          <p className="mt-6 text-center text-[11px] text-portal-muted">{COPY.portales.pieLegal}</p>
+          <p className="mt-6 text-center text-2xs text-portal-muted">{COPY.portales.pieLegal}</p>
         </div>
       </main>
     </div>

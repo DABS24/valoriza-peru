@@ -54,7 +54,12 @@ export function ReservasCola({
   const visibles = filtro === "mias" ? mias : fuente;
 
   const vistaTabs: PTab<Vista>[] = [
-    { id: "pendientes", label: T.tabPendientes, contador: listaActivas.length, contadorTono: "alerta" },
+    {
+      id: "pendientes",
+      label: T.tabPendientes,
+      contador: listaActivas.length,
+      contadorTono: "alerta",
+    },
     { id: "confirmadas", label: T.tabConfirmadas, contador: listaConfirmadas.length },
   ];
   const filtroTabs: PTab<Filtro>[] = [
@@ -132,7 +137,9 @@ export function ReservasCola({
   return (
     <div>
       <header className="mb-5">
-        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{T.titulo}</h1>
+        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+          {T.titulo}
+        </h1>
         <p className="mt-1 max-w-2xl text-sm text-portal-muted">{T.sub}</p>
       </header>
 
@@ -165,7 +172,10 @@ export function ReservasCola({
                     {vista === "pendientes" ? (
                       <CuentaRegresiva hasta={r.venceEn} />
                     ) : r.financiadaEn ? (
-                      <PPill tone="money" leadingIcon={<CheckCircle2 className="size-3.5" aria-hidden />}>
+                      <PPill
+                        tone="money"
+                        leadingIcon={<CheckCircle2 className="size-3.5" aria-hidden />}
+                      >
                         {T.financiadaBadge}
                       </PPill>
                     ) : (

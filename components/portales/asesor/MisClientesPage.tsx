@@ -1,8 +1,5 @@
 import { requirePortalStaff } from "@/lib/portales/guards";
-import {
-  listarClientesDeAsesorEnriquecido,
-  listarProspectosDeAsesor,
-} from "@/lib/portales/data";
+import { listarClientesDeAsesorEnriquecido, listarProspectosDeAsesor } from "@/lib/portales/data";
 import type { PortalSlug } from "@/lib/portales/config";
 import { MisClientes } from "@/components/portales/asesor/MisClientes";
 

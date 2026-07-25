@@ -12,8 +12,20 @@ import {
 } from "@/lib/portales/config";
 import { acentoPortalRgb } from "@/lib/portales/tema";
 import { labelGarantia, nivelRiesgo } from "@/lib/portales/constants";
-import { coberturaGarantia, coberturaTexto, gananciaAlPlazo, pctTasa, tasasDerivadas } from "@/lib/portales/tasas";
-import { labelOpcion, numDato, strDato, plazoTexto, conSufijo } from "@/lib/portales/oportunidadResumen";
+import {
+  coberturaGarantia,
+  coberturaTexto,
+  gananciaAlPlazo,
+  pctTasa,
+  tasasDerivadas,
+} from "@/lib/portales/tasas";
+import {
+  labelOpcion,
+  numDato,
+  strDato,
+  plazoTexto,
+  conSufijo,
+} from "@/lib/portales/oportunidadResumen";
 import type { ReporteData, ReporteSeccion } from "@/lib/pdf/reporteUsuario";
 
 /**
@@ -103,8 +115,10 @@ export async function constanciaReserva(
   const cobertura = coberturaGarantia(
     garantias.map((g) => ({
       valorEstimado: g.valor_estimado != null ? Number(g.valor_estimado) : null,
+      moneda: g.moneda as string | null,
     })),
     monto,
+    moneda,
   );
   const ganancia =
     monto != null && tasa != null && plazoBase != null

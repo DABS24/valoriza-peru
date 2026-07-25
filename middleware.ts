@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { SESS_COOKIE } from "@/lib/auth/session";
 import { updateSession, borrarCookiesAuth } from "@/lib/supabase/middleware";
 
 const isProd = process.env.NODE_ENV === "production";
 
 /** Tope duro de sesión: 1 hora desde el login (marca httpOnly, no reseteable por JS). */
 const MAX_SESION_MS = 60 * 60 * 1000;
-const SESS_COOKIE = "vpses";
 
 /**
  * Pantallas PÚBLICAS del portal. Todo lo demás es zona protegida: acá no hay
@@ -15,10 +15,20 @@ const SESS_COOKIE = "vpses";
  * una pantalla nueva acá la deja detrás del login (falla cerrado), que es el lado
  * correcto del error.
  *
- * Las dos son estáticas (prerenderadas), así que tampoco pueden llevar nonce: sus
- * <script> se emiten en build y 'strict-dynamic' los bloquearía.
+ * Son estáticas (prerenderadas), así que tampoco pueden llevar nonce: sus <script>
+ * se emiten en build y 'strict-dynamic' los bloquearía.
+ *
+ * ⚠️ "/" es la landing institucional y es pública A PROPÓSITO, pero el match es
+ * exacto: `esPublica` solo abre la raíz, no todo lo que cuelga de ella. Verificado
+ * con /cliente, /admin, /asesor y /empresario, que siguen cerrados.
  */
-const PUBLICAS: readonly string[] = ["/login", "/nueva-clave"];
+const PUBLICAS: readonly string[] = [
+  "/", // landing institucional
+  "/login",
+  "/nueva-clave",
+  "/legal", // términos, privacidad, cookies
+  "/libro-reclamaciones",
+];
 
 /** ¿El path es una de las pantallas públicas? */
 function esPublica(path: string): boolean {
@@ -81,11 +91,15 @@ export async function middleware(request: NextRequest) {
   // dinero e identidad de inversionistas, y no hay ninguna superficie abierta que
   // proteger de menos.
   const esApi = path.startsWith("/api");
-  const zonaProtegida = !esPublica(path) && !esApi;
+  // El tope de sesión aplica también a /api: un atacante con la cookie robada que
+  // solo golpee la API mantenía la sesión viva para siempre, porque updateSession
+  // refresca el JWT y este bloque nunca corría. Auditoría 2026-07-25.
+  const zonaProtegida = !esPublica(path);
 
   // Estricto (nonce + strict-dynamic) donde vive la información sensible. Solo en
   // páginas dinámicas: las estáticas se prerenderan sin nonce y quedarían rotas.
-  const usarNonce = isProd && zonaProtegida;
+  // El nonce sigue siendo solo de páginas: una respuesta JSON no lleva <script>.
+  const usarNonce = isProd && zonaProtegida && !esApi;
   const nonce = usarNonce ? makeNonce() : null;
   const csp = buildCsp(nonce);
 
@@ -117,7 +131,15 @@ export async function middleware(request: NextRequest) {
     const marca = Number(request.cookies.get(SESS_COOKIE)?.value);
     if (Number.isFinite(marca) && marca > 0) {
       if (Date.now() - marca > MAX_SESION_MS) {
-        // Sesión vencida: cerrar duro (borrar cookies de auth) y mandar a login.
+        // Sesión vencida. La API contesta 401: un fetch no sabe seguir un redirect
+        // a una pantalla de login, y el JSON deja al cliente manejarlo.
+        if (esApi) {
+          const j = NextResponse.json({ error: "sesion_expirada" }, { status: 401 });
+          borrarCookiesAuth(request, j);
+          j.cookies.set(SESS_COOKIE, "", { maxAge: 0, path: "/" });
+          return j;
+        }
+        // Página: cerrar duro (borrar cookies de auth) y mandar a login.
         const url = request.nextUrl.clone();
         url.pathname = "/login";
         url.search = "?sesion=expirada";
@@ -137,7 +159,9 @@ export async function middleware(request: NextRequest) {
       });
     }
   } else if (zonaProtegida && hayUser === false) {
-    // Sin sesión no se entra, ni siquiera al cascarón.
+    // Sin sesión no se entra, ni siquiera al cascarón. Los guards de cada handler
+    // ya devuelven 401; acá se corta antes y con la misma forma.
+    if (esApi) return NextResponse.json({ error: "sin_sesion" }, { status: 401 });
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.search = "";

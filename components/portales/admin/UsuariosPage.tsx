@@ -25,11 +25,5 @@ export default async function UsuariosPage({ portal }: { portal: PortalSlug }) {
     listarMiembros(portal),
     prospectosSinCuenta(portal),
   ]);
-  return (
-    <UsuariosTabla
-      miembros={miembros}
-      miId={miembro.userId}
-      prospectos={prospectos}
-    />
-  );
+  return <UsuariosTabla miembros={miembros} miId={miembro.userId} prospectos={prospectos} />;
 }

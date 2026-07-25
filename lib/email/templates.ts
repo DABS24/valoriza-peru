@@ -75,12 +75,6 @@ function layout(inner: string, marcaPortal?: string): string {
 </body></html>`;
 }
 
-
-
-
-
-
-
 /**
  * Bloque de contenido de PORTAL: título + saludo opcional + cuerpo + botón + nota
  * de contexto + "ignora". Sin campo de expiración (no son enlaces con vencimiento
@@ -223,11 +217,11 @@ export function correoPortalReservaConfirmada(opts: {
  * PORTAL · aviso al STAFF de que una empresa dejó una nueva solicitud de
  * financiamiento. `marca` = nombre del portal.
  */
-export function correoPortalSolicitudNueva(opts: {
-  marca: string;
-  empresa: string;
-  url: string;
-}): { subject: string; html: string; text: string } {
+export function correoPortalSolicitudNueva(opts: { marca: string; empresa: string; url: string }): {
+  subject: string;
+  html: string;
+  text: string;
+} {
   const T = COPY.correos.portalSolicitudNueva;
   const campos = {
     titulo: T.titulo,
@@ -269,4 +263,3 @@ export function correoPortalSolicitudResuelta(opts: {
     text: bloquePortalTexto(campos, opts.marca),
   };
 }
-

@@ -167,14 +167,16 @@ export function CatalogoCliente({
                     {T.card.verDetalle}
                   </PButton>
                   {esCliente && (
-                    <AccionesReserva portal={portal} op={op} miId={miId} asesor={asesor} fullWidth />
-                  )}
-                  {esStaff && op.estadoPublicacion === "disponible" && (
-                    <BloquearPara
-                      oportunidadId={op.id}
-                      titulares={titulares}
+                    <AccionesReserva
+                      portal={portal}
+                      op={op}
+                      miId={miId}
+                      asesor={asesor}
                       fullWidth
                     />
+                  )}
+                  {esStaff && op.estadoPublicacion === "disponible" && (
+                    <BloquearPara oportunidadId={op.id} titulares={titulares} fullWidth />
                   )}
                 </div>
               }

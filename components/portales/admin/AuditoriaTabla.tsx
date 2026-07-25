@@ -46,7 +46,9 @@ function desdeDe(periodo: Periodo): string | undefined {
 
 /** El rol guardado es texto libre en la base: se muestra traducido solo si es uno conocido. */
 function rolConocido(rol: string | null): PortalRol | null {
-  return rol != null && (PORTAL_ROLES as readonly string[]).includes(rol) ? (rol as PortalRol) : null;
+  return rol != null && (PORTAL_ROLES as readonly string[]).includes(rol)
+    ? (rol as PortalRol)
+    : null;
 }
 
 /**
@@ -162,9 +164,17 @@ export function AuditoriaTabla({ portal }: { portal: PortalSlug }) {
                   : T.integridadParcial(integridad.revisados, integridad.total)}
               </p>
             )}
-            {roto && <p className="mt-2 text-xs font-semibold text-portal-danger">{T.integridadRotaQueHacer}</p>}
-            <p className="mt-3 text-xs leading-relaxed text-portal-muted">{T.integridadComoFunciona}</p>
-            <p className="mt-1.5 text-xs leading-relaxed text-portal-muted">{T.integridadAlcance}</p>
+            {roto && (
+              <p className="mt-2 text-xs font-semibold text-portal-danger">
+                {T.integridadRotaQueHacer}
+              </p>
+            )}
+            <p className="mt-3 text-xs leading-relaxed text-portal-muted">
+              {T.integridadComoFunciona}
+            </p>
+            <p className="mt-1.5 text-xs leading-relaxed text-portal-muted">
+              {T.integridadAlcance}
+            </p>
             <PButton
               variant="ghost"
               size="sm"
@@ -264,7 +274,9 @@ export function AuditoriaTabla({ portal }: { portal: PortalSlug }) {
                     <td className="px-5 py-3 font-medium text-portal-ink">
                       {labelAccionAuditoria(e.accion)}
                     </td>
-                    <td className="px-5 py-3 text-portal-ink2">{labelEntidadAuditoria(e.entidad)}</td>
+                    <td className="px-5 py-3 text-portal-ink2">
+                      {labelEntidadAuditoria(e.entidad)}
+                    </td>
                     {/* La fila entera abre el detalle (comodidad con el ratón), pero el
                         botón real es este: una fila clicable no la alcanza el teclado. */}
                     <td className="px-5 py-3 text-right">
@@ -309,7 +321,7 @@ export function AuditoriaTabla({ portal }: { portal: PortalSlug }) {
 function Dato({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div className="min-w-0">
-      <dt className="text-[11px] font-bold uppercase tracking-wide text-portal-muted">{label}</dt>
+      <dt className="text-2xs font-bold uppercase tracking-wide text-portal-muted">{label}</dt>
       <dd className={cn("mt-0.5 break-words text-sm text-portal-ink", mono && "font-mono text-xs")}>
         {value}
       </dd>
@@ -336,26 +348,29 @@ function DetalleEvento({ evento, onClose }: { evento: EventoPortal | null; onClo
             label={D.quien}
             value={evento.actorNombre ?? (evento.actorId ? T.actorBorrado : T.actorSistema)}
           />
-          <Dato label={D.rol} value={rol ? COPY.portales.roles[rol] : (evento.actorRol ?? D.sinDato)} />
+          <Dato
+            label={D.rol}
+            value={rol ? COPY.portales.roles[rol] : (evento.actorRol ?? D.sinDato)}
+          />
           <Dato label={D.recurso} value={labelEntidadAuditoria(evento.entidad)} />
           <Dato label={D.recursoId} value={evento.entidadId ?? D.sinDato} mono />
         </dl>
 
         {/* Desde dónde: dato personal, solo para el administrador del portal. */}
         <div className="rounded-portal-sm border border-portal-line bg-portal-subtle p-3">
-          <p className="text-[11px] font-bold uppercase tracking-wide text-portal-muted">
+          <p className="text-2xs font-bold uppercase tracking-wide text-portal-muted">
             {D.origenTitulo}
           </p>
           <dl className="mt-2 space-y-2">
             <Dato label={D.ip} value={evento.ip ?? D.sinDato} mono />
             <Dato label={D.dispositivo} value={evento.userAgent ?? D.sinDato} mono />
           </dl>
-          <p className="mt-2 text-[11px] text-portal-muted">{D.origenNota}</p>
+          <p className="mt-2 text-2xs text-portal-muted">{D.origenNota}</p>
         </div>
 
         {hayDatos && (
           <div>
-            <p className="mb-2 text-[11px] font-bold uppercase tracking-wide text-portal-muted">
+            <p className="mb-2 text-2xs font-bold uppercase tracking-wide text-portal-muted">
               {D.datosTitulo}
             </p>
             <pre className="overflow-x-auto whitespace-pre-wrap break-words rounded-portal-sm border border-portal-line bg-portal-subtle p-3 font-mono text-xs text-portal-ink">
@@ -365,7 +380,7 @@ function DetalleEvento({ evento, onClose }: { evento: EventoPortal | null; onClo
         )}
 
         <div className="rounded-portal-sm border border-portal-line bg-portal-subtle p-3">
-          <p className="text-[11px] font-bold uppercase tracking-wide text-portal-muted">
+          <p className="text-2xs font-bold uppercase tracking-wide text-portal-muted">
             {D.selloTitulo}
           </p>
           <dl className="mt-2 space-y-2">

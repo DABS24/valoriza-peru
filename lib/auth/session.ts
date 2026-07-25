@@ -10,6 +10,13 @@
  */
 
 const KEY = "donbilletes.loginAt";
+/**
+ * Nombre de la cookie httpOnly que marca el inicio de sesión. FUENTE ÚNICA: la
+ * escribe el middleware y la borra `/api/salir`; tenerla escrita en dos lugares
+ * fue exactamente cómo el logout dejó de limpiarla y el siguiente login rebotaba.
+ */
+export const SESS_COOKIE = "vpses";
+
 export const MAX_SESION_MS = 60 * 60 * 1000; // 1 hora
 
 /** Marca el momento del login (al entrar con contraseña o completar el 2FA). */

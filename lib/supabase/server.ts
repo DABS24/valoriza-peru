@@ -20,9 +20,7 @@ export const createClient = cache(async () => {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(
-          cookiesToSet: Array<{ name: string; value: string; options?: CookieOptions }>,
-        ) {
+        setAll(cookiesToSet: Array<{ name: string; value: string; options?: CookieOptions }>) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options),

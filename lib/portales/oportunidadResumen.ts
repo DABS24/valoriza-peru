@@ -106,10 +106,7 @@ export function teaDe(tasaMensual: number | null): string | null {
  * Modelo de vista de la card según el portal. `mesesSufijo` se pasa como texto
  * ("meses") para no hardcodearlo acá; viene del copy del caller.
  */
-export function resumenCard(
-  op: OportunidadLite,
-  mesesSufijo: string,
-): ResumenCard {
+export function resumenCard(op: OportunidadLite, mesesSufijo: string): ResumenCard {
   const cfg = PORTALES[op.portal];
   const { ubicacion, subtitulo } = ubicacionSubtitulo(op.distrito, op.ciudad, op.datos);
   const destacadoPct = teaDe(op.tasaMensual);
@@ -121,7 +118,10 @@ export function resumenCard(
     subtitulo,
     destacadoPct,
     stats: [
-      { label: cfg.card.stat1, value: op.montoSolicitado != null ? toMonedaKpi(op.montoSolicitado, op.moneda) : "—" },
+      {
+        label: cfg.card.stat1,
+        value: op.montoSolicitado != null ? toMonedaKpi(op.montoSolicitado, op.moneda) : "—",
+      },
       { label: cfg.card.stat2, value: plazo ?? "—", wrap: true },
       { label: cfg.card.stat3, value: destacadoPct ?? "—" },
     ],

@@ -92,6 +92,8 @@ export function gananciaAlPlazo(
 }
 
 export interface CoberturaGarantia {
+  /** Respaldos descartados por estar en otra moneda que la operación. */
+  omitidas?: number;
   /** Cuántas veces el total de garantías cubre el monto (totalGarantias ÷ monto). */
   veces: number;
   /** Suma de los valores estimados de las garantías (en la moneda del monto). */
@@ -103,6 +105,13 @@ export interface CoberturaGarantia {
 /** Garantía mínima que necesita coberturaGarantia (solo el valor estimado). */
 export interface GarantiaValor {
   valorEstimado: number | null;
+  /**
+   * 🔴 Obligatoria. `portal_garantias` tiene su PROPIA moneda, independiente de
+   * la operación: sumar sin mirarla producía "3.2x tu inversión" mezclando soles
+   * con dólares, en el número que la ficha llama el centro de confianza — y que
+   * también sale en el PDF de constancia.
+   */
+  moneda?: string | null;
 }
 
 /**
@@ -113,11 +122,20 @@ export interface GarantiaValor {
 export function coberturaGarantia(
   garantias: readonly GarantiaValor[],
   monto: number | null | undefined,
+  /** Moneda de la OPERACIÓN: es el denominador, así que manda. */
+  moneda?: string | null,
 ): CoberturaGarantia {
   let totalGarantias = 0;
   let cuenta = 0;
+  let omitidas = 0;
   for (const g of garantias) {
     if (g.valorEstimado != null && Number.isFinite(g.valorEstimado) && g.valorEstimado > 0) {
+      // Nunca se suman monedas distintas. El resto del repo ya lo respeta con
+      // `monedaDominante`; este agregado era el único que se lo saltaba.
+      if (moneda && g.moneda && g.moneda !== moneda) {
+        omitidas += 1;
+        continue;
+      }
       totalGarantias += g.valorEstimado;
       cuenta += 1;
     }
@@ -126,7 +144,7 @@ export function coberturaGarantia(
     monto != null && Number.isFinite(monto) && monto > 0 && totalGarantias > 0
       ? totalGarantias / monto
       : 0;
-  return { veces, totalGarantias, cuenta };
+  return { veces, totalGarantias, cuenta, omitidas };
 }
 
 /** Cobertura corta para display: 2.3 → "2.3×", 3 → "3×". null si no aplica (≤0). */
@@ -193,9 +211,16 @@ export function costoEmpresario(
   plazoMeses: number | null | undefined,
 ): CostoEmpresario {
   const m = pos(monto);
-  const comision = Number.isFinite(comisionPct) && (comisionPct as number) >= 0 ? (comisionPct as number) : 0;
-  const tasa = Number.isFinite(tasaMensualPct) && (tasaMensualPct as number) >= 0 ? (tasaMensualPct as number) : 0;
-  const meses = Number.isFinite(plazoMeses) && (plazoMeses as number) > 0 ? Math.floor(plazoMeses as number) : 0;
+  const comision =
+    Number.isFinite(comisionPct) && (comisionPct as number) >= 0 ? (comisionPct as number) : 0;
+  const tasa =
+    Number.isFinite(tasaMensualPct) && (tasaMensualPct as number) >= 0
+      ? (tasaMensualPct as number)
+      : 0;
+  const meses =
+    Number.isFinite(plazoMeses) && (plazoMeses as number) > 0
+      ? Math.floor(plazoMeses as number)
+      : 0;
 
   const comisionMonto = m * (comision / 100);
   const cuotaMensualInteres = m * (tasa / 100);
@@ -233,6 +258,24 @@ export interface CuotaCronograma {
  * `desde` (default: hoy). Entradas inválidas → []. Es SIMULACIÓN: el cronograma real
  * se define al desembolso (etiquetarlo así en la UI). Determinístico si se pasa `desde`.
  */
+/**
+ * Suma meses clampeando al último día del mes destino.
+ *
+ * `setMonth` NO clampea: 31 ene + 1 mes cae en 3 mar. Verificado — un cronograma
+ * de 6 cuotas desde el 31 de enero daba DOS cuotas en marzo y NINGUNA en febrero.
+ * El comentario anterior decía "setMonth maneja el wrap de año", que es cierto y
+ * no era el problema.
+ */
+export function sumarMeses(base: Date, n: number): Date {
+  const d = new Date(base.getTime());
+  const dia = d.getDate();
+  d.setDate(1); // mover el mes con día 1 evita el desborde
+  d.setMonth(d.getMonth() + n);
+  const ultimo = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  d.setDate(Math.min(dia, ultimo));
+  return d;
+}
+
 export function cronogramaEmpresario(
   monto: number | null | undefined,
   tasaMensualPct: number | null | undefined,
@@ -242,14 +285,16 @@ export function cronogramaEmpresario(
   const m = pos(monto);
   const n = Number.isFinite(meses) && (meses as number) > 0 ? Math.floor(meses as number) : 0;
   if (m <= 0 || n <= 0) return [];
-  const tasa = Number.isFinite(tasaMensualPct) && (tasaMensualPct as number) >= 0 ? (tasaMensualPct as number) : 0;
+  const tasa =
+    Number.isFinite(tasaMensualPct) && (tasaMensualPct as number) >= 0
+      ? (tasaMensualPct as number)
+      : 0;
   const interes = m * (tasa / 100);
 
   const filas: CuotaCronograma[] = [];
   for (let i = 1; i <= n; i++) {
-    // Fecha = `desde` + i meses (setMonth maneja el wrap de año). Se clona para no mutar.
-    const f = new Date(desde.getTime());
-    f.setMonth(f.getMonth() + i);
+    // Fecha = `desde` + i meses, clampeada al último día del mes destino.
+    const f = sumarMeses(desde, i);
     const capital = i === n ? m : 0;
     filas.push({
       numero: i,

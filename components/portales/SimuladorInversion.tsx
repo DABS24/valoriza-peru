@@ -99,7 +99,7 @@ export function SimuladorInversion({
               className="mt-3 w-full accent-portal-primary"
               aria-label={T.montoLabel}
             />
-            <div className="mt-1 flex justify-between text-[11px] font-medium text-portal-muted tabular-nums">
+            <div className="mt-1 flex justify-between text-2xs font-medium tabular-nums text-portal-muted">
               <span>{toMoneda(min, moneda)}</span>
               <span>{toMoneda(max, moneda)}</span>
             </div>
@@ -152,7 +152,9 @@ function Resultado({
   return (
     <div className="rounded-portal-sm border border-portal-line bg-portal-surface p-3.5">
       <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-portal-muted">
-        <span className={tone === "positive" ? "text-portal-positive" : "text-portal-primary"}>{icon}</span>
+        <span className={tone === "positive" ? "text-portal-positive" : "text-portal-primary"}>
+          {icon}
+        </span>
         {label}
       </p>
       <p

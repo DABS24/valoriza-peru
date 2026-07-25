@@ -31,10 +31,7 @@ async function preparar(ctx: { params: Promise<{ id: string }> }) {
   return { portal, id, guard } as const;
 }
 
-export async function PATCH(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const p = await preparar(ctx);
   if ("fail" in p) return p.fail;
 
@@ -58,10 +55,7 @@ export async function PATCH(
   return NextResponse.json({ resultado: "ok" });
 }
 
-export async function DELETE(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const p = await preparar(ctx);
   if ("fail" in p) return p.fail;
 

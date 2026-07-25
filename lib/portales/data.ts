@@ -116,7 +116,7 @@ export interface OportunidadLite {
   numFotos: number;
 }
 
-export interface GarantiaRow {
+export type GarantiaRow = {
   id: string;
   tipo: string;
   titulo: string | null;
@@ -124,22 +124,22 @@ export interface GarantiaRow {
   valorEstimado: number | null;
   moneda: PortalMoneda;
   orden: number;
-}
+};
 
-export interface FotoRow {
+export type FotoRow = {
   id: string;
   path: string;
   orden: number;
   garantiaId: string | null;
   url: string | null;
-}
+};
 
 /**
  * Documento de respaldo (data room). Client-safe: solo metadata visible + URL
  * firmada. NUNCA lleva hash ni datos internos. `tipo` es texto abierto
  * (contrato/tasacion/titulo/carta_fianza/otro); el label lo pone el TS.
  */
-export interface DocRow {
+export type DocRow = {
   id: string;
   tipo: string;
   nombre: string | null;
@@ -147,7 +147,7 @@ export interface DocRow {
   mime: string | null;
   orden: number;
   url: string | null;
-}
+};
 
 export interface OportunidadFull extends OportunidadLite {
   descripcion: string | null;
@@ -168,7 +168,7 @@ export interface OportunidadFull extends OportunidadLite {
   docs: DocRow[];
 }
 
-export interface MiembroRow {
+export type MiembroRow = {
   portal: PortalSlug;
   userId: string;
   rol: PortalRol;
@@ -177,7 +177,7 @@ export interface MiembroRow {
   asesorId: string | null;
   estado: "activo" | "inactivo";
   createdAt: string;
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>;
@@ -212,8 +212,11 @@ function mapLite(r: Row, portadaUrl: string | null, numFotos: number): Oportunid
  * Portadas (orden 0, sin garantia) de un set de oportunidades + conteo total.
  * Firma con el client que se le pase (sesión staff o admin para el cliente).
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function portadasDe(supabase: any, ids: string[]): Promise<{
+async function portadasDe(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: any,
+  ids: string[],
+): Promise<{
   portada: Map<string, string>;
   conteo: Map<string, number>;
 }> {
@@ -432,7 +435,10 @@ export async function catalogoParaCliente(portal: PortalSlug): Promise<Oportunid
     .order("created_at", { ascending: false });
   const rows = (data as Row[]) ?? [];
   const [{ portada, conteo }, prestatarios] = await Promise.all([
-    portadasDe(admin, rows.map((r) => r.id)),
+    portadasDe(
+      admin,
+      rows.map((r) => r.id),
+    ),
     resumenPrestatarios(admin, portal, rows),
   ]);
   return rows.map((r) => {
@@ -597,7 +603,9 @@ export async function getMiEmpresa(portal: PortalSlug): Promise<MiEmpresa | null
  * agrupa por estado (vigentes = disponible+reservada, cerradas, en evaluación =
  * borrador). Sin portada (no la necesita) → cero firmas de Storage.
  */
-export async function oportunidadesDeMiEmpresa(portal: PortalSlug): Promise<OportunidadEmpresario[]> {
+export async function oportunidadesDeMiEmpresa(
+  portal: PortalSlug,
+): Promise<OportunidadEmpresario[]> {
   const prestId = await miPrestatarioId(portal);
   if (!prestId) return [];
   const admin = createAdminClient();
@@ -680,7 +688,10 @@ async function docsDeSolicitudes(supabase: any, ids: string[]): Promise<Map<stri
     .in("solicitud_id", ids)
     .order("orden", { ascending: true });
   const rows = (data as Row[]) ?? [];
-  const firmadas = await signedUrlsPortal(supabase, rows.map((d) => d.path));
+  const firmadas = await signedUrlsPortal(
+    supabase,
+    rows.map((d) => d.path),
+  );
   for (const d of rows) {
     const doc: DocRow = {
       id: d.id,
@@ -745,7 +756,10 @@ export async function getMisSolicitudes(portal: PortalSlug): Promise<SolicitudEm
     .eq("prestatario_id", prestId)
     .order("created_at", { ascending: false });
   const rows = (data as Row[]) ?? [];
-  const docs = await docsDeSolicitudes(admin, rows.map((r) => r.id));
+  const docs = await docsDeSolicitudes(
+    admin,
+    rows.map((r) => r.id),
+  );
   return rows.map((r) => mapSolicitud(r, docs.get(r.id) ?? []));
 }
 
@@ -837,7 +851,10 @@ export async function listarSolicitudesStaff(portal: PortalSlug): Promise<Solici
     .eq("portal", portal)
     .order("created_at", { ascending: false });
   const rows = (data as Row[]) ?? [];
-  const docs = await docsDeSolicitudes(supabase, rows.map((r) => r.id));
+  const docs = await docsDeSolicitudes(
+    supabase,
+    rows.map((r) => r.id),
+  );
   return rows.map((r) => ({
     ...mapSolicitud(r, docs.get(r.id) ?? []),
     prestatarioId: r.prestatario_id,
@@ -899,7 +916,9 @@ export async function convertirSolicitud(
   const supabase = await createClient();
   const { data: sol } = await supabase
     .from("portal_solicitudes")
-    .select("id, estado, monto, moneda, plazo_meses, descripcion, prestatario_id, portal_prestatarios!inner(nombre)")
+    .select(
+      "id, estado, monto, moneda, plazo_meses, descripcion, prestatario_id, portal_prestatarios!inner(nombre)",
+    )
     .eq("portal", portal)
     .eq("id", solicitudId)
     .maybeSingle();
@@ -1020,9 +1039,7 @@ export async function listarClientesDeAsesorEnriquecido(
 
   // Ops de reservas COMPROMETIDAS (activa+confirmada) para el monto y la moneda.
   const opIdsCompr = [
-    ...new Set(
-      reservas.filter((r) => esComprometida(r.estado)).map((r) => r.oportunidad_id),
-    ),
+    ...new Set(reservas.filter((r) => esComprometida(r.estado)).map((r) => r.oportunidad_id)),
   ];
   const opMonto = new Map<string, number>();
   const opMoneda = new Map<string, PortalMoneda>();
@@ -1071,7 +1088,8 @@ export async function listarClientesDeAsesorEnriquecido(
 
   // Orden: última actividad descendente; los sin actividad, al final (por antigüedad).
   enriquecidos.sort((a, b) => {
-    if (a.ultimaActividad && b.ultimaActividad) return b.ultimaActividad.localeCompare(a.ultimaActividad);
+    if (a.ultimaActividad && b.ultimaActividad)
+      return b.ultimaActividad.localeCompare(a.ultimaActividad);
     if (a.ultimaActividad) return -1;
     if (b.ultimaActividad) return 1;
     return a.createdAt.localeCompare(b.createdAt);
@@ -1195,7 +1213,12 @@ export async function crearOportunidad(
   if (error || !data) return null;
   // Si las garantías no entraron, la operación existe pero SIN respaldo. No se
   // devuelve el id como si todo hubiera salido bien: el caller tiene que enterarse.
-  const conGarantias = await reemplazarGarantias(supabase, portal, data.id as string, input.garantias);
+  const conGarantias = await reemplazarGarantias(
+    supabase,
+    portal,
+    data.id as string,
+    input.garantias,
+  );
   if (!conGarantias) return null;
   return data.id as string;
 }
@@ -1291,7 +1314,7 @@ async function armarFull(
   const numFotos = fotoRows.length;
   const portadaUrl =
     fotoRows.find((f) => f.garantia_id == null)?.path != null
-      ? firmadas[fotoRows.find((f) => f.garantia_id == null)!.path] ?? null
+      ? (firmadas[fotoRows.find((f) => f.garantia_id == null)!.path] ?? null)
       : null;
 
   const lite = mapLite(op, portadaUrl, numFotos);
@@ -1393,7 +1416,9 @@ export async function listarPrestatarios(portal: PortalSlug): Promise<Prestatari
   const [{ data: prest }, { data: ops }] = await Promise.all([
     supabase
       .from("portal_prestatarios")
-      .select("id, portal, nombre, ruc, nivel_riesgo, scoring_pago, rating, notas_internas, estado, created_at, user_id")
+      .select(
+        "id, portal, nombre, ruc, nivel_riesgo, scoring_pago, rating, notas_internas, estado, created_at, user_id",
+      )
       .eq("portal", portal)
       .order("created_at", { ascending: false }),
     supabase
@@ -1416,7 +1441,9 @@ export async function getPrestatario(
   const supabase = await createClient();
   const { data } = await supabase
     .from("portal_prestatarios")
-    .select("id, portal, nombre, ruc, nivel_riesgo, scoring_pago, rating, notas_internas, estado, created_at")
+    .select(
+      "id, portal, nombre, ruc, nivel_riesgo, scoring_pago, rating, notas_internas, estado, created_at",
+    )
     .eq("portal", portal)
     .eq("id", id)
     .maybeSingle();
@@ -1669,7 +1696,7 @@ export async function kpisPortal(portal: PortalSlug): Promise<KpisPortal> {
     reservasFinanciadas,
     conversionReservas: proporcion(reservasFinanciadas, reservaRows.length),
     miembros,
-    prestatarios: usaPrestatarios ? (prestRes as { count: number | null }).count ?? 0 : null,
+    prestatarios: usaPrestatarios ? ((prestRes as { count: number | null }).count ?? 0) : null,
   };
 }
 
@@ -1809,7 +1836,9 @@ export async function carteraCliente(portal: PortalSlug): Promise<CarteraCliente
     const { data } = await admin
       .from("portal_oportunidades")
       // Columnas EXPLÍCITAS públicas: nunca notas_internas.
-      .select("id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max")
+      .select(
+        "id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max",
+      )
       .in("id", opIds);
     for (const o of (data as Row[]) ?? []) ops.set(o.id, o);
   }
@@ -1893,7 +1922,9 @@ export async function listarReservasStaff(
   const supabase = await createClient();
   let q = supabase
     .from("portal_reservas")
-    .select("id, oportunidad_id, cliente_id, prospecto_id, asesor_id, estado, reservado_en, vence_en")
+    .select(
+      "id, oportunidad_id, cliente_id, prospecto_id, asesor_id, estado, reservado_en, vence_en",
+    )
     .eq("portal", portal)
     .eq("estado", opts.estado ?? "activa")
     .order("vence_en", { ascending: true });
@@ -2146,7 +2177,9 @@ export async function alertasAsesor(portal: PortalSlug, asesorId: string): Promi
     opIds.length
       ? supabase
           .from("portal_oportunidades")
-          .select("id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max, financiada_en")
+          .select(
+            "id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max, financiada_en",
+          )
           .in("id", opIds)
       : Promise.resolve({ data: [] as Row[] }),
     nombresDeTitulares(supabase, portal, [...refActivas, ...refConfirmadas, ...refNotas]),
@@ -2306,7 +2339,9 @@ export async function alertasAdmin(portal: PortalSlug): Promise<AlertasAdmin> {
 
   // Conteos de garantías/fotos/documentos SOLO de las operaciones ya visibles: es lo
   // único que necesita el chequeo de salud, y así no se traen filas de borradores.
-  const idsVisibles = opRows.filter((o) => esVisible(o.estado_publicacion)).map((o) => o.id as string);
+  const idsVisibles = opRows
+    .filter((o) => esVisible(o.estado_publicacion))
+    .map((o) => o.id as string);
   const [garRes, fotoRes, docRes] = await Promise.all([
     idsVisibles.length
       ? supabase.from("portal_garantias").select("oportunidad_id").in("oportunidad_id", idsVisibles)
@@ -2686,7 +2721,9 @@ async function reservasDeTitular(
     const { data } = await supabase
       .from("portal_oportunidades")
       // Columnas EXPLÍCITAS públicas: nunca notas_internas.
-      .select("id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max, financiada_en")
+      .select(
+        "id, titulo, moneda, monto_solicitado, tasa_mensual, plazo_meses_min, plazo_meses_max, financiada_en",
+      )
       .in("id", opIds);
     for (const o of (data as Row[]) ?? []) ops.set(o.id, o);
   }
@@ -2792,7 +2829,7 @@ const PROSPECTO_COLS =
   "id, nombre, telefono, tipo_documento, documento, asesor_id, convertido_user_id, created_at";
 
 /** Un prospecto tal como lo ve el staff. */
-export interface ProspectoRow {
+export type ProspectoRow = {
   id: string;
   nombre: string;
   telefono: string;
@@ -2806,7 +2843,7 @@ export interface ProspectoRow {
   /** Cuenta a la que quedó ligado, o null. */
   convertidoUserId: string | null;
   createdAt: string;
-}
+};
 
 function mapProspecto(r: Row): ProspectoRow {
   const tel = (r.telefono as string) ?? "";
@@ -3109,10 +3146,18 @@ async function nombresDeTitulares(
   const proIds = [...new Set(refs.filter((r) => r?.tipo === "prospecto").map((r) => r!.id))];
   const [cliRes, proRes] = await Promise.all([
     cliIds.length
-      ? supabase.from("portal_miembros").select("user_id, nombre").eq("portal", portal).in("user_id", cliIds)
+      ? supabase
+          .from("portal_miembros")
+          .select("user_id, nombre")
+          .eq("portal", portal)
+          .in("user_id", cliIds)
       : Promise.resolve({ data: [] as Row[] }),
     proIds.length
-      ? supabase.from("portal_prospectos").select("id, nombre").eq("portal", portal).in("id", proIds)
+      ? supabase
+          .from("portal_prospectos")
+          .select("id, nombre")
+          .eq("portal", portal)
+          .in("id", proIds)
       : Promise.resolve({ data: [] as Row[] }),
   ]);
   const clientes = new Map<string, string>();
@@ -3283,7 +3328,8 @@ export async function getMiAsesor(portal: PortalSlug): Promise<MiAsesor | null> 
     .eq("portal", portal)
     .eq("user_id", miembro.asesorId)
     .maybeSingle();
-  if (!data || data.estado !== "activo" || !["asesor", "admin"].includes(data.rol as string)) return null;
+  if (!data || data.estado !== "activo" || !["asesor", "admin"].includes(data.rol as string))
+    return null;
   return {
     nombre: data.nombre as string,
     telefono: telefonoWa((data.telefono as string | null) ?? null),

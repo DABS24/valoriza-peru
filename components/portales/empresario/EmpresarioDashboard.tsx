@@ -107,7 +107,9 @@ export function EmpresarioDashboard({
               <Trophy className="size-5" aria-hidden />
             </span>
             <div className="min-w-0">
-              <h2 className="font-portal text-base font-bold text-portal-ink">{E.reputacion.titulo}</h2>
+              <h2 className="font-portal text-base font-bold text-portal-ink">
+                {E.reputacion.titulo}
+              </h2>
               <p className="text-sm text-portal-muted">{E.reputacion.sub}</p>
             </div>
           </div>

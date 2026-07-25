@@ -24,10 +24,7 @@ const bodySchema = z.object({
   asesorId: z.string().uuid().optional().or(z.literal("")),
 });
 
-export async function PATCH(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 

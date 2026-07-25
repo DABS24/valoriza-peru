@@ -16,13 +16,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 /** Clasificación del archivo (espejo del enum SQL tipo_archivo). */
 export type TipoArchivo =
-  | "dni_frontal"
-  | "dni_posterior"
-  | "selfie"
-  | "voucher"
-  | "boleta"
-  | "constancia"
-  | "avatar";
+  "dni_frontal" | "dni_posterior" | "selfie" | "voucher" | "boleta" | "constancia" | "avatar";
 
 /** Bucket privado/público según el tipo. avatares es el único público. La boleta
  *  (comisión SUNAT) y la constancia (transferencia del neto) comparten el bucket
@@ -81,7 +75,13 @@ export async function uploadEvidencia(
   });
   if (error) throw error;
 
-  return { bucket, path, hashSha256, bytes: file.size, mime: file.type || "application/octet-stream" };
+  return {
+    bucket,
+    path,
+    hashSha256,
+    bytes: file.size,
+    mime: file.type || "application/octet-stream",
+  };
 }
 
 /** Bucket único de los portales secretos (0076). Path = <portal>/<oportunidad_id>/<uuid>-<nombre>. */
@@ -115,7 +115,13 @@ export async function uploadFotoPortal(
     upsert: false,
   });
   if (error) throw error;
-  return { bucket: PORTAL_MEDIA_BUCKET, path, hashSha256, bytes: file.size, mime: file.type || "application/octet-stream" };
+  return {
+    bucket: PORTAL_MEDIA_BUCKET,
+    path,
+    hashSha256,
+    bytes: file.size,
+    mime: file.type || "application/octet-stream",
+  };
 }
 
 /** Extensión de archivo a partir del MIME (fallback: por el nombre, o "bin"). */

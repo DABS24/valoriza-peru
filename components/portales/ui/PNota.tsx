@@ -17,7 +17,12 @@ export function PNota({
   className?: string;
 }) {
   return (
-    <div className={cn("flex items-start gap-3 rounded-portal border border-portal-line bg-portal-surface p-4 shadow-portal", className)}>
+    <div
+      className={cn(
+        "flex items-start gap-3 rounded-portal border border-portal-line bg-portal-surface p-4 shadow-portal",
+        className,
+      )}
+    >
       <span className="grid size-8 shrink-0 place-items-center rounded-chip bg-portal-primary-soft text-portal-primary-ink">
         <Icon className="size-4" />
       </span>

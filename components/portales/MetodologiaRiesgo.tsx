@@ -58,11 +58,15 @@ export function MetodologiaRiesgo({
           {rating && (
             <div>
               <p className="mb-1 text-sm font-semibold text-portal-ink">{T.ratingTitulo}</p>
-              <p className="text-sm leading-relaxed text-portal-ink2">{RATING_ESCALA_EXPLICACION}</p>
+              <p className="text-sm leading-relaxed text-portal-ink2">
+                {RATING_ESCALA_EXPLICACION}
+              </p>
             </div>
           )}
           <div className="rounded-portal-sm bg-portal-surface p-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-portal-muted">{T.queMiramos}</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-portal-muted">
+              {T.queMiramos}
+            </p>
             <p className="mt-1 text-sm leading-relaxed text-portal-ink2">{T.queMiramosTexto}</p>
           </div>
         </div>

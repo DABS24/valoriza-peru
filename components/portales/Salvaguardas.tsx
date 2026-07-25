@@ -56,7 +56,7 @@ export function Salvaguardas({
   moneda: PortalMoneda;
 }) {
   const T = COPY.portales.cliente.salvaguardas;
-  const cobertura = coberturaGarantia(garantias, monto);
+  const cobertura = coberturaGarantia(garantias, monto, moneda);
   const vecesTxt = coberturaTexto(cobertura.veces);
 
   return (
@@ -113,8 +113,12 @@ export function Salvaguardas({
                       </span>
                     )}
                   </div>
-                  {g.titulo && <p className="mt-0.5 text-sm font-medium text-portal-ink2">{g.titulo}</p>}
-                  {g.descripcion && <p className="mt-0.5 text-sm text-portal-muted">{g.descripcion}</p>}
+                  {g.titulo && (
+                    <p className="mt-0.5 text-sm font-medium text-portal-ink2">{g.titulo}</p>
+                  )}
+                  {g.descripcion && (
+                    <p className="mt-0.5 text-sm text-portal-muted">{g.descripcion}</p>
+                  )}
                 </div>
               </li>
             );

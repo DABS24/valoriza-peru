@@ -95,7 +95,10 @@ export async function guardarNuevaClave(password: string): Promise<boolean> {
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({ password });
     if (error) return false;
-    await fetch("/api/auth/desbloquear", { method: "POST" }).catch(() => {});
+    // Antes acá se llamaba /api/auth/desbloquear para limpiar el lockout de
+    // login. Ese sistema es del monorepo y NO existe en este repo — la ruta se
+    // quedó del otro lado en la separación y el `.catch` la hacía fallar en
+    // silencio. Si algún día se agrega lockout acá, vuelve la llamada.
     await supabase.auth.signOut();
     return true;
   } catch {

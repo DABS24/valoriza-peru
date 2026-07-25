@@ -83,11 +83,9 @@ export function CarteraAsesores({ filas }: { filas: CargaAsesor[] }) {
                     >
                       {toMonedaKpi(a.comprometido, a.moneda)}
                     </span>
-                    {a.multiMoneda && (
-                      <p className="text-[11px] text-portal-muted">{T.multiMoneda}</p>
-                    )}
+                    {a.multiMoneda && <p className="text-2xs text-portal-muted">{T.multiMoneda}</p>}
                   </td>
-                  <td className="px-5 py-3 text-right tabular-nums font-semibold text-portal-positive">
+                  <td className="px-5 py-3 text-right font-semibold tabular-nums text-portal-positive">
                     {toInt(a.financiadas)}
                   </td>
                 </tr>

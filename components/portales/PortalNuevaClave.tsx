@@ -84,10 +84,19 @@ export function PortalNuevaClave({ portal }: { portal: PortalSlug }) {
                   value={password2}
                   onChange={(e) => setPassword2(e.target.value)}
                   error={
-                    password2.length > 0 && password2 !== password ? T.passwordNoCoincide : undefined
+                    password2.length > 0 && password2 !== password
+                      ? T.passwordNoCoincide
+                      : undefined
                   }
                 />
-                <PButton type="submit" fullWidth pill size="lg" loading={guardando} disabled={guardando}>
+                <PButton
+                  type="submit"
+                  fullWidth
+                  pill
+                  size="lg"
+                  loading={guardando}
+                  disabled={guardando}
+                >
                   {guardando ? T.guardando : T.cta}
                 </PButton>
               </form>
@@ -110,7 +119,7 @@ export function PortalNuevaClave({ portal }: { portal: PortalSlug }) {
             </a>
           </p>
 
-          <p className="mt-6 text-center text-[11px] text-portal-muted">{COPY.portales.pieLegal}</p>
+          <p className="mt-6 text-center text-2xs text-portal-muted">{COPY.portales.pieLegal}</p>
         </div>
       </main>
     </div>

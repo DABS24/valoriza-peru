@@ -54,7 +54,11 @@ function navPara(rol: PortalRol, base: string, cfg: (typeof PORTALES)[PortalSlug
       ...(cfg.prestatarios
         ? [
             { href: `${base}/admin/solicitudes`, label: T.solicitudes, icon: ClipboardList },
-            { href: `${base}/admin/${cfg.prestatarios.ruta}`, label: cfg.prestatarios.label, icon: HardHat },
+            {
+              href: `${base}/admin/${cfg.prestatarios.ruta}`,
+              label: cfg.prestatarios.label,
+              icon: HardHat,
+            },
           ]
         : []),
       { href: `${base}/admin/usuarios`, label: T.usuarios, icon: Users },
@@ -225,7 +229,7 @@ export function PortalShell({
         {/* Ficha de usuario */}
         <div className="border-b border-portal-line px-4 py-3">
           <p className="truncate text-sm font-semibold text-portal-ink">{nombre}</p>
-          <span className="mt-1 inline-block rounded-chip bg-portal-primary-soft px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-portal-primary-ink">
+          <span className="mt-1 inline-block rounded-chip bg-portal-primary-soft px-2 py-0.5 text-2xs font-bold uppercase tracking-wide text-portal-primary-ink">
             {rolLabel}
           </span>
         </div>
@@ -276,7 +280,7 @@ export function PortalShell({
           {/* Pie legal + términos del portal. El link vive acá (y no en el nav) a
               propósito: es letra chica, no una sección de trabajo, pero tiene que
               estar SIEMPRE alcanzable desde cualquier pantalla del portal. */}
-          <p className="px-3 pt-2 text-[11px] leading-tight text-portal-muted">
+          <p className="px-3 pt-2 text-2xs leading-tight text-portal-muted">
             {T.pieLegal}
             {" · "}
             <Link href={`${base}/terminos`} className="underline hover:text-portal-ink2">
@@ -316,7 +320,7 @@ export function PortalShell({
         <main className="flex-1 px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-10">
           <div className="mx-auto w-full max-w-6xl">{children}</div>
           {/* Pie legal (visible en móvil, donde el sidebar no está) */}
-          <p className="mx-auto mt-10 w-full max-w-6xl text-center text-[11px] text-portal-muted lg:hidden">
+          <p className="mx-auto mt-10 w-full max-w-6xl text-center text-2xs text-portal-muted lg:hidden">
             {T.pieLegal}
             {" · "}
             <Link href={`${base}/terminos`} className="underline hover:text-portal-ink2">
@@ -341,7 +345,7 @@ export function PortalShell({
               href={it.href}
               aria-current={activo(it.href) ? "page" : undefined}
               className={cn(
-                "flex min-w-[4.25rem] flex-1 flex-col items-center gap-1 px-1 py-2 text-[10px] font-semibold transition",
+                "flex min-w-[4.25rem] flex-1 flex-col items-center gap-1 px-1 py-2 text-3xs font-semibold transition",
                 activo(it.href) ? "text-portal-primary" : "text-portal-muted",
               )}
             >

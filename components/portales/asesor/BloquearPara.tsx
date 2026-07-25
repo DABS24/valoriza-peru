@@ -228,9 +228,7 @@ export function BloquearPara({
         )}
 
         <div className="mt-5 flex items-start gap-2">
-          <PPill tone="gold" className="shrink-0">
-            {T.holdBadge}
-          </PPill>
+          <PPill tone="gold">{T.holdBadge}</PPill>
           <p className="text-xs leading-relaxed text-portal-muted">{T.nota}</p>
         </div>
 

@@ -35,10 +35,10 @@ export async function subirDocPortal(args: {
   form.append("tipo", args.tipo);
   form.append("nombre", args.file.name);
 
-  const res = await fetch(
-    `/api/oportunidades/${args.oportunidadId}/docs`,
-    { method: "POST", body: form },
-  );
+  const res = await fetch(`/api/oportunidades/${args.oportunidadId}/docs`, {
+    method: "POST",
+    body: form,
+  });
   if (!res.ok) return null;
   const payload = (await res.json().catch(() => ({}))) as { doc?: DocPortalRef };
   return payload.doc ?? null;

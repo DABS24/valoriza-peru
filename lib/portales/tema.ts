@@ -91,8 +91,18 @@ const BASE_OSCURO: TemaBase = {
 // ValorizaPeru: TEAL (obra pública / crecimiento).
 const ACENTOS: Record<PortalSlug, { claro: Acento; oscuro: Acento }> = {
   contratista: {
-    claro: { primary: "13 148 136", primaryHover: "15 118 110", primarySoft: "204 251 241", primaryInk: "17 94 89" },
-    oscuro: { primary: "45 212 191", primaryHover: "94 234 212", primarySoft: "19 78 74", primaryInk: "153 246 228" },
+    claro: {
+      primary: "13 148 136",
+      primaryHover: "15 118 110",
+      primarySoft: "204 251 241",
+      primaryInk: "17 94 89",
+    },
+    oscuro: {
+      primary: "45 212 191",
+      primaryHover: "94 234 212",
+      primarySoft: "19 78 74",
+      primaryInk: "153 246 228",
+    },
   },
 };
 

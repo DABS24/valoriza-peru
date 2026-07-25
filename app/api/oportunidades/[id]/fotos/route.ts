@@ -40,10 +40,7 @@ async function borrarBinario(supabase: SupabaseClient, path: string): Promise<vo
   if (error) console.error("[portales fotos] binario huérfano en Storage:", path, error.message);
 }
 
-export async function POST(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 
@@ -130,10 +127,7 @@ export async function POST(
   });
 }
 
-export async function DELETE(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 

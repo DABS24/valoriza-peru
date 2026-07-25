@@ -105,7 +105,10 @@ export function faltantesDeOportunidad(op: OportunidadRevisable): FaltanteOportu
  * válida — nunca un 0 que se confunda con "recién creado". Negativo se recorta a 0
  * (una fecha futura no lleva días esperando).
  */
-export function diasDesde(iso: string | null | undefined, ahora: number = Date.now()): number | null {
+export function diasDesde(
+  iso: string | null | undefined,
+  ahora: number = Date.now(),
+): number | null {
   if (!iso) return null;
   const t = new Date(iso).getTime();
   if (!Number.isFinite(t)) return null;

@@ -308,6 +308,7 @@ export const AUDITORIA_ACCIONES: Record<string, string> = {
   // Cuenta de acceso. Mismos verbos que en la bitácora de Efectivo (un solo
   // vocabulario), etiquetados en español llano: nada de "2FA" ni "MFA" en pantalla.
   password_cambiada: "Cambió su contraseña",
+  clave_cambiada: "Cambió su contraseña",
   mfa_activado: "Activó la verificación en dos pasos",
   mfa_desactivado: "Desactivó la verificación en dos pasos",
   aviso_seguridad_fallido: "No se pudo enviar el aviso de seguridad",
