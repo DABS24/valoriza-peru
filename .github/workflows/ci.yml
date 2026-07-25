@@ -4,9 +4,14 @@
 # rompe" — y su corolario, que se descubrió después: un script que nadie ejecuta
 # tampoco vale. Hasta hoy el gate dependía de que alguien se acordara de correrlo.
 #
-# El gate del estándar vive en ~/.claude/skills/balarezo-web (repo privado
-# DABS24/balarezo-web-skill). Acá se clona con un token de solo lectura; si no
-# está configurado, ese paso se salta con aviso y el resto del CI igual corre.
+# Acá corre lo que tiene que pasar en CADA push: el gate del repo, tipos, lint,
+# tests y build.
+#
+# El gate del estándar (balarezo-web) NO corre acá a propósito: lo que revisa
+# —líneas rojas SMV, páginas legales, accesibilidad, idioma del código— no cambia
+# entre un commit y otro. Es auditoría, no verificación por commit, y se corre a
+# mano cada tanto:
+#     bash ~/.claude/skills/balarezo-web/scripts/gate.sh
 name: CI
 
 on:
@@ -45,23 +50,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      # El gate universal del estándar: léxico, voceo, YMYL, líneas rojas,
-      # obligaciones legales, a11y, idioma del código.
-      - name: Gate del estándar (balarezo-web)
-        if: ${{ env.SKILL_TOKEN != '' }}
-        env:
-          SKILL_TOKEN: ${{ secrets.BALAREZO_WEB_SKILL_TOKEN }}
-        run: |
-          git clone --depth 1 \
-            "https://x-access-token:${SKILL_TOKEN}@github.com/DABS24/balarezo-web-skill.git" \
-            /tmp/skill
-          bash /tmp/skill/scripts/gate.sh "$GITHUB_WORKSPACE"
-
-      - name: Aviso si el gate del estándar no corrió
-        if: ${{ env.SKILL_TOKEN == '' }}
-        env:
-          SKILL_TOKEN: ${{ secrets.BALAREZO_WEB_SKILL_TOKEN }}
-        run: |
-          echo "::warning::El gate del estándar NO corrió: falta el secret BALAREZO_WEB_SKILL_TOKEN."
-          echo "Un CI que dice OK sin haber chequeado todo es peor que no tenerlo."
