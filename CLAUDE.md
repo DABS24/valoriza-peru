@@ -137,13 +137,36 @@ Ante la duda: queda en `desarrollo` y se pregunta.
 El código salió del monorepo de Don Gato el **2026-07-25**. Dos hechos que
 importan al leerlo o modificarlo:
 
-1. **Comparte el proyecto Supabase** con el otro producto de la SAC (tablas
-   `portal_*` + `portal_miembros`, siempre aisladas: auth, RLS y bucket propios).
-   El slug interno de la vertical sigue siendo `"contratista"` porque es el valor
-   que ya tienen las filas — renombrarlo sería una migración de datos sin ganancia.
+1. **Comparte el proyecto Supabase** con el otro producto de la SAC (ver la sección
+   siguiente). El slug interno de la vertical sigue siendo `"contratista"` porque es
+   el valor que ya tienen las filas — renombrarlo sería una migración de datos sin
+   ninguna ganancia.
 2. Varios comentarios explican decisiones **por contraste con ese otro producto**.
    Es historia real del código (por qué una pantalla no hereda tema, título ni
    contacto de nadie), no código muerto.
+
+## 🧱 Base compartida — se comporta como separada
+
+Decisión de Diego (2026-07-25): por ahora **el mismo proyecto Supabase** que Don Gato
+Efectivo, para no gastar otra cuota del plan gratis. Las reglas que sostienen eso:
+
+1. **Todo lo de este portal va con prefijo `portal_`.** Tabla, función, enum,
+   trigger: sin excepción. Hoy son 11 tablas, 13 funciones, 4 enums, 7 triggers y el
+   bucket `portal-media`. Esa invariante es lo que hace que separarse después sea un
+   `pg_dump -t 'portal_*'` y no arqueología.
+2. **Cero dependencias del otro producto.** Ni FKs a sus tablas, ni sus funciones.
+   El último cruce —los triggers `updated_at` usaban una función suya— se cerró en
+   `1000_frontera_base_compartida.sql`. Si aparece uno nuevo, se corta ahí mismo.
+3. **Este repo no lee ni escribe nada de Efectivo** (`perfiles`, `operaciones`, sus
+   buckets). Son dos negocios.
+4. **`auth.users` es lo único de verdad compartido** (16 FKs). Por eso ningún script
+   de ninguno de los dos repos borra usuarios "todos menos X" sin descartar antes a
+   los del otro producto.
+5. **Migraciones: este repo usa `1000`+.** Ver `supabase/migrations/README.md`.
+6. **El corte está mapeado**: inventario verificado y pasos en
+   [`docs-internal/SEPARAR_BASE.md`](docs-internal/SEPARAR_BASE.md). Hoy es barato
+   porque los únicos usuarios son las 4 cuentas demo; cuando haya inversionistas
+   reales, mover contraseñas hasheadas ya cuesta.
 
 ## 🚩 Pendientes conocidos
 
