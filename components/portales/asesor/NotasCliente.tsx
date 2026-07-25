@@ -14,11 +14,7 @@ import { cn } from "@/lib/cn";
 import { toDate, toDateTime } from "@/lib/formatters";
 import { fechaRecordatorioISO, recordatorioVencido } from "@/lib/portales/asesor";
 import type { RefTitular } from "@/lib/portales/asesor";
-import {
-  crearNotaPortal,
-  marcarNotaPortal,
-  borrarNotaPortal,
-} from "@/lib/portales/notas-client";
+import { crearNotaPortal, marcarNotaPortal, borrarNotaPortal } from "@/lib/portales/notas-client";
 import type { NotaCliente } from "@/lib/portales/data";
 
 /**
@@ -34,13 +30,7 @@ import type { NotaCliente } from "@/lib/portales/data";
  * mientras tanto todo queda deshabilitado y solo esa fila muestra su spinner.
  * Mobile-first: la nota apila su texto y sus acciones; en desktop van en fila.
  */
-export function NotasCliente({
-  sujeto,
-  notas,
-}: {
-  sujeto: RefTitular;
-  notas: NotaCliente[];
-}) {
+export function NotasCliente({ sujeto, notas }: { sujeto: RefTitular; notas: NotaCliente[] }) {
   const T = COPY.portales.asesor.notas;
 
   const [lista, setLista] = useState<NotaCliente[]>(notas);
@@ -88,9 +78,7 @@ export function NotasCliente({
     try {
       const ok = await marcarNotaPortal(nota.id, !nota.hecha);
       if (!ok) return void toast.error(T.error);
-      setLista((prev) =>
-        prev.map((n) => (n.id === nota.id ? { ...n, hecha: !nota.hecha } : n)),
-      );
+      setLista((prev) => prev.map((n) => (n.id === nota.id ? { ...n, hecha: !nota.hecha } : n)));
     } catch {
       toast.error(T.error);
     } finally {
@@ -190,11 +178,7 @@ export function NotasCliente({
             return (
               <li key={n.id}>
                 <PCard
-                  className={cn(
-                    "p-5",
-                    n.hecha && "opacity-70",
-                    urge && "border-portal-danger/40",
-                  )}
+                  className={cn("p-5", n.hecha && "opacity-70", urge && "border-portal-danger/40")}
                 >
                   <p className="whitespace-pre-wrap break-words text-sm text-portal-ink">
                     {n.texto}
@@ -223,11 +207,7 @@ export function NotasCliente({
                         loading={cargando}
                         disabled={ocupado}
                         leadingIcon={
-                          n.hecha ? (
-                            <RotateCcw className="size-4" />
-                          ) : (
-                            <Check className="size-4" />
-                          )
+                          n.hecha ? <RotateCcw className="size-4" /> : <Check className="size-4" />
                         }
                         onClick={() => alternarHecha(n)}
                       >

@@ -154,13 +154,16 @@ function nuevaPagina(ctx: Ctx, conCabecera = false) {
 function cabeceraContinuacion(ctx: Ctx) {
   const { page, bold, font, data } = ctx;
   page.drawText(data.marca, { x: M, y: ctx.y - 10, size: 9, font: bold, color: ctx.navy });
-  page.drawText(fit(font, `${data.titulo} · ${data.persona.nombre} (continuación)`, 8, CONTENT_W - 120), {
-    x: M,
-    y: ctx.y - 22,
-    size: 8,
-    font,
-    color: MUTED,
-  });
+  page.drawText(
+    fit(font, `${data.titulo} · ${data.persona.nombre} (continuación)`, 8, CONTENT_W - 120),
+    {
+      x: M,
+      y: ctx.y - 22,
+      size: 8,
+      font,
+      color: MUTED,
+    },
+  );
   ctx.y -= 40;
 }
 
@@ -184,11 +187,29 @@ function encabezadoPrincipal(ctx: Ctx) {
   });
   ctx.y -= 34;
 
-  page.drawText(fit(bold, data.titulo, 17, CONTENT_W), { x: M, y: ctx.y, size: 17, font: bold, color: INK });
+  page.drawText(fit(bold, data.titulo, 17, CONTENT_W), {
+    x: M,
+    y: ctx.y,
+    size: 17,
+    font: bold,
+    color: INK,
+  });
   ctx.y -= 20;
-  page.drawText(fit(bold, data.persona.nombre, 12, CONTENT_W), { x: M, y: ctx.y, size: 12, font: bold, color: ctx.navy });
+  page.drawText(fit(bold, data.persona.nombre, 12, CONTENT_W), {
+    x: M,
+    y: ctx.y,
+    size: 12,
+    font: bold,
+    color: ctx.navy,
+  });
   ctx.y -= 14;
-  page.drawText(fit(font, data.persona.sub, 9, CONTENT_W), { x: M, y: ctx.y, size: 9, font, color: MUTED });
+  page.drawText(fit(font, data.persona.sub, 9, CONTENT_W), {
+    x: M,
+    y: ctx.y,
+    size: 9,
+    font,
+    color: MUTED,
+  });
   ctx.y -= 12;
   // La línea de periodo solo aparece si el documento TIENE periodo: un reporte de
   // actividad lo tiene, una constancia de una operación puntual no.
@@ -197,7 +218,12 @@ function encabezadoPrincipal(ctx: Ctx) {
     : `Generado: ${data.generadoEl}`;
   page.drawText(fit(font, meta, 8, CONTENT_W), { x: M, y: ctx.y, size: 8, font, color: MUTED });
   ctx.y -= 18;
-  page.drawLine({ start: { x: M, y: ctx.y }, end: { x: PAGE_W - M, y: ctx.y }, thickness: 1, color: ctx.navy });
+  page.drawLine({
+    start: { x: M, y: ctx.y },
+    end: { x: PAGE_W - M, y: ctx.y },
+    thickness: 1,
+    color: ctx.navy,
+  });
   ctx.y -= 20;
 }
 
@@ -221,8 +247,20 @@ function bloqueResumen(ctx: Ctx) {
     const x = M + col * colW;
     const y = ctx.y - fila * filaH;
     const { label, valor } = data.resumen[i];
-    page.drawText(fit(font, label.toUpperCase(), 7, colW - 20), { x, y, size: 7, font, color: MUTED });
-    page.drawText(fit(bold, valor, 10, colW - 10), { x, y: y - 12, size: 10, font: bold, color: INK });
+    page.drawText(fit(font, label.toUpperCase(), 7, colW - 20), {
+      x,
+      y,
+      size: 7,
+      font,
+      color: MUTED,
+    });
+    page.drawText(fit(bold, valor, 10, colW - 10), {
+      x,
+      y: y - 12,
+      size: 10,
+      font: bold,
+      color: INK,
+    });
   }
   ctx.y -= filas * filaH + 10;
 }
@@ -230,13 +268,30 @@ function bloqueResumen(ctx: Ctx) {
 function tabla(ctx: Ctx, sec: ReporteSeccion) {
   const { data } = ctx;
   asegurar(ctx, 46);
-  ctx.page.drawText(sec.titulo.toUpperCase(), { x: M, y: ctx.y, size: 9, font: ctx.bold, color: ctx.navy });
+  ctx.page.drawText(sec.titulo.toUpperCase(), {
+    x: M,
+    y: ctx.y,
+    size: 9,
+    font: ctx.bold,
+    color: ctx.navy,
+  });
   ctx.y -= 6;
-  ctx.page.drawLine({ start: { x: M, y: ctx.y }, end: { x: PAGE_W - M, y: ctx.y }, thickness: 0.5, color: LINE });
+  ctx.page.drawLine({
+    start: { x: M, y: ctx.y },
+    end: { x: PAGE_W - M, y: ctx.y },
+    thickness: 0.5,
+    color: LINE,
+  });
   ctx.y -= 12;
 
   if (!sec.filas.length) {
-    ctx.page.drawText(sec.vacio ?? "Sin registros.", { x: M, y: ctx.y, size: 8, font: ctx.font, color: MUTED });
+    ctx.page.drawText(sec.vacio ?? "Sin registros.", {
+      x: M,
+      y: ctx.y,
+      size: 8,
+      font: ctx.font,
+      color: MUTED,
+    });
     ctx.y -= 20;
     return;
   }
@@ -256,11 +311,20 @@ function tabla(ctx: Ctx, sec: ReporteSeccion) {
   const rowH = size + 6;
 
   const drawHead = () => {
-    ctx.page.drawRectangle({ x: M, y: ctx.y - rowH + 4, width: CONTENT_W, height: rowH, color: HEADBG });
+    ctx.page.drawRectangle({
+      x: M,
+      y: ctx.y - rowH + 4,
+      width: CONTENT_W,
+      height: rowH,
+      color: HEADBG,
+    });
     for (let c = 0; c < n; c++) {
       const w = anchos[c] - 6;
       const txt = fit(ctx.bold, sec.columnas[c], size, w);
-      const tx = align[c] === "r" ? xs[c] + anchos[c] - 4 - ctx.bold.widthOfTextAtSize(txt, size) : xs[c] + 3;
+      const tx =
+        align[c] === "r"
+          ? xs[c] + anchos[c] - 4 - ctx.bold.widthOfTextAtSize(txt, size)
+          : xs[c] + 3;
       ctx.page.drawText(txt, { x: tx, y: ctx.y - size, size, font: ctx.bold, color: ctx.navy });
     }
     ctx.y -= rowH;
@@ -271,18 +335,33 @@ function tabla(ctx: Ctx, sec: ReporteSeccion) {
   for (const fila of sec.filas) {
     if (ctx.y - rowH < M + 16) {
       nuevaPagina(ctx, true);
-      ctx.page.drawText(sec.titulo.toUpperCase() + " (cont.)", { x: M, y: ctx.y, size: 8, font: ctx.bold, color: ctx.navy });
+      ctx.page.drawText(sec.titulo.toUpperCase() + " (cont.)", {
+        x: M,
+        y: ctx.y,
+        size: 8,
+        font: ctx.bold,
+        color: ctx.navy,
+      });
       ctx.y -= 14;
       drawHead();
     }
     if (z % 2 === 1) {
-      ctx.page.drawRectangle({ x: M, y: ctx.y - rowH + 4, width: CONTENT_W, height: rowH, color: ZEBRA });
+      ctx.page.drawRectangle({
+        x: M,
+        y: ctx.y - rowH + 4,
+        width: CONTENT_W,
+        height: rowH,
+        color: ZEBRA,
+      });
     }
     for (let c = 0; c < n; c++) {
       const w = anchos[c] - 6;
       const raw = fila[c] ?? "";
       const txt = fit(ctx.font, raw, size, w);
-      const tx = align[c] === "r" ? xs[c] + anchos[c] - 4 - ctx.font.widthOfTextAtSize(txt, size) : xs[c] + 3;
+      const tx =
+        align[c] === "r"
+          ? xs[c] + anchos[c] - 4 - ctx.font.widthOfTextAtSize(txt, size)
+          : xs[c] + 3;
       ctx.page.drawText(txt, { x: tx, y: ctx.y - size, size, font: ctx.font, color: INK });
     }
     ctx.y -= rowH;
@@ -301,9 +380,20 @@ function bloqueNotas(ctx: Ctx, notas: ReporteNotas) {
   const size = 8;
   const lh = size + 3.5;
   asegurar(ctx, 34);
-  ctx.page.drawText(notas.titulo.toUpperCase(), { x: M, y: ctx.y, size: 9, font: ctx.bold, color: ctx.navy });
+  ctx.page.drawText(notas.titulo.toUpperCase(), {
+    x: M,
+    y: ctx.y,
+    size: 9,
+    font: ctx.bold,
+    color: ctx.navy,
+  });
   ctx.y -= 6;
-  ctx.page.drawLine({ start: { x: M, y: ctx.y }, end: { x: PAGE_W - M, y: ctx.y }, thickness: 0.5, color: LINE });
+  ctx.page.drawLine({
+    start: { x: M, y: ctx.y },
+    end: { x: PAGE_W - M, y: ctx.y },
+    thickness: 0.5,
+    color: LINE,
+  });
   ctx.y -= 14;
 
   for (const parrafo of notas.parrafos) {

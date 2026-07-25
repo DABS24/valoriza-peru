@@ -15,10 +15,20 @@ const SESS_COOKIE = "vpses";
  * una pantalla nueva acá la deja detrás del login (falla cerrado), que es el lado
  * correcto del error.
  *
- * Las dos son estáticas (prerenderadas), así que tampoco pueden llevar nonce: sus
- * <script> se emiten en build y 'strict-dynamic' los bloquearía.
+ * Son estáticas (prerenderadas), así que tampoco pueden llevar nonce: sus <script>
+ * se emiten en build y 'strict-dynamic' los bloquearía.
+ *
+ * ⚠️ "/" es la landing institucional y es pública A PROPÓSITO, pero el match es
+ * exacto: `esPublica` solo abre la raíz, no todo lo que cuelga de ella. Verificado
+ * con /cliente, /admin, /asesor y /empresario, que siguen cerrados.
  */
-const PUBLICAS: readonly string[] = ["/login", "/nueva-clave"];
+const PUBLICAS: readonly string[] = [
+  "/", // landing institucional
+  "/login",
+  "/nueva-clave",
+  "/legal", // términos, privacidad, cookies
+  "/libro-reclamaciones",
+];
 
 /** ¿El path es una de las pantallas públicas? */
 function esPublica(path: string): boolean {

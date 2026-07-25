@@ -92,7 +92,9 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
       setConfirmarDesactivar(false);
       toast.success(T.desactivada);
     } catch (e) {
-      toast.error((e as Error)?.message === "clave_incorrecta" ? T.claveIncorrecta : T.errorGenerico);
+      toast.error(
+        (e as Error)?.message === "clave_incorrecta" ? T.claveIncorrecta : T.errorGenerico,
+      );
     } finally {
       setOcupado(false);
     }
@@ -136,7 +138,9 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{H.titulo}</h1>
+      <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+        {H.titulo}
+      </h1>
       <p className="mt-1 text-sm text-portal-muted">{H.sub}</p>
 
       <PCard className="mt-6">
@@ -152,7 +156,9 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
               <p className="mt-1 text-sm text-portal-ink2">{T.desc}</p>
             </div>
           </div>
-          <PPill tone={activo ? "money" : "neutral"}>{activo ? T.estadoActivo : T.estadoInactivo}</PPill>
+          <PPill tone={activo ? "money" : "neutral"}>
+            {activo ? T.estadoActivo : T.estadoInactivo}
+          </PPill>
         </div>
 
         {!cargando && !activo && !enroll && (
@@ -162,7 +168,13 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
         )}
 
         {activo && (
-          <PButton pill variant="ghost" className="mt-5" onClick={() => setConfirmarDesactivar(true)} disabled={ocupado}>
+          <PButton
+            pill
+            variant="ghost"
+            className="mt-5"
+            onClick={() => setConfirmarDesactivar(true)}
+            disabled={ocupado}
+          >
             {T.desactivar}
           </PButton>
         )}
@@ -184,7 +196,13 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
             <div>
               <p className="text-sm font-semibold text-portal-ink">{T.paso1}</p>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={enroll.qr} alt="QR" className="mt-3 size-44 rounded-portal border border-portal-line bg-white p-2" />
+              <img
+                loading="lazy"
+                decoding="async"
+                src={enroll.qr}
+                alt="QR"
+                className="mt-3 size-44 rounded-portal border border-portal-line bg-white p-2"
+              />
             </div>
             <div>
               <p className="text-sm font-semibold text-portal-ink">{T.paso2}</p>
@@ -206,14 +224,22 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
               <PButton pill fullWidth onClick={confirmar} disabled={ocupado || codigo.length !== 6}>
                 {T.confirmar}
               </PButton>
-              <PButton pill fullWidth variant="ghost" onClick={() => setEnroll(null)} disabled={ocupado}>
+              <PButton
+                pill
+                fullWidth
+                variant="ghost"
+                onClick={() => setEnroll(null)}
+                disabled={ocupado}
+              >
                 {T.cancelar}
               </PButton>
             </div>
           </div>
         )}
 
-        <p className="mt-6 border-t border-portal-line pt-4 text-xs text-portal-muted">{T.sesionInfo}</p>
+        <p className="mt-6 border-t border-portal-line pt-4 text-xs text-portal-muted">
+          {T.sesionInfo}
+        </p>
       </PCard>
 
       <PCard className="mt-6">
@@ -243,9 +269,15 @@ export function PortalConfiguracion({ loginHref }: { loginHref: string }) {
             autoComplete="new-password"
             value={pwConfirmar}
             onChange={(e) => setPwConfirmar(e.target.value)}
-            error={pwConfirmar.length > 0 && pwConfirmar !== pwNueva ? T.password.noCoincide : undefined}
+            error={
+              pwConfirmar.length > 0 && pwConfirmar !== pwNueva ? T.password.noCoincide : undefined
+            }
           />
-          <PButton pill onClick={cambiarPassword} disabled={cambiandoPw || !pwActual || !pwNueva || !pwConfirmar}>
+          <PButton
+            pill
+            onClick={cambiarPassword}
+            disabled={cambiandoPw || !pwActual || !pwNueva || !pwConfirmar}
+          >
             {T.password.guardar}
           </PButton>
         </div>

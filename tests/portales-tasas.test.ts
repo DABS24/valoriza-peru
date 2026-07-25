@@ -47,7 +47,9 @@ describe("tasasDerivadas", () => {
   it("redondea a 2 decimales (no más)", () => {
     const { teaPct } = tasasDerivadas(2.9);
     // 2 decimales como máximo: value × 100 debe ser entero.
-    expect(Number.isInteger(Math.round(teaPct * 100)) && teaPct * 100 === Math.round(teaPct * 100)).toBe(true);
+    expect(
+      Number.isInteger(Math.round(teaPct * 100)) && teaPct * 100 === Math.round(teaPct * 100),
+    ).toBe(true);
   });
 
   it("0% mensual → TNA 0, TEA 0 (no explota con cero)", () => {
@@ -113,10 +115,7 @@ describe("gananciaAlPlazo (interés simple mensual — la ganancia REAL del per�
 
 describe("coberturaGarantia (cuántas veces el respaldo cubre la inversión)", () => {
   it("suma valores estimados ÷ monto", () => {
-    const c = coberturaGarantia(
-      [{ valorEstimado: 15000 }, { valorEstimado: 6000 }],
-      10000,
-    );
+    const c = coberturaGarantia([{ valorEstimado: 15000 }, { valorEstimado: 6000 }], 10000);
     expect(c.totalGarantias).toBe(21000);
     expect(c.veces).toBe(2.1);
     expect(c.cuenta).toBe(2);
@@ -208,11 +207,7 @@ describe("cronogramaEmpresario (simulación bullet)", () => {
 
   it("las fechas avanzan un mes por cuota desde `desde`", () => {
     const filas = cronogramaEmpresario(1000, 1, 3, desde);
-    expect(filas.map((f) => f.fechaISO.slice(0, 7))).toEqual([
-      "2026-02",
-      "2026-03",
-      "2026-04",
-    ]);
+    expect(filas.map((f) => f.fechaISO.slice(0, 7))).toEqual(["2026-02", "2026-03", "2026-04"]);
   });
 
   it("entradas inválidas → []", () => {

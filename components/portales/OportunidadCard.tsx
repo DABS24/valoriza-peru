@@ -84,7 +84,7 @@ export function OportunidadCard({
             <span className="truncate">{resumen.ubicacion}</span>
           </p>
         )}
-        <h3 className="mt-1 font-portal text-lg font-bold leading-snug text-portal-ink line-clamp-2">
+        <h3 className="mt-1 line-clamp-2 font-portal text-lg font-bold leading-snug text-portal-ink">
           <Link href={href} className="hover:underline">
             {op.titulo}
           </Link>
@@ -92,8 +92,10 @@ export function OportunidadCard({
         {op.prestatario && (
           <>
             <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-              <span className="min-w-0 truncate font-semibold text-portal-ink">{op.prestatario.nombre}</span>
-              <span className="shrink-0 rounded-chip bg-portal-primary-soft px-2 py-0.5 text-[11px] font-bold text-portal-primary-ink">
+              <span className="min-w-0 truncate font-semibold text-portal-ink">
+                {op.prestatario.nombre}
+              </span>
+              <span className="shrink-0 rounded-chip bg-portal-primary-soft px-2 py-0.5 text-2xs font-bold text-portal-primary-ink">
                 {T.card.operacionOrdinal(op.prestatario.ordinal)}
               </span>
             </p>
@@ -115,7 +117,7 @@ export function OportunidadCard({
         <dl className="mt-4 grid grid-cols-3 gap-2 border-t border-portal-line pt-4">
           {resumen.stats.map((s, i) => (
             <div key={i} className="min-w-0">
-              <dt className="truncate text-[10px] font-bold uppercase tracking-wider text-portal-muted">
+              <dt className="truncate text-3xs font-bold uppercase tracking-wider text-portal-muted">
                 {s.label}
               </dt>
               <dd

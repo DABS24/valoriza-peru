@@ -29,7 +29,14 @@ export function FichaCliente({ portal, ficha }: { portal: PortalSlug; ficha: Cli
 
   return (
     <div>
-      <PButton as="link" href={`${base}/asesor/clientes`} variant="ghost" size="sm" pill className="mb-5">
+      <PButton
+        as="link"
+        href={`${base}/asesor/clientes`}
+        variant="ghost"
+        size="sm"
+        pill
+        className="mb-5"
+      >
         {T.volver}
       </PButton>
 
@@ -103,12 +110,10 @@ export function FichaCliente({ portal, ficha }: { portal: PortalSlug; ficha: Cli
               return (
                 <PCard key={r.reservaId} className="flex flex-col">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="min-w-0 font-portal text-base font-bold text-portal-ink line-clamp-2">
+                    <h3 className="line-clamp-2 min-w-0 font-portal text-base font-bold text-portal-ink">
                       {r.titulo}
                     </h3>
-                    <PPill tone={TONO_RESERVA[r.estado]} className="shrink-0">
-                      {E[r.estado]}
-                    </PPill>
+                    <PPill tone={TONO_RESERVA[r.estado]}>{E[r.estado]}</PPill>
                   </div>
 
                   <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
@@ -154,10 +159,7 @@ export function FichaCliente({ portal, ficha }: { portal: PortalSlug; ficha: Cli
       </div>
 
       {/* Libreta interna del asesor sobre este cliente (nunca la ve el inversionista) */}
-      <NotasCliente
-        sujeto={{ tipo: "cliente", id: cliente.userId }}
-        notas={ficha.notas}
-      />
+      <NotasCliente sujeto={{ tipo: "cliente", id: cliente.userId }} notas={ficha.notas} />
     </div>
   );
 }

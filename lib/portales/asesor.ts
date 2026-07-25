@@ -243,7 +243,12 @@ export function monedaDominante(filas: readonly FilaMoneda[]): AgregadoMoneda {
     }
   }
   const b = buckets.get(mejor)!;
-  return { moneda: mejor, comprometido: b.comprometido, extra: b.extra, multiMoneda: buckets.size > 1 };
+  return {
+    moneda: mejor,
+    comprometido: b.comprometido,
+    extra: b.extra,
+    multiMoneda: buckets.size > 1,
+  };
 }
 
 /**

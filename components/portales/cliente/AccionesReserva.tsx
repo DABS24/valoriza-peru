@@ -143,7 +143,11 @@ export function AccionesReserva({
           <Clock className="size-4 shrink-0 text-portal-warning" aria-hidden />
           <span className="font-semibold text-portal-ink">{T.reservadaPorTi}</span>
           <span className="text-portal-muted">·</span>
-          <CuentaRegresiva hasta={op.reservadoHasta ?? ""} conPrefijo className="text-portal-ink2" />
+          <CuentaRegresiva
+            hasta={op.reservadoHasta ?? ""}
+            conPrefijo
+            className="text-portal-ink2"
+          />
         </div>
         <PButton
           as="link"

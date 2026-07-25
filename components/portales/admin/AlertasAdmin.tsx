@@ -238,7 +238,9 @@ export function AlertasAdmin({ portal, alertas }: { portal: PortalSlug; alertas:
                   key={b.id}
                   className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 p-5"
                 >
-                  <p className="min-w-0 flex-1 truncate font-semibold text-portal-ink">{b.titulo}</p>
+                  <p className="min-w-0 flex-1 truncate font-semibold text-portal-ink">
+                    {b.titulo}
+                  </p>
                   <div className="flex flex-wrap items-center gap-3">
                     <PPill tone="neutral">{T.diasQuieto(b.dias)}</PPill>
                     <PButton

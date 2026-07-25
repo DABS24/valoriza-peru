@@ -73,10 +73,7 @@ describe("alta de portal · el correo de acceso no arrastra nada de Efectivo", (
   });
 
   it("el enlace del correo apunta a la pantalla de contraseña DEL portal", () => {
-    for (const ruta of [
-      "app/api/usuarios/route.ts",
-      "app/api/prestatarios/[id]/cuenta/route.ts",
-    ]) {
+    for (const ruta of ["app/api/usuarios/route.ts", "app/api/prestatarios/[id]/cuenta/route.ts"]) {
       const src = leer(ruta);
       // El portal está montado en la raíz: el enlace es `<origen>/nueva-clave`.
       expect(src).toMatch(/APP\.url\}\/nueva-clave/);

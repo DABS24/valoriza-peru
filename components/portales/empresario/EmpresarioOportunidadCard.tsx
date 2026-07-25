@@ -37,7 +37,9 @@ export function EmpresarioOportunidadCard({ op }: { op: OportunidadEmpresario })
   const solicita = tieneMonto ? toMonedaKpi(c.monto, op.moneda) : E.sinDatos;
   const recibe = tieneMonto && comisionDefinida ? toMonedaKpi(c.recibeNeto, op.moneda) : E.sinDatos;
   const costo =
-    tieneMonto && comisionDefinida && c.costoTotal > 0 ? toMonedaKpi(c.costoTotal, op.moneda) : E.sinDatos;
+    tieneMonto && comisionDefinida && c.costoTotal > 0
+      ? toMonedaKpi(c.costoTotal, op.moneda)
+      : E.sinDatos;
 
   const stats = [
     { label: E.solicitas, value: solicita, positive: false },
@@ -46,7 +48,11 @@ export function EmpresarioOportunidadCard({ op }: { op: OportunidadEmpresario })
   ];
 
   const comisionPct = pctTasa(op.comisionPct);
-  const plazo = plazoTexto(op.plazoMesesMin, op.plazoMesesMax, COPY.portales.cliente.labels.plazoMeses);
+  const plazo = plazoTexto(
+    op.plazoMesesMin,
+    op.plazoMesesMax,
+    COPY.portales.cliente.labels.plazoMeses,
+  );
   const cuota = pctTasa(op.tasaMensual);
 
   return (
@@ -59,13 +65,11 @@ export function EmpresarioOportunidadCard({ op }: { op: OportunidadEmpresario })
               <span className="truncate">{ubicacion}</span>
             </p>
           )}
-          <h3 className="mt-1 font-portal text-base font-bold leading-snug text-portal-ink line-clamp-2">
+          <h3 className="mt-1 line-clamp-2 font-portal text-base font-bold leading-snug text-portal-ink">
             {op.titulo}
           </h3>
         </div>
-        <PPill tone={est.tono} className="shrink-0">
-          {est.label}
-        </PPill>
+        <PPill tone={est.tono}>{est.label}</PPill>
       </div>
 
       {subtitulo && <p className="mt-1 truncate text-sm text-portal-ink2">{subtitulo}</p>}
@@ -73,7 +77,7 @@ export function EmpresarioOportunidadCard({ op }: { op: OportunidadEmpresario })
       <dl className="mt-4 grid grid-cols-3 gap-2 border-t border-portal-line pt-4">
         {stats.map((s) => (
           <div key={s.label} className="min-w-0">
-            <dt className="truncate text-[10px] font-bold uppercase tracking-wider text-portal-muted">
+            <dt className="truncate text-3xs font-bold uppercase tracking-wider text-portal-muted">
               {s.label}
             </dt>
             <dd
@@ -123,7 +127,11 @@ export function EmpresarioOportunidadCard({ op }: { op: OportunidadEmpresario })
         tasaMensual={op.tasaMensual}
         meses={meses}
         moneda={op.moneda}
-        rango={op.plazoMesesMin != null && op.plazoMesesMax != null && op.plazoMesesMin !== op.plazoMesesMax}
+        rango={
+          op.plazoMesesMin != null &&
+          op.plazoMesesMax != null &&
+          op.plazoMesesMin !== op.plazoMesesMax
+        }
       />
     </PCard>
   );

@@ -16,7 +16,11 @@ export function PortalWordmark({
 }) {
   const inicial = nombre.trim().charAt(0).toUpperCase();
   const cuadrado =
-    size === "lg" ? "size-11 text-xl rounded-portal-sm" : size === "md" ? "size-9 text-base rounded-portal-sm" : "size-8 text-sm rounded-[10px]";
+    size === "lg"
+      ? "size-11 text-xl rounded-portal-sm"
+      : size === "md"
+        ? "size-9 text-base rounded-portal-sm"
+        : "size-8 text-sm rounded-[10px]";
   const texto = size === "lg" ? "text-xl" : size === "md" ? "text-lg" : "text-sm";
 
   return (
@@ -30,7 +34,9 @@ export function PortalWordmark({
       >
         {inicial}
       </span>
-      <span className={cn("truncate font-portal font-extrabold tracking-tight text-portal-ink", texto)}>
+      <span
+        className={cn("truncate font-portal font-extrabold tracking-tight text-portal-ink", texto)}
+      >
         {nombre}
       </span>
     </span>

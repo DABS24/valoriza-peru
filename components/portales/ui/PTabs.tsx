@@ -41,9 +41,19 @@ const CHIP_ON = "border border-portal-primary bg-portal-primary text-white";
 const CHIP_OFF =
   "border border-portal-line2 bg-portal-surface text-portal-ink2 hover:border-portal-primary hover:text-portal-primary";
 
-export function PTabs<T extends string>({ tabs, activa, onChange, label, className }: PTabsProps<T>) {
+export function PTabs<T extends string>({
+  tabs,
+  activa,
+  onChange,
+  label,
+  className,
+}: PTabsProps<T>) {
   return (
-    <div role="tablist" aria-label={label} className={cn("flex flex-wrap items-center gap-2", className)}>
+    <div
+      role="tablist"
+      aria-label={label}
+      className={cn("flex flex-wrap items-center gap-2", className)}
+    >
       {tabs.map((t) => {
         const on = t.id === activa;
         const contenido = (

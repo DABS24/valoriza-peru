@@ -34,7 +34,7 @@ export function PPill({
     <span
       title={title}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-chip px-3 py-1 text-xs font-semibold",
+        "inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-chip px-3 py-1 text-xs font-semibold",
         toneClasses[tone],
         className,
       )}

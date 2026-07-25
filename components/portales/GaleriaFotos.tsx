@@ -38,7 +38,13 @@ export function GaleriaFotos({ fotos, alt }: { fotos: FotoGaleria[]; alt: string
           la URL firmada. object-contain para no recortar la foto. */}
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-portal border border-portal-line bg-portal-subtle">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={validas[idx].url!} alt={alt} className="absolute inset-0 size-full object-contain" />
+        <img
+          loading="lazy"
+          decoding="async"
+          src={validas[idx].url!}
+          alt={alt}
+          className="absolute inset-0 size-full object-contain"
+        />
       </div>
       {validas.length > 1 && (
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
@@ -49,12 +55,20 @@ export function GaleriaFotos({ fotos, alt }: { fotos: FotoGaleria[]; alt: string
               onClick={() => setActiva(i)}
               className={cn(
                 "size-16 shrink-0 overflow-hidden rounded-portal-sm border-2 transition",
-                i === idx ? "border-portal-primary" : "border-portal-line hover:border-portal-primary/50",
+                i === idx
+                  ? "border-portal-primary"
+                  : "border-portal-line hover:border-portal-primary/50",
               )}
               aria-label={`${alt} ${i + 1}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={f.url!} alt="" className="size-full object-cover" />
+              <img
+                loading="lazy"
+                decoding="async"
+                src={f.url!}
+                alt=""
+                className="size-full object-cover"
+              />
             </button>
           ))}
         </div>

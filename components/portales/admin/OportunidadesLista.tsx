@@ -67,10 +67,17 @@ export function OportunidadesLista({
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{T.titulo}</h1>
+          <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+            {T.titulo}
+          </h1>
           <p className="mt-1 max-w-2xl text-sm text-portal-muted">{T.sub}</p>
         </div>
-        <PButton as="link" href={`${base}/admin/oportunidades/nueva`} pill leadingIcon={<Plus className="size-4" />}>
+        <PButton
+          as="link"
+          href={`${base}/admin/oportunidades/nueva`}
+          pill
+          leadingIcon={<Plus className="size-4" />}
+        >
           {T.nueva}
         </PButton>
       </div>
@@ -105,7 +112,14 @@ export function OportunidadesLista({
                 ) : undefined
               }
               acciones={
-                <PButton as="link" href={`${base}/admin/oportunidades/${op.id}`} variant="ghost" size="sm" pill fullWidth>
+                <PButton
+                  as="link"
+                  href={`${base}/admin/oportunidades/${op.id}`}
+                  variant="ghost"
+                  size="sm"
+                  pill
+                  fullWidth
+                >
                   {T.editar}
                 </PButton>
               }

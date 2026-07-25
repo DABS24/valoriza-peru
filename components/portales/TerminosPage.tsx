@@ -10,15 +10,16 @@
  * Es la primera página legal de los portales: hasta ahora el único texto legal era
  * "Operado por Don Gato Servicios SAC" en el pie del PortalShell.
  */
-import { requirePortalSession } from "@/lib/portales/guards";
 import { PORTALES, type PortalSlug } from "@/lib/portales/config";
 import { COPY } from "@/lib/copy";
 import { PCard } from "@/components/portales/ui/PCard";
 
-/** Términos del portal (SERVER). Cualquier miembro activo del portal los puede leer. */
+/**
+ * Términos del portal (SERVER). PÚBLICO a propósito: un documento legal que solo
+ * se puede leer con sesión no cumple su función — quien decide si acepta todavía
+ * no tiene cuenta.
+ */
 export default async function TerminosPage({ portal }: { portal: PortalSlug }) {
-  await requirePortalSession(portal);
-
   const T = COPY.portales;
   const L = T.terminos;
   const marca = PORTALES[portal].nombreCorto;

@@ -46,9 +46,7 @@ export async function safeGetUser(
  * de la cookie local (0 red). Úsalo SOLO para obtener el uid de un filtro de
  * LECTURA; para ESCRITURAS y guards de auth server-side seguir con getUser().
  */
-export async function getUid(
-  supabase: ReturnType<typeof createClient>,
-): Promise<string | null> {
+export async function getUid(supabase: ReturnType<typeof createClient>): Promise<string | null> {
   try {
     const { data } = await supabase.auth.getSession();
     return data.session?.user?.id ?? null;

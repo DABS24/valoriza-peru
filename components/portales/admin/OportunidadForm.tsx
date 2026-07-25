@@ -90,9 +90,7 @@ export function OportunidadForm({
   const [estado, setEstado] = useState(inicial?.estadoPublicacion ?? "borrador");
 
   // ── Datos específicos de la vertical ──
-  const [datos, setDatos] = useState<Record<string, string>>(
-    datosAStrings(inicial?.datos ?? {}),
-  );
+  const [datos, setDatos] = useState<Record<string, string>>(datosAStrings(inicial?.datos ?? {}));
   const setCampo = (key: string, val: string) => setDatos((d) => ({ ...d, [key]: val }));
 
   // ── Garantías ──
@@ -112,7 +110,14 @@ export function OportunidadForm({
   const agregarGarantia = () =>
     setGarantias((g) => [
       ...g,
-      { tipo: cfg.garantiasSugeridas[0] ?? OTRO, tipoOtro: "", titulo: "", descripcion: "", valor: "", moneda },
+      {
+        tipo: cfg.garantiasSugeridas[0] ?? OTRO,
+        tipoOtro: "",
+        titulo: "",
+        descripcion: "",
+        valor: "",
+        moneda,
+      },
     ]);
   const quitarGarantia = (i: number) => setGarantias((g) => g.filter((_, idx) => idx !== i));
   const setGarantia = (i: number, patch: Partial<GarantiaForm>) =>
@@ -231,9 +236,7 @@ export function OportunidadForm({
 
     setGuardando(true);
     try {
-      const url = editando
-        ? `/api/oportunidades/${oportunidadId}`
-        : `/api/oportunidades`;
+      const url = editando ? `/api/oportunidades/${oportunidadId}` : `/api/oportunidades`;
       const res = await fetch(url, {
         method: editando ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -282,13 +285,34 @@ export function OportunidadForm({
       {/* Generales */}
       <PCard className="space-y-4">
         <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionGeneral}</h2>
-        <PInput label={F.titulo} value={titulo} onChange={(e) => setTitulo(e.target.value)} requiredMark />
-        <PTextarea label={F.descripcion} value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+        <PInput
+          label={F.titulo}
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          requiredMark
+        />
+        <PTextarea
+          label={F.descripcion}
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+        />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <PInput label={F.direccion} value={direccion} onChange={(e) => setDireccion(e.target.value)} />
-          <PInput label={F.distrito} value={distrito} onChange={(e) => setDistrito(e.target.value)} />
+          <PInput
+            label={F.direccion}
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+          />
+          <PInput
+            label={F.distrito}
+            value={distrito}
+            onChange={(e) => setDistrito(e.target.value)}
+          />
           <PInput label={F.ciudad} value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
-          <PSelect label={F.moneda} value={moneda} onChange={(e) => setMoneda(e.target.value as "PEN" | "USD")}>
+          <PSelect
+            label={F.moneda}
+            value={moneda}
+            onChange={(e) => setMoneda(e.target.value as "PEN" | "USD")}
+          >
             <option value="USD">USD</option>
             <option value="PEN">PEN</option>
           </PSelect>
@@ -299,7 +323,13 @@ export function OportunidadForm({
       <PCard className="space-y-4">
         <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionFinanciero}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <PInput label={F.montoSolicitado} type="number" inputMode="decimal" value={monto} onChange={(e) => setMonto(e.target.value)} />
+          <PInput
+            label={F.montoSolicitado}
+            type="number"
+            inputMode="decimal"
+            value={monto}
+            onChange={(e) => setMonto(e.target.value)}
+          />
           <PInput
             label={F.tasaMensual}
             type="number"
@@ -308,8 +338,20 @@ export function OportunidadForm({
             value={tasaMensual}
             onChange={(e) => setTasaMensual(e.target.value)}
           />
-          <PInput label={F.plazoMin} type="number" inputMode="numeric" value={plazoMin} onChange={(e) => setPlazoMin(e.target.value)} />
-          <PInput label={F.plazoMax} type="number" inputMode="numeric" value={plazoMax} onChange={(e) => setPlazoMax(e.target.value)} />
+          <PInput
+            label={F.plazoMin}
+            type="number"
+            inputMode="numeric"
+            value={plazoMin}
+            onChange={(e) => setPlazoMin(e.target.value)}
+          />
+          <PInput
+            label={F.plazoMax}
+            type="number"
+            inputMode="numeric"
+            value={plazoMax}
+            onChange={(e) => setPlazoMax(e.target.value)}
+          />
           <PInput
             label={F.comision}
             type="number"
@@ -327,7 +369,11 @@ export function OportunidadForm({
           <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionPrestatario}</h2>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="flex-1">
-              <PSelect label={F.prestatario} value={prestatarioId} onChange={(e) => setPrestatarioId(e.target.value)}>
+              <PSelect
+                label={F.prestatario}
+                value={prestatarioId}
+                onChange={(e) => setPrestatarioId(e.target.value)}
+              >
                 <option value="">{F.prestatarioSin}</option>
                 {opciones.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -348,7 +394,12 @@ export function OportunidadForm({
         <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionVertical}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {cfg.campos.map((c) => (
-            <CampoVertical key={c.key} campo={c} value={datos[c.key] ?? ""} onChange={(v) => setCampo(c.key, v)} />
+            <CampoVertical
+              key={c.key}
+              campo={c}
+              value={datos[c.key] ?? ""}
+              onChange={(v) => setCampo(c.key, v)}
+            />
           ))}
         </div>
       </PCard>
@@ -357,7 +408,13 @@ export function OportunidadForm({
       <PCard className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionGarantias}</h2>
-          <PButton variant="ghost" size="sm" pill leadingIcon={<Plus className="size-4" />} onClick={agregarGarantia}>
+          <PButton
+            variant="ghost"
+            size="sm"
+            pill
+            leadingIcon={<Plus className="size-4" />}
+            onClick={agregarGarantia}
+          >
             {F.agregarGarantia}
           </PButton>
         </div>
@@ -366,10 +423,17 @@ export function OportunidadForm({
         ) : (
           <div className="space-y-4">
             {garantias.map((g, i) => (
-              <div key={i} className="rounded-card-sm border border-portal-line bg-portal-subtle/40 p-4">
+              <div
+                key={i}
+                className="rounded-card-sm border border-portal-line bg-portal-subtle/40 p-4"
+              >
                 <div className="flex items-start gap-3">
                   <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
-                    <PSelect label={F.garantiaTipo} value={g.tipo} onChange={(e) => setGarantia(i, { tipo: e.target.value })}>
+                    <PSelect
+                      label={F.garantiaTipo}
+                      value={g.tipo}
+                      onChange={(e) => setGarantia(i, { tipo: e.target.value })}
+                    >
                       {cfg.garantiasSugeridas.map((t) => (
                         <option key={t} value={t}>
                           {labelGarantia(t)}
@@ -378,12 +442,31 @@ export function OportunidadForm({
                       <option value={OTRO}>{F.garantiaTipoOtro}</option>
                     </PSelect>
                     {g.tipo === OTRO && (
-                      <PInput label={F.garantiaTipo} value={g.tipoOtro} onChange={(e) => setGarantia(i, { tipoOtro: e.target.value })} />
+                      <PInput
+                        label={F.garantiaTipo}
+                        value={g.tipoOtro}
+                        onChange={(e) => setGarantia(i, { tipoOtro: e.target.value })}
+                      />
                     )}
-                    <PInput label={F.garantiaTitulo} value={g.titulo} onChange={(e) => setGarantia(i, { titulo: e.target.value })} />
-                    <PInput label={F.garantiaValor} type="number" inputMode="decimal" value={g.valor} onChange={(e) => setGarantia(i, { valor: e.target.value })} />
+                    <PInput
+                      label={F.garantiaTitulo}
+                      value={g.titulo}
+                      onChange={(e) => setGarantia(i, { titulo: e.target.value })}
+                    />
+                    <PInput
+                      label={F.garantiaValor}
+                      type="number"
+                      inputMode="decimal"
+                      value={g.valor}
+                      onChange={(e) => setGarantia(i, { valor: e.target.value })}
+                    />
                     <div className="sm:col-span-2">
-                      <PTextarea label={F.garantiaDescripcion} rows={2} value={g.descripcion} onChange={(e) => setGarantia(i, { descripcion: e.target.value })} />
+                      <PTextarea
+                        label={F.garantiaDescripcion}
+                        rows={2}
+                        value={g.descripcion}
+                        onChange={(e) => setGarantia(i, { descripcion: e.target.value })}
+                      />
                     </div>
                   </div>
                   <button
@@ -405,7 +488,11 @@ export function OportunidadForm({
       <PCard className="space-y-4">
         <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionRiesgo}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <PSelect label={F.nivelRiesgo} value={nivelRiesgo} onChange={(e) => setNivelRiesgo(e.target.value)}>
+          <PSelect
+            label={F.nivelRiesgo}
+            value={nivelRiesgo}
+            onChange={(e) => setNivelRiesgo(e.target.value)}
+          >
             <option value="">{F.sinRiesgo}</option>
             {NIVELES_RIESGO.map((n) => (
               <option key={n.id} value={n.id}>
@@ -422,8 +509,17 @@ export function OportunidadForm({
             ))}
           </PSelect>
         </div>
-        <PTextarea label={F.notasInternas} hint={F.notasHint} value={notas} onChange={(e) => setNotas(e.target.value)} />
-        <PSelect label={F.estadoPublicacion} value={estado} onChange={(e) => setEstado(e.target.value as typeof estado)}>
+        <PTextarea
+          label={F.notasInternas}
+          hint={F.notasHint}
+          value={notas}
+          onChange={(e) => setNotas(e.target.value)}
+        />
+        <PSelect
+          label={F.estadoPublicacion}
+          value={estado}
+          onChange={(e) => setEstado(e.target.value as typeof estado)}
+        >
           {ESTADOS_PUBLICACION.map((es) => (
             <option key={es.id} value={es.id}>
               {es.label}
@@ -436,14 +532,27 @@ export function OportunidadForm({
       <PCard className="space-y-4">
         <h2 className="font-portal text-lg font-bold text-portal-ink">{F.seccionFotos}</h2>
         {!editando ? (
-          <p className="text-sm text-portal-muted">{F.fotoHint} · {COPY.portales.comun.guardar}</p>
+          <p className="text-sm text-portal-muted">
+            {F.fotoHint} · {COPY.portales.comun.guardar}
+          </p>
         ) : (
           <>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {fotos.map((f) => (
-                <div key={f.id} className="group relative aspect-square overflow-hidden rounded-card-sm border border-portal-line bg-portal-subtle">
+                <div
+                  key={f.id}
+                  className="group relative aspect-square overflow-hidden rounded-card-sm border border-portal-line bg-portal-subtle"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {f.url && <img src={f.url} alt="" className="size-full object-cover" />}
+                  {f.url && (
+                    <img
+                      loading="lazy"
+                      decoding="async"
+                      src={f.url}
+                      alt=""
+                      className="size-full object-cover"
+                    />
+                  )}
                   <button
                     type="button"
                     onClick={() => quitarFoto(f)}
@@ -455,9 +564,21 @@ export function OportunidadForm({
                 </div>
               ))}
               <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-card-sm border-2 border-dashed border-portal-line2 text-portal-muted transition hover:border-portal-primary hover:text-portal-primary">
-                {subiendoFoto ? <Loader2 className="size-6 animate-spin" /> : <ImagePlus className="size-6" />}
-                <span className="text-xs font-semibold">{subiendoFoto ? F.subiendo : F.subirFoto}</span>
-                <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={onFoto} disabled={subiendoFoto} />
+                {subiendoFoto ? (
+                  <Loader2 className="size-6 animate-spin" />
+                ) : (
+                  <ImagePlus className="size-6" />
+                )}
+                <span className="text-xs font-semibold">
+                  {subiendoFoto ? F.subiendo : F.subirFoto}
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="sr-only"
+                  onChange={onFoto}
+                  disabled={subiendoFoto}
+                />
               </label>
             </div>
             <p className="text-xs text-portal-muted">{F.fotoHint}</p>
@@ -488,7 +609,9 @@ export function OportunidadForm({
                       <div className="min-w-0">
                         <p className="truncate font-semibold text-portal-ink">{labelDoc(d.tipo)}</p>
                         <p className="truncate text-xs text-portal-muted">
-                          {[d.nombre, d.bytes ? toFileSize(d.bytes) : null].filter(Boolean).join(" · ")}
+                          {[d.nombre, d.bytes ? toFileSize(d.bytes) : null]
+                            .filter(Boolean)
+                            .join(" · ")}
                         </p>
                       </div>
                     </div>
@@ -506,7 +629,11 @@ export function OportunidadForm({
             )}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <div className="flex-1">
-                <PSelect label={F.docTipo} value={docTipo} onChange={(e) => setDocTipo(e.target.value)}>
+                <PSelect
+                  label={F.docTipo}
+                  value={docTipo}
+                  onChange={(e) => setDocTipo(e.target.value)}
+                >
                   {DOC_TIPOS_SUGERIDOS.map((t) => (
                     <option key={t} value={t}>
                       {labelDoc(t)}
@@ -515,7 +642,11 @@ export function OportunidadForm({
                 </PSelect>
               </div>
               <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-portal-sm bg-portal-primary-soft px-5 py-3 font-portal text-sm font-semibold text-portal-primary-ink transition hover:bg-portal-primary/15">
-                {subiendoDoc ? <Loader2 className="size-4 animate-spin" /> : <FilePlus className="size-4" />}
+                {subiendoDoc ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <FilePlus className="size-4" />
+                )}
                 <span>{subiendoDoc ? F.subiendoDoc : F.subirDoc}</span>
                 <input
                   type="file"
@@ -533,10 +664,24 @@ export function OportunidadForm({
 
       {/* Acciones */}
       <div className="flex flex-col gap-2 sm:flex-row-reverse">
-        <PButton pill size="lg" fullWidth loading={guardando} disabled={guardando} onClick={guardar}>
+        <PButton
+          pill
+          size="lg"
+          fullWidth
+          loading={guardando}
+          disabled={guardando}
+          onClick={guardar}
+        >
           {guardando ? F.guardando : F.guardar}
         </PButton>
-        <PButton as="link" href={`${base}/admin/oportunidades`} variant="ghost" pill size="lg" fullWidth>
+        <PButton
+          as="link"
+          href={`${base}/admin/oportunidades`}
+          variant="ghost"
+          pill
+          size="lg"
+          fullWidth
+        >
           {F.cancelar}
         </PButton>
       </div>
@@ -607,10 +752,25 @@ function PrestatarioInlineDialog({
   }
 
   return (
-    <Dialog open={open} onClose={() => (creando ? undefined : onClose())} title={F.prestatarioCrearTitulo}>
+    <Dialog
+      open={open}
+      onClose={() => (creando ? undefined : onClose())}
+      title={F.prestatarioCrearTitulo}
+    >
       <div className="space-y-4">
-        <PInput label={P.nombre} value={nombre} onChange={(e) => setNombre(e.target.value)} requiredMark />
-        <PInput label={P.ruc} inputMode="numeric" hint={P.rucHint} value={ruc} onChange={(e) => setRuc(e.target.value)} />
+        <PInput
+          label={P.nombre}
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          requiredMark
+        />
+        <PInput
+          label={P.ruc}
+          inputMode="numeric"
+          hint={P.rucHint}
+          value={ruc}
+          onChange={(e) => setRuc(e.target.value)}
+        />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <PSelect label={P.nivelRiesgo} value={nivel} onChange={(e) => setNivel(e.target.value)}>
             <option value="">{P.sinRiesgo}</option>
@@ -620,7 +780,13 @@ function PrestatarioInlineDialog({
               </option>
             ))}
           </PSelect>
-          <PInput label={P.scoringPago} type="number" inputMode="numeric" value={scoring} onChange={(e) => setScoring(e.target.value)} />
+          <PInput
+            label={P.scoringPago}
+            type="number"
+            inputMode="numeric"
+            value={scoring}
+            onChange={(e) => setScoring(e.target.value)}
+          />
         </div>
       </div>
       <div className="mt-6 flex flex-col gap-2 sm:flex-row-reverse">
@@ -647,7 +813,13 @@ function CampoVertical({
 }) {
   if (campo.tipo === "select") {
     return (
-      <PSelect label={campo.label} value={value} onChange={(e) => onChange(e.target.value)} requiredMark={campo.requerido} hint={campo.ayuda}>
+      <PSelect
+        label={campo.label}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        requiredMark={campo.requerido}
+        hint={campo.ayuda}
+      >
         <option value="">—</option>
         {campo.opciones?.map((o) => (
           <option key={o.value} value={o.value}>

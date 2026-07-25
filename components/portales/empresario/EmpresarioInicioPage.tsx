@@ -27,7 +27,9 @@ export default async function EmpresarioInicioPage({ portal }: { portal: PortalS
   const evaluacion = ops.filter((o) => o.estadoPublicacion === "borrador");
 
   const cfg = portalPorSlug(portal);
-  const solicitarHref = cfg?.prestatarios ? `${basePortal(portal)}/empresario/solicitudes` : undefined;
+  const solicitarHref = cfg?.prestatarios
+    ? `${basePortal(portal)}/empresario/solicitudes`
+    : undefined;
 
   // Reputación: operaciones completadas = financiadas o cerradas con nosotros (proxy
   // público de "buen pagador"). NUNCA el scoring interno. Los borradores (en

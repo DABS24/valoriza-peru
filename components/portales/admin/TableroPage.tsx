@@ -34,7 +34,9 @@ export default async function TableroPage({ portal }: { portal: PortalSlug }) {
   return (
     <div>
       <header className="mb-6">
-        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">{T.titulo}</h1>
+        <h1 className="font-portal text-2xl font-extrabold tracking-tight text-portal-ink sm:text-3xl">
+          {T.titulo}
+        </h1>
         <p className="mt-1 max-w-2xl text-sm text-portal-muted">{T.sub}</p>
       </header>
 
@@ -77,7 +79,9 @@ export default async function TableroPage({ portal }: { portal: PortalSlug }) {
           {/* Sin operaciones financiadas todavía no hay ticket promedio: "—", no 0. */}
           <PStat
             label={T.kpiTicket}
-            value={k.ticketPromedio == null ? T.sinDatoAun : toMonedaKpi(k.ticketPromedio, k.moneda)}
+            value={
+              k.ticketPromedio == null ? T.sinDatoAun : toMonedaKpi(k.ticketPromedio, k.moneda)
+            }
             title={k.ticketPromedio == null ? undefined : toMoneda(k.ticketPromedio, k.moneda)}
             sub={k.ticketPromedio == null ? T.sinDatoAunSub : T.kpiTicketSub}
             tone="ink"
@@ -133,7 +137,9 @@ export default async function TableroPage({ portal }: { portal: PortalSlug }) {
         </div>
         {/* Montos en una sola moneda: si hay otra, se declara en vez de mentir con un total. */}
         {k.multiMoneda && (
-          <p className="text-xs font-medium text-portal-muted">{COPY.portales.multiMonedaNota(k.moneda)}</p>
+          <p className="text-xs font-medium text-portal-muted">
+            {COPY.portales.multiMonedaNota(k.moneda)}
+          </p>
         )}
       </section>
 
@@ -144,7 +150,11 @@ export default async function TableroPage({ portal }: { portal: PortalSlug }) {
           <PStat label={T.kpiInversionistas} value={toInt(k.miembros.clientes)} tone="ink" />
           <PStat label={T.kpiAsesores} value={toInt(k.miembros.asesores)} />
           {k.prestatarios != null && (
-            <PStat label={cfg.prestatarios?.label ?? T.kpiContratistas} value={toInt(k.prestatarios)} tone="positive" />
+            <PStat
+              label={cfg.prestatarios?.label ?? T.kpiContratistas}
+              value={toInt(k.prestatarios)}
+              tone="positive"
+            />
           )}
         </div>
       </section>

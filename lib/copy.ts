@@ -68,7 +68,8 @@ const app = {
     // Banner de cuenta desactivada (solo lectura).
     readOnly: {
       titulo: "Tu cuenta está en modo solo lectura",
-      texto: "Puedes ver tu información e historial, pero por ahora no puedes hacer nuevas operaciones. Escríbenos si crees que es un error.",
+      texto:
+        "Puedes ver tu información e historial, pero por ahora no puedes hacer nuevas operaciónes. Escríbenos si crees que es un error.",
     },
     // Estados de carga (loading.tsx + AppShell). Texto accesible para el
     // esqueleto/animación mientras el server component transmite.
@@ -114,7 +115,7 @@ const correos = {
     subject: (marca: string) => `Nueva solicitud de financiamiento · ${marca}`,
     titulo: "Una empresa dejó una nueva solicitud",
     cuerpo: (empresa: string) =>
-      `${empresa} registró una solicitud de financiamiento en el panel. Revísala en la sección de solicitudes para evaluarla.`,
+      `${empresa} registró una solicitud de financiamiento en el panel. Revísala en la sección de solicitudes para evalúarla.`,
     boton: "Ver las solicitudes",
     nota: "La solicitud incluye monto, plazo y los documentos que la empresa haya adjuntado.",
     ignora: "Si no esperabas este aviso, puedes ignorarlo.",
@@ -135,7 +136,8 @@ const correos = {
   portalPie: (marca: string) => `${marca} · Operado por ${APP.legalName}`,
   portalNoResponder: "Por favor, no respondas a este correo.",
   footer: `${APP.legalName} · Por favor, no respondas a este correo.`,
-  contactoFooter: (wa: string, correo: string) => `¿Dudas? Escríbenos por WhatsApp ${wa} o a ${correo}.`,
+  contactoFooter: (wa: string, correo: string) =>
+    `¿Dudas? Escríbenos por WhatsApp ${wa} o a ${correo}.`,
 } as const;
 
 const portales = {
@@ -162,11 +164,11 @@ const portales = {
    * Aviso cuando hay montos en más de una moneda: el total va en la dominante y
    * quedan montos afuera. ÚNICO lugar del texto — lo leen el inversionista (su
    * cartera), el asesor (la de un cliente) y el admin (el portal). Estaba escrito
-   * dos veces con voces distintas, y la del asesor decía "tienes operaciones"
+   * dos veces con voces distintas, y la del asesor decía "tienes operaciónes"
    * cuando en realidad mira la cartera de OTRO. Redacción neutra: sirve a los tres.
    */
   multiMonedaNota: (moneda: string) =>
-    `El total va en ${moneda}. Hay operaciones en otra moneda que no se suman a este número.`,
+    `El total va en ${moneda}. Hay operaciónes en otra moneda que no se suman a este número.`,
   // 404 PROPIO del portal. El global (app/not-found.tsx) atrapa lo no ruteado; el
   // verde de Efectivo y su WhatsApp: mostrárselo a un inversionista dentro de su
   // portal es una fuga de marca hacia el otro negocio. Sobrio y sin mascota.
@@ -207,7 +209,7 @@ const portales = {
         {
           titulo: "Transfieres directo a la empresa",
           detalle:
-            "El dinero de tu inversión va a la cuenta de la empresa. No pasa por ninguna cuenta nuestra: no lo recibimos, no lo retenemos y no lo administramos.",
+            "El dinero de tu inversión va a la cuenta de la empresa. No pasa por ningúna cuenta nuestra: no lo recibimos, no lo retenemos y no lo administramos.",
         },
         {
           titulo: `Qué hace ${APP.brand}`,
@@ -227,7 +229,7 @@ const portales = {
         },
         {
           titulo: `A ${APP.brand}: la comisión`,
-          detalle: `La comisión de intermediación la asume tu empresa y se descuenta del desembolso. Es el pago a ${APP.legalName} por evaluar la operación, publicarla y acompañar el proceso.`,
+          detalle: `La comisión de intermediación la asume tu empresa y se descuenta del desembolso. Es el pago a ${APP.legalName} por evalúar la operación, publicarla y acompañar el proceso.`,
         },
         {
           titulo: "Lo que devuelves no cambia",
@@ -246,12 +248,12 @@ const portales = {
    * cómo funciona el producto y que ya son verdad en el código —portal por
    * invitación, contrato bilateral, transferencias directas, comisión a cargo de la
    * empresa—. Nada de cláusulas inventadas: sin jurisdicción, sin arbitraje, sin
-   * renuncias de responsabilidad, sin plazos y sin ninguna afirmación de estar
+   * renuncias de responsabilidad, sin plazos y sin ningúna afirmación de estar
    * autorizados, registrados o supervisados. Si algo no se puede sostener con el
    * código o con un papel, no se escribe.
    *
    * El riesgo de capital NO se redacta acá: se reusa `disclaimerCapital` y las
-   * advertencias de `cliente.recuperacion` (SSOT). Duplicarlo sería tener dos
+   * advertencias de `cliente.recuperación` (SSOT). Duplicarlo sería tener dos
    * versiones del mismo aviso legal envejeciendo por separado.
    */
   terminos: {
@@ -261,19 +263,19 @@ const portales = {
       [
         {
           titulo: "Un portal privado y por invitación",
-          cuerpo: `${marca} es un portal privado operado por ${APP.legalName}. El acceso es por invitación: las cuentas las crea nuestro equipo y no hay registro abierto. Sirve para gestionar y hacer seguimiento de operaciones que se conversan de forma presencial con un asesor. La información publicada acá no constituye una oferta pública de inversión ni una invitación a invertir dirigida al público en general.`,
+          cuerpo: `${marca} es un portal privado operado por ${APP.legalName}. El acceso es por invitación: las cuentas las crea nuestro equipo y no hay registro abierto. Sirve para gestiónar y hacer seguimiento de operaciónes que se conversan de forma presencial con un asesor. La información publicada acá no constituye una oferta pública de inversión ni una invitación a invertir dirigida al público en general.`,
         },
         {
           titulo: "El contrato es entre el inversionista y la empresa",
-          cuerpo: `Cada operación termina en un contrato privado entre el inversionista y la empresa que recibe el financiamiento, con sus propias condiciones, plazos y garantías. ${APP.legalName} no es parte de ese contrato: no presta, no recibe el financiamiento, no garantiza el repago y no asume la obligación de pago de ninguna de las partes.`,
+          cuerpo: `Cada operación termina en un contrato privado entre el inversionista y la empresa que recibe el financiamiento, con sus propias condiciones, plazos y garantías. ${APP.legalName} no es parte de ese contrato: no presta, no recibe el financiamiento, no garantiza el repago y no asume la obligación de pago de ningúna de las partes.`,
         },
         {
           titulo: "No custodiamos ni administramos dinero",
-          cuerpo: `Las transferencias son directas entre el inversionista y la empresa. ${APP.legalName} no recibe, no retiene, no custodia ni administra los fondos de las operaciones publicadas. El portal no procesa pagos ni mantiene saldos a nombre de los usuarios: reservar una oportunidad aparta la operación mientras un asesor te contacta, no compromete dinero y no genera ningún cargo.`,
+          cuerpo: `Las transferencias son directas entre el inversionista y la empresa. ${APP.legalName} no recibe, no retiene, no custodia ni administra los fondos de las operaciónes publicadas. El portal no procesa pagos ni mantiene saldos a nombre de los usuarios: reservar una oportunidad aparta la operación mientras un asesor te contacta, no compromete dinero y no genera ningún cargo.`,
         },
         {
           titulo: "Comisión de intermediación",
-          cuerpo: `${APP.legalName} cobra una comisión de intermediación por evaluar la operación, publicarla y acompañar el proceso. Esa comisión la paga la empresa que recibe el financiamiento y se descuenta de lo que recibe al desembolso. El inversionista no paga comisión al portal, y la comisión no se descuenta de su retorno.`,
+          cuerpo: `${APP.legalName} cobra una comisión de intermediación por evalúar la operación, publicarla y acompañar el proceso. Esa comisión la paga la empresa que recibe el financiamiento y se descuenta de lo que recibe al desembolso. El inversionista no paga comisión al portal, y la comisión no se descuenta de su retorno.`,
         },
         {
           titulo: "Qué es la información del portal",
@@ -281,10 +283,10 @@ const portales = {
         },
         {
           titulo: "No somos una entidad supervisada",
-          cuerpo: `${APP.legalName} no es una entidad del sistema financiero ni del mercado de valores: no capta depósitos del público, no otorga créditos por cuenta propia y no administra fondos de terceros. No se encuentra bajo la supervisión de la Superintendencia de Banca, Seguros y AFP (SBS) ni de la Superintendencia del Mercado de Valores (SMV). Los montos de las operaciones no son depósitos y no están cubiertos por el Fondo de Seguro de Depósitos ni por ningún fondo de garantía estatal.`,
+          cuerpo: `${APP.legalName} no es una entidad del sistema financiero ni del mercado de valores: no capta depósitos del público, no otorga créditos por cuenta propia y no administra fondos de terceros. No se encuentra bajo la supervisión de la Superintendencia de Banca, Seguros y AFP (SBS) ni de la Superintendencia del Mercado de Valores (SMV). Los montos de las operaciónes no son depósitos y no están cubiertos por el Fondo de Seguro de Depósitos ni por ningún fondo de garantía estatal.`,
         },
       ] as const,
-    /** El riesgo se reusa de `disclaimerCapital` + `cliente.recuperacion.advertencias`. */
+    /** El riesgo se reusa de `disclaimerCapital` + `cliente.recuperación.advertencias`. */
     riesgoTitulo: "Riesgo de la inversión",
     dudas: "Si algo de esto no te queda claro, pregúntale a tu asesor antes de avanzar.",
   },
@@ -340,10 +342,10 @@ const portales = {
     sinFoto: "Sin foto",
     /** Posición de la operación del prestatario (estilo inversiones.io). */
     operacionOrdinal: (n: number) => `${n}.ª operación`,
-    /** Track record público del prestatario: total de operaciones y cuántas cerró.
+    /** Track record público del prestatario: total de operaciónes y cuántas cerró.
      *  "Cerradas" es factual (estado de la operación); NO afirma "pagó a tiempo". */
     trackRecord: (total: number, cerradas: number) =>
-      `${total === 1 ? "1 operación" : `${total} operaciones`} · ${cerradas} ${cerradas === 1 ? "cerrada" : "cerradas"}`,
+      `${total === 1 ? "1 operación" : `${total} operaciónes`} · ${cerradas} ${cerradas === 1 ? "cerrada" : "cerradas"}`,
   },
   reserva: {
     reservar: "Reservar",
@@ -371,7 +373,7 @@ const portales = {
   historial: {
     titulo: "Mi historial",
     sub: "Todas tus reservas: activas, confirmadas y las que ya no siguen.",
-    vacio: "Todavía no reservaste ninguna oportunidad.",
+    vacio: "Todavía no reservaste ningúna oportunidad.",
     explorar: "Explorar oportunidades",
     colOportunidad: "Oportunidad",
     colEstado: "Estado",
@@ -458,11 +460,11 @@ const portales = {
     irAlLogin: "Ir a iniciar sesión",
   },
   // ── EMPRESARIO (el contratista/prestatario con su propia cuenta) ──
-  // Panel de solo-ver: sus operaciones agrupadas + un botón para enviarnos una
+  // Panel de solo-ver: sus operaciónes agrupadas + un botón para enviarnos una
   // oferta por WhatsApp. NUNCA ve el lado inversionista, ni scoring, ni notas.
   empresario: {
     inicioSaludo: (nombre: string) => `Hola, ${nombre}`,
-    inicioSub: "Este es el panel de tu empresa. Aquí ves tus operaciones con nosotros.",
+    inicioSub: "Este es el panel de tu empresa. Aquí ves tus operaciónes con nosotros.",
     empresaLabel: "Tu empresa",
     rucLabel: "RUC",
     kpiVigentes: "Vigentes",
@@ -474,10 +476,12 @@ const portales = {
     seccionCerradasSub: "Financiamientos ya concretados.",
     seccionEvaluacion: "En evaluación",
     seccionEvaluacionSub: "Las estamos revisando; todavía no se publican.",
-    vacio: "Todavía no tienes operaciones registradas. Cuando quieras financiar un contrato o una factura, envíanos tu oferta.",
+    vacio:
+      "Todavía no tienes operaciónes registradas. Cuando quieras financiar un contrato o una factura, envíanos tu oferta.",
     enviarOferta: "Enviar oferta por WhatsApp",
     solicitarFinanciamiento: "Solicitar financiamiento",
-    ofertaNota: "¿Tienes un contrato o una factura para financiar? Déjanos una solicitud en el panel o escríbenos por WhatsApp.",
+    ofertaNota:
+      "¿Tienes un contrato o una factura para financiar? Déjanos una solicitud en el panel o escríbenos por WhatsApp.",
     waMensaje: (nombre: string) => `Hola, soy ${nombre}. Quiero enviar una oferta para evaluación.`,
     // ── Vista de COSTO del prestatario (reemplaza el framing de rentabilidad del
     //    inversionista). El empresario ve SU número: cuánto recibe, cuánto paga por
@@ -546,10 +550,10 @@ const portales = {
       capitalLabel: "Capital que devuelves al final",
       porDefinirTitulo: "Faltan condiciones por definir",
       porDefinirTexto:
-        "El interés y la comisión los fija el equipo al evaluar tu caso. Mientras tanto preferimos dejar esos números en blanco antes que mostrarte uno que no es el tuyo.",
+        "El interés y la comisión los fija el equipo al evalúar tu caso. Mientras tanto preferimos dejar esos números en blanco antes que mostrarte uno que no es el tuyo.",
       referencia: (n: number) =>
         `Interés y comisión de referencia: los de tus condiciones más recientes con nosotros (${
-          n === 1 ? "1 operación" : `${n} operaciones`
+          n === 1 ? "1 operación" : `${n} operaciónes`
         }). Pueden cambiar en esta solicitud.`,
       disclaimer:
         "Es una estimación referencial, no una oferta ni una aprobación. Las condiciones finales se definen con la evaluación de tu solicitud.",
@@ -561,7 +565,7 @@ const portales = {
       sub: "Pide financiamiento para un contrato o una factura y súbenos el respaldo.",
       nueva: "Solicitar financiamiento",
       vacio:
-        "Todavía no enviaste ninguna solicitud. Cuando quieras financiar un contrato o una factura, empieza acá.",
+        "Todavía no enviaste ningúna solicitud. Cuando quieras financiar un contrato o una factura, empieza acá.",
       montoLabel: "Monto solicitado",
       plazoLabel: "Plazo",
       creadaLabel: "Enviada",
@@ -608,7 +612,7 @@ const portales = {
       retiro: {
         titulo: "¿Retirar esta solicitud?",
         texto:
-          "Dejaremos de evaluarla y no seguiremos con este pedido. Tus documentos quedan guardados. Si la necesitas de nuevo, puedes enviar una solicitud nueva.",
+          "Dejaremos de evalúarla y no seguiremos con este pedido. Tus documentos quedan guardados. Si la necesitas de nuevo, puedes enviar una solicitud nueva.",
         confirmar: "Sí, retirar",
         ok: "Solicitud retirada.",
         error:
@@ -616,7 +620,7 @@ const portales = {
       },
       docs: {
         titulo: "Documentos de respaldo",
-        sub: "Adjunta contrato, valorización, carta fianza, etc. Ayuda a evaluar más rápido.",
+        sub: "Adjunta contrato, valorización, carta fianza, etc. Ayuda a evalúar más rápido.",
         subir: "Subir documento",
         subiendo: "Subiendo…",
         tipo: "Tipo de documento",
@@ -636,7 +640,14 @@ const portales = {
     timeline: {
       titulo: "Estado de la operación",
       // Orden: evaluación → aprobada → publicada → con inversionista → financiada → repago.
-      pasos: ["En evaluación", "Aprobada", "Publicada", "Con inversionista", "Financiada", "En repago"],
+      pasos: [
+        "En evaluación",
+        "Aprobada",
+        "Publicada",
+        "Con inversionista",
+        "Financiada",
+        "En repago",
+      ],
       actual: (label: string) => `Ahora: ${label}`,
     },
     // ── "Tu historial con Don Gato" (reputación amable; nunca el scoring interno) ──
@@ -646,15 +657,15 @@ const portales = {
       totalOps: "Operaciones",
       completadas: "Completadas",
       completadasSub: "Financiadas o cerradas con nosotros.",
-      vacio: "Aún no tienes operaciones registradas.",
-      buenPagador: "Cumplir a tiempo mejora tus condiciones en las próximas operaciones.",
+      vacio: "Aún no tienes operaciónes registradas.",
+      buenPagador: "Cumplir a tiempo mejora tus condiciones en las próximas operaciónes.",
     },
   },
   cliente: {
     // ── Inicio (dashboard del inversionista) ──
     inicioSaludo: (nombre: string) => `Hola, ${nombre}`,
     inicioSub: "Este es tu panel de inversión.",
-    inicioSinReservasTitulo: "Aún no reservaste ninguna oportunidad",
+    inicioSinReservasTitulo: "Aún no reservaste ningúna oportunidad",
     inicioSinReservasTexto:
       "Explora las oportunidades disponibles y aparta la que más te convenza. La reserva es gratis y sin compromiso de pago.",
     inicioExplorar: "Ver oportunidades",
@@ -706,8 +717,7 @@ const portales = {
       gananciaMensual: "Ganancia mensual",
       // ── Ganancia AL PLAZO (lidera las condiciones; evita creer que se gana la TEA en pocos meses) ──
       gananciaAlPlazo: "Ganancia estimada al plazo",
-      gananciaAlPlazoSobre: (monto: string, plazo: string) =>
-        `Sobre ${monto} en ${plazo}`,
+      gananciaAlPlazoSobre: (monto: string, plazo: string) => `Sobre ${monto} en ${plazo}`,
       equivalenteAnual: "Equivalente anual",
       equivalenteAnualNota:
         "TNA y TEA son referencias ANUALES para comparar. En este plazo ganas la estimación de arriba, no el equivalente anual completo.",
@@ -740,8 +750,8 @@ const portales = {
       sub: "Todo lo que respalda tu inversión",
       conteo: (n: number) => (n === 1 ? "1 salvaguarda" : `${n} salvaguardas`),
       coberturaTitular: (veces: string) => `La garantía cubre ${veces} tu inversión`,
-      coberturaDetalle: (garantias: string, monto: string) =>
-        `${garantias} en garantías frente a ${monto} solicitados`,
+      coberturaDetalle: (garantías: string, monto: string) =>
+        `${garantías} en garantías frente a ${monto} solicitados`,
       sinCobertura: "Respaldos de esta operación",
       valorLabel: "Valor estimado",
       sinGarantias: "Esta oportunidad aún no tiene salvaguardas cargadas.",
@@ -840,10 +850,22 @@ const portales = {
     timeline: {
       titulo: "El proceso de tu inversión",
       pasos: [
-        { clave: "reservar", label: "Reservada", detalle: "La apartamos 24 h para ti, sin dinero." },
-        { clave: "asesor", label: "Tu asesor te contacta", detalle: "Resuelve tus dudas y coordina los siguientes pasos." },
+        {
+          clave: "reservar",
+          label: "Reservada",
+          detalle: "La apartamos 24 h para ti, sin dinero.",
+        },
+        {
+          clave: "asesor",
+          label: "Tu asesor te contacta",
+          detalle: "Resuelve tus dudas y coordina los siguientes pasos.",
+        },
         { clave: "firma", label: "Firma", detalle: "Se formaliza el acuerdo de inversión." },
-        { clave: "transferencia", label: "Transferencia", detalle: "Envías el monto y la operación queda en marcha." },
+        {
+          clave: "transferencia",
+          label: "Transferencia",
+          detalle: "Envías el monto y la operación queda en marcha.",
+        },
       ],
       estadoReservada: "Reservada · tu asesor te contactará",
       estadoConfirmada: "Confirmada · en proceso",
@@ -870,7 +892,8 @@ const portales = {
       colCobro: "Cobro aprox.",
       vacio: "Todavía no tienes inversiones comprometidas.",
       explorar: "Explorar oportunidades",
-      notaEstimado: "Las ganancias y fechas son estimaciones al plazo; no son un compromiso de pago.",
+      notaEstimado:
+        "Las ganancias y fechas son estimaciones al plazo; no son un compromiso de pago.",
     },
   },
   asesor: {
@@ -887,7 +910,7 @@ const portales = {
     kpiComprometido: "Comprometido",
     kpiComprometidoSub: "En reservas activas y confirmadas de tu cartera",
     kpiComision: "Comisión estimada",
-    kpiComisionSub: "Sobre tus operaciones. Intel interna, no la ve el inversionista.",
+    kpiComisionSub: "Sobre tus operaciónes. Intel interna, no la ve el inversionista.",
     kpiCerradas: "Financiadas",
     kpiCerradasSub: "Operaciones de tu cartera ya desembolsadas",
     kpiDineroTitulo: "Tu cartera en números",
@@ -944,7 +967,8 @@ const portales = {
       colMonto: "Monto estimado",
       sinPorVencer: "Sin reservas por vencer.",
       sinCobros: "Sin cobros próximos.",
-      notaCobros: "Fecha y monto son estimados (financiamiento + plazo); no son un compromiso de pago.",
+      notaCobros:
+        "Fecha y monto son estimados (financiamiento + plazo); no son un compromiso de pago.",
     },
     // ── BLOQUEAR una operación a nombre de alguien (el acto central del asesor) ──
     // El negocio es presencial: el asesor cierra por teléfono y bloquea él. El
@@ -965,7 +989,8 @@ const portales = {
       telefonoPlaceholder: "Con el que cerraron por teléfono",
       tipoDocumentoLabel: "Tipo de documento",
       documentoLabel: "Número de documento",
-      documentoHint: "Puedes completarlo después; ayuda a no registrar dos veces a la misma persona.",
+      documentoHint:
+        "Puedes completarlo después; ayuda a no registrar dos veces a la misma persona.",
       holdBadge: "24 h",
       nota: "Queda en tu cartera y en la cola de reservas, igual que si la hubiera apartado el cliente.",
       confirmar: "Bloquear 24 horas",
@@ -1017,7 +1042,7 @@ const portales = {
       kpiGananciaSub: "Estimada al plazo de cada operación",
       kpiOperaciones: "Operaciones",
       reservasTitulo: "Reservas de este cliente",
-      sinReservas: "Este cliente todavía no reservó ninguna oportunidad.",
+      sinReservas: "Este cliente todavía no reservó ningúna oportunidad.",
       colMonto: "Monto",
       colGanancia: "Ganancia est.",
       notaEstimado: "Las ganancias son estimaciones al plazo; no son un compromiso de pago.",
@@ -1031,7 +1056,8 @@ const portales = {
       textoLabel: "Nota",
       textoPlaceholder: "Qué se conversó, en qué quedaron, qué pidió.",
       recordarLabel: "Próxima acción (opcional)",
-      recordarHint: "La fecha en que quieres volver a este cliente. Te aparecerá en tus pendientes.",
+      recordarHint:
+        "La fecha en que quieres volver a este cliente. Te aparecerá en tus pendientes.",
       guardar: "Guardar nota",
       guardando: "Guardando…",
       cancelar: "Cancelar",
@@ -1072,7 +1098,7 @@ const portales = {
       // ── Cierre del ciclo: marcar FINANCIADA (paso extra tras confirmar) ──
       tabPendientes: "Pendientes",
       tabConfirmadas: "Confirmadas",
-      vacioConfirmadas: "No hay operaciones confirmadas pendientes de financiar.",
+      vacioConfirmadas: "No hay operaciónes confirmadas pendientes de financiar.",
       marcarFinanciada: "Marcar financiada",
       financiadaBadge: "Financiada",
       confirmadaBadge: "Confirmada",
@@ -1098,7 +1124,8 @@ const portales = {
       kpiMontoReservado: "En oportunidades reservadas",
       kpiMontoCerrado: "En oportunidades cerradas",
       kpiComisionEstimada: "Comisión estimada",
-      kpiComisionEstimadaSub: "Estimada sobre reservadas + cerradas. Intel interna, no la ve el inversionista.",
+      kpiComisionEstimadaSub:
+        "Estimada sobre reservadas + cerradas. Intel interna, no la ve el inversionista.",
       kpiInversionistas: "Inversionistas",
       kpiAsesores: "Asesores",
       kpiContratistas: "Contratistas",
@@ -1110,17 +1137,17 @@ const portales = {
       kpiCapitalColocado: "Capital colocado",
       kpiCapitalColocadoSub: "Operaciones ya desembolsadas al prestatario",
       kpiComisionFinanciada: "Comisión ganada",
-      kpiComisionFinanciadaSub: "Sobre operaciones ya desembolsadas. Intel interna.",
+      kpiComisionFinanciadaSub: "Sobre operaciónes ya desembolsadas. Intel interna.",
       kpiFinanciadas: "Operaciones financiadas",
       kpiTicket: "Ticket promedio",
-      kpiTicketSub: "Promedio de las operaciones financiadas",
+      kpiTicketSub: "Promedio de las operaciónes financiadas",
       kpiConversion: "Reservas que llegan a financiarse",
       kpiConversionSub: "De cada reserva registrada, cuántas terminaron en desembolso",
       kpiReservasExpiradas: "Reservas expiradas",
       kpiReservasExpiradasSub: "El hold de 24 h venció sin cerrar",
       /** Cuando no hay muestra todavía: se dice, no se muestra un 0 que parece resultado. */
       sinDatoAun: "—",
-      sinDatoAunSub: "Todavía no hay operaciones financiadas para medirlo.",
+      sinDatoAunSub: "Todavía no hay operaciónes financiadas para medirlo.",
       sinReservasAunSub: "Todavía no hay reservas registradas para medirlo.",
     },
     // ── Cola de trabajo del admin: lo que solo resuelve él, arriba del tablero ──
@@ -1138,7 +1165,7 @@ const portales = {
       catalogoTitulo: "Publicadas con datos faltantes",
       catalogoSub:
         "El inversionista ya las está viendo así. Sin comisión no hay ingreso; sin garantía la ficha promete algo que no muestra.",
-      catalogoVacio: "Todas las operaciones publicadas están completas.",
+      catalogoVacio: "Todas las operaciónes publicadas están completas.",
       completar: "Completar",
       /** Etiqueta de cada dato que falta. Se pintan como chips en la fila. */
       falta: {
@@ -1158,10 +1185,10 @@ const portales = {
       reservasVacio: "No hay reservas activas ahora mismo.",
       reservasSinAsesor: (n: number) =>
         n === 1 ? "1 sin asesor asignado" : `${n} sin asesor asignado`,
-      // Borradores estancados
+      // Borradores estáncados
       borradoresTitulo: "Borradores olvidados",
       borradoresSub: "Trabajo empezado que no se publicó ni se descartó.",
-      borradoresVacio: "No hay borradores estancados.",
+      borradoresVacio: "No hay borradores estáncados.",
       diasQuieto: (n: number) => (n === 1 ? "1 día quieto" : `${n} días quietos`),
       // Clientes sin asesor
       clientesTitulo: "Inversionistas sin asesor",
@@ -1244,7 +1271,7 @@ const portales = {
     },
     prestatarios: {
       titulo: "Contratistas",
-      sub: "Registro de contratistas con su scoring de pagador e historial de operaciones.",
+      sub: "Registro de contratistas con su scoring de pagador e historial de operaciónes.",
       crear: "Nuevo contratista",
       crearTitulo: "Nuevo contratista",
       editarTitulo: "Editar contratista",
@@ -1274,14 +1301,15 @@ const portales = {
       faltaNombre: "Ponle un nombre.",
       rucInvalido: "El RUC debe tener 11 dígitos.",
       vacio: "Todavía no registraste ningún contratista.",
-      operaciones: (n: number) => (n === 1 ? "1 operación" : `${n} operaciones`),
+      operaciones: (n: number) => (n === 1 ? "1 operación" : `${n} operaciónes`),
       sinScoring: "—",
       // ── Cuenta de acceso del empresario (login al panel de solo-ver) ──
       colAcceso: "Acceso",
       conAcceso: "Con acceso",
       sinCuenta: "Sin cuenta",
       cuentaSeccion: "Cuenta de acceso",
-      cuentaSub: "Dale al contratista su propio acceso para ver sus operaciones (sin el lado inversionista ni datos internos).",
+      cuentaSub:
+        "Dale al contratista su propio acceso para ver sus operaciónes (sin el lado inversionista ni datos internos).",
       cuentaToggle: "Crear cuenta de acceso",
       cuentaEmail: "Correo de acceso",
       cuentaTelefono: "Teléfono (WhatsApp)",
@@ -1309,7 +1337,7 @@ const portales = {
       // ── Conversión: la cuenta es de alguien que un asesor ya trabajaba ──
       prospectoLabel: "¿Ya lo trabajaba un asesor?",
       prospectoHint:
-        "Si eliges a alguien de la lista, sus operaciones y las notas de su asesor quedan ligadas a esta cuenta.",
+        "Si eliges a alguien de la lista, sus operaciónes y las notas de su asesor quedan ligadas a esta cuenta.",
       prospectoNinguno: "No, es alguien nuevo",
       prospectoNoLigado:
         "La cuenta se creó, pero no pudimos ligar su historial. Revisa la lista de personas sin cuenta.",
@@ -1353,9 +1381,7 @@ const portales = {
       // ── Comprobación de integridad ──
       integridadTitulo: "Revisión del registro",
       integridadOk: (n: number) =>
-        n === 1
-          ? "Revisamos 1 enlace y calza."
-          : `Revisamos ${n} enlaces y todos calzan.`,
+        n === 1 ? "Revisamos 1 enlace y calza." : `Revisamos ${n} enlaces y todos calzan.`,
       integridadRota: (n: number) =>
         n === 1
           ? "1 renglón no calza con el anterior."
@@ -1412,8 +1438,7 @@ const portales = {
         recurso: "Sobre qué",
         recursoId: "Identificador del recurso",
         origenTitulo: "Desde dónde",
-        origenNota:
-          "Dato personal de quien hizo el movimiento. No sale de esta pantalla.",
+        origenNota: "Dato personal de quien hizo el movimiento. No sale de esta pantalla.",
         ip: "Dirección de internet",
         dispositivo: "Dispositivo y navegador",
         datosTitulo: "Qué quedó registrado",
@@ -1427,9 +1452,9 @@ const portales = {
     },
     oportunidades: {
       titulo: "Oportunidades",
-      sub: "Publica y gestiona lo que ven los inversionistas.",
+      sub: "Publica y gestióna lo que ven los inversionistas.",
       nueva: "Nueva oportunidad",
-      vacio: "Todavía no publicaste ninguna oportunidad.",
+      vacio: "Todavía no publicaste ningúna oportunidad.",
       editar: "Editar",
       verDetalle: "Ver",
       filtroTodos: "Todas",
@@ -1458,7 +1483,8 @@ const portales = {
         plazoMin: "Plazo mínimo (meses)",
         plazoMax: "Plazo máximo (meses)",
         tasaMensual: "Ganancia mensual (%)",
-        tasaMensualHint: "Solo la mensual. La TNA (×12) y la TEA (efectiva anual) se calculan solas.",
+        tasaMensualHint:
+          "Solo la mensual. La TNA (×12) y la TEA (efectiva anual) se calculan solas.",
         tasasPreview: "Equivale a TNA {tna} y TEA {tea}.",
         comision: "Comisión de intermediación (%)",
         // Asimetría DELIBERADA de visibilidad: la empresa ve monto y % porque es su
@@ -1492,7 +1518,8 @@ const portales = {
         quitarFoto: "Quitar",
         // ── Documentos de respaldo (data room) ──
         seccionDocs: "Documentos de respaldo",
-        seccionDocsSub: "Contrato, tasación, título, carta fianza… El inversionista los ve y descarga.",
+        seccionDocsSub:
+          "Contrato, tasación, título, carta fianza… El inversionista los ve y descarga.",
         docTipo: "Tipo de documento",
         docArchivo: "Archivo",
         subirDoc: "Subir documento",
@@ -1518,7 +1545,201 @@ const portales = {
   },
 } as const;
 
+/**
+ * Landing pública — la ÚNICA superficie del portal visible sin sesión.
+ *
+ * 🔴 LÍNEA ROJA (docs-internal/ENCUADRE_LEGAL.md): "registro abierto de
+ * inversionistas o landing pública ofreciendo rentabilidades" es OFERTA PÚBLICA
+ * y cambia el régimen regulatorio (SMV). Por eso esta landing:
+ *   · NO publica tasas, rentabilidades, plazos ni oportunidades
+ *   · NO tiene registro: el acceso es por invitación y el CTA va al login
+ *   · NO promete recuperación ni retorno
+ * Es institucional: explica el modelo y quién opera. Nada más.
+ */
+const landing = {
+  meta: {
+    titulo: "Financiamiento para contratistas del Estado",
+    descripcion:
+      "Plataforma privada que documenta operaciónes de financiamiento entre contratistas del Estado e inversionistas. Acceso por invitación.",
+  },
+  nav: { acceder: "Ingresar" },
+  hero: {
+    eyebrow: "Plataforma privada - por invitación",
+    titulo: "Financiamiento para contratistas del Estado, documentado de punta a punta",
+    sub: "Un contratista con una valorización aprobada necesita capital antes del pago. Un inversionista lo financia. Nosotros organizamos el expediente y registramos el acuerdo.",
+    cta: "Ingresar al portal",
+    nota: "El acceso es por invitación. Si todavia no tienes cuenta, escríbenos.",
+  },
+  modelo: {
+    titulo: "Cómo funciona",
+    sub: "Tres partes, un contrato entre ellas, y una plataforma que lo registra.",
+    pasos: [
+      {
+        n: "01",
+        titulo: "El contratista presenta su operación",
+        texto:
+          "Tiene una valorización aprobada por la entidad del Estado y necesita el capital antes de que le paguen. Su asesor arma el expediente con la documentación que la respalda.",
+      },
+      {
+        n: "02",
+        titulo: "El inversionista evalúa y decide",
+        texto:
+          "Revisa el expediente completo, las garantías y la metodología de riesgo. Si decide participar, el acuerdo se cierra directamente entre las partes.",
+      },
+      {
+        n: "03",
+        titulo: "La plataforma documenta y da seguimiento",
+        texto:
+          "Registramos el acuerdo y emitimos la constancia. Cada movimiento queda en una bitácora encadenada, para que quede rastro de quién hizo qué y cuándo.",
+      },
+    ],
+  },
+  encuadre: {
+    titulo: "Qué somos y qué no",
+    sub: "La transparencia sobre el rol de cada quien es parte del producto.",
+    si: {
+      titulo: "Lo que sí hacemos",
+      items: [
+        "Organizamos el expediente y registramos el acuerdo entre las partes.",
+        "Publicamos la documentación que respalda cada operación, para que la revises antes de decidir.",
+        "Dejamos rastro de cada movimiento en una bitácora encadenada.",
+        "Explicamos la metodología con la que se evalúa cada operación.",
+      ],
+    },
+    no: {
+      titulo: "Lo que no hacemos",
+      items: [
+        "No recibimos, custodiamos ni transferimos dinero. El acuerdo es entre las partes.",
+        "No ofrecemos inversiones al público ni captamos fondos.",
+        "No garantizamos el repago ni prometemos rendimiento alguno.",
+        "No damos asesoría de inversion: la decisión es del inversionista.",
+      ],
+    },
+  },
+  riesgo: {
+    titulo: "Sobre el riesgo",
+    texto:
+      "Toda operación de financiamiento tiene riesgo de impago. Puedes perder parte o la totalidad del capital. Ninguna operación de este portal tiene la recuperación garantizada, y el resultado de una gestión de cobranza depende de terceros, incluidas instancias judiciales.",
+  },
+  contacto: {
+    titulo: "¿Te invitaron, o quieres conocer el modelo?",
+    texto: "Escríbenos y te explicamos cómo funciona antes de que decidas nada.",
+    cta: "Escribir por WhatsApp",
+  },
+  pie: {
+    operadoPor: "Operado por",
+    verificar: "Verifica nuestro RUC en SUNAT",
+    derechos: "Todos los derechos reservados.",
+    links: {
+      terminos: "Términos",
+      privacidad: "Privacidad",
+      cookies: "Cookies",
+      libro: "Libro de Reclamaciones",
+    },
+    aviso:
+      "Este portal no es una entidad del sistema financiero ni del mercado de valores: no capta depósitos del público, no otorga créditos por cuenta propia y no administra fondos de terceros. No está supervisado por la SBS ni por la SMV. Los montos de una operación no constituyen depósitos ni están cubiertos por ningún fondo de garantía estatal.",
+  },
+} as const;
+
+/**
+ * ⚠️ BORRADOR LEGAL — igual que los términos, este texto DEBE revisarlo el
+ * abogado de la Fase 0. Describe en español llano lo que el producto hace hoy
+ * según el código, y cita las normas que aplican. No inventa cláusulas ni
+ * plazos que no estén en la norma, y no afirma autorización ni supervisión de
+ * ningúna entidad.
+ */
+const legal = {
+  privacidad: {
+    titulo: "Politica de Privacidad",
+    intro:
+      "Esta politica explica que datos personales tratamos, para que, y que derechos tienes sobre ellos. Se rige por la Ley N.o 29733, Ley de Proteccion de Datos Personales, y su reglamento.",
+    secciones: [
+      {
+        h: "Quien trata tus datos",
+        p: "El responsable del tratamiento es Don Gato Servicios SAC, que opera este portal. Puedes verificar nuestra inscripcion en la consulta publica de RUC de SUNAT.",
+      },
+      {
+        h: "Que datos tratamos",
+        p: "Datos de identificacion y contacto (nombre, documento, correo, telefono), los datos de las operaciónes en las que participas, y la documentación que tu o tu asesor cargan al expediente. Tambien registramos la actividad dentro del portal en una bitacora de auditoria.",
+      },
+      {
+        h: "Para que los usamos",
+        p: "Para darte acceso al portal, documentar y dar seguimiento a las operaciónes, verificar la identidad de las partes, cumplir obligaciones legales y tributarias, y comunicarnos contigo sobre tus operaciónes.",
+      },
+      {
+        h: "Con quien los compartimos",
+        p: "Con las contrapartes de una operación en la que participas, con proveedores que nos prestán servicios de infraestructura y correo bajo obligacion de confidencialidad, y con las autoridades competentes cuando la ley lo exige. No vendemos datos personales ni los cedemos con fines publicitarios.",
+      },
+      {
+        h: "Consentimiento",
+        p: "El tratamiento se basa en tu consentimiento libre, previo, informado y expreso, y en el cumplimiento de obligaciones legales. Puedes revocar tu consentimiento en cualquier momento, sin efecto retroactivo y sin perjuicio de la conservacion que la ley nos exige.",
+      },
+      {
+        h: "Tus derechos",
+        p: "Puedes ejercer tus derechos de acceso, rectificacion, cancelacion y oposicion escribiendonos por los canales de contacto del portal. Te responderemos en los plazos que fija la Ley N.o 29733 y su reglamento.",
+      },
+      {
+        h: "Cuanto conservamos tus datos",
+        p: "Conservamos la documentación de las operaciónes y la evidencia asociada por el plazo que exigen las normas tributarias y de prevencion de lavado de activos. Por eso, cerrar tu cuenta no elimina el historial de operaciónes ya registradas.",
+      },
+      {
+        h: "Seguridad",
+        p: "Aplicamos control de acceso por rol, cifrado en transito, y una bitacora de auditoria con sello encadenado que permite detectar alteraciones. Ningun sistema es infalible: si detectamos un incidente que afecte tus datos, te lo comunicaremos.",
+      },
+      {
+        h: "Cambios",
+        p: "Si cambiamos esta politica, publicaremos la version actualizada en esta misma pagina.",
+      },
+    ],
+  },
+  cookies: {
+    titulo: "Politica de Cookies",
+    intro:
+      "Este portal usa la cantidad minima de cookies necesaria para funcionar. No usamos cookies publicitarias ni de seguimiento de terceros.",
+    secciones: [
+      {
+        h: "Cookies necesarias",
+        p: "Guardan tu sesion iniciada y protegen los formularios. Sin ellas el portal no puede saber que eres tu, asi que no se pueden desactivar. Se eliminan al cerrar sesion o al vencer.",
+      },
+      {
+        h: "Que NO usamos",
+        p: "No usamos cookies de publicidad, ni de redes sociales, ni pixeles de terceros para seguirte fuera de este portal.",
+      },
+      {
+        h: "Como controlarlas",
+        p: "Puedes borrar o bloquear las cookies desde la configuracion de tu navegador. Si bloqueas las necesarias, no vas a poder iniciar sesion.",
+      },
+    ],
+  },
+  libro: {
+    titulo: "Libro de Reclamaciones",
+    intro:
+      "Conforme al Codigo de Proteccion y Defensa del Consumidor, Ley N.o 29571, ponemos a tu disposicion nuestro Libro de Reclamaciones.",
+    secciones: [
+      {
+        h: "Que puedes registrar",
+        p: "Un reclamo, cuando no estas conforme con el servicio recibido. O una queja, cuando quieres expresar tu malestar por la atencion, sin que haya de por medio un problema con el servicio.",
+      },
+      {
+        h: "Como registrarlo",
+        p: "Escríbenos por los canales de contacto del portal indicando tu nombre completo, documento de identidad, telefono, correo, el detalle de lo ocurrido y lo que pides. Vamos a registrarlo y te confirmaremos la recepcion con el numero que le corresponde.",
+      },
+      {
+        h: "Plazo de respuesta",
+        p: "Responderemos dentro del plazo que fija la normativa de proteccion al consumidor, contado desde que registramos tu reclamo. Si necesitamos mas tiempo por la complejidad del caso, te lo comunicaremos.",
+      },
+      {
+        h: "Si no quedas conforme",
+        p: "Puedes acudir a INDECOPI presentando tu caso en cualquiera de sus oficinas o por su plataforma virtual. Registrar un reclamo aca no limita tu derecho a hacerlo.",
+      },
+    ],
+    nota: "El registro por formulario en linea, con numero de reclamo automatico, esta pendiente de implementacion.",
+  },
+} as const;
+
 export const COPY = {
+  landing,
+  legal,
   pages,
   app,
   correos,

@@ -47,7 +47,7 @@ export function PStat({
       >
         {value}
       </p>
-      {sub != null && <p className="mt-1 text-[11px] text-portal-muted">{sub}</p>}
+      {sub != null && <p className="mt-1 text-2xs text-portal-muted">{sub}</p>}
     </div>
   );
 }

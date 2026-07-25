@@ -18,9 +18,7 @@ import "server-only";
 import { APP } from "@/lib/constants";
 
 const FROM =
-  process.env.RESEND_FROM_EMAIL ??
-  process.env.EMAIL_FROM ??
-  `${APP.brand} <onboarding@resend.dev>`;
+  process.env.RESEND_FROM_EMAIL ?? process.env.EMAIL_FROM ?? `${APP.brand} <onboarding@resend.dev>`;
 
 /** Extrae la dirección de un remitente con formato `Nombre <correo@dominio>`. */
 function direccionDe(remitente: string): string {

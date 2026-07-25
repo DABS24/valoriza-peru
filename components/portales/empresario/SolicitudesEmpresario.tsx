@@ -192,10 +192,7 @@ export function SolicitudesEmpresario({
     }
   }
 
-  function actualizarDocs(
-    solId: string,
-    fn: (docs: DocPortalRef[]) => DocPortalRef[],
-  ) {
+  function actualizarDocs(solId: string, fn: (docs: DocPortalRef[]) => DocPortalRef[]) {
     setLista((prev) =>
       prev.map((s) => (s.id === solId ? { ...s, docs: fn(s.docs as DocPortalRef[]) } : s)),
     );
@@ -316,7 +313,8 @@ export function SolicitudesEmpresario({
                       {sol.monto != null ? toMoneda(sol.monto, sol.moneda) : "—"}
                     </p>
                     <p className="text-sm text-portal-ink2">
-                      {S.plazoLabel}: {sol.plazoMeses ?? "—"} {COPY.portales.cliente.labels.plazoMeses}
+                      {S.plazoLabel}: {sol.plazoMeses ?? "—"}{" "}
+                      {COPY.portales.cliente.labels.plazoMeses}
                     </p>
                   </div>
 
@@ -372,7 +370,10 @@ export function SolicitudesEmpresario({
                   ) : (
                     <ul className="mt-3 divide-y divide-portal-line rounded-portal-sm border border-portal-line">
                       {sol.docs.map((d) => (
-                        <li key={d.id} className="flex items-center justify-between gap-3 px-3.5 py-3">
+                        <li
+                          key={d.id}
+                          className="flex items-center justify-between gap-3 px-3.5 py-3"
+                        >
                           <a
                             href={d.url ?? undefined}
                             target="_blank"

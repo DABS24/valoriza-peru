@@ -23,5 +23,12 @@ export default async function OportunidadEditarPage({
     portalPorSlug(portal)?.prestatarios ? listarPrestatariosOpciones(portal) : Promise.resolve([]),
   ]);
   if (!op) notFound();
-  return <OportunidadForm portal={portal} oportunidadId={op.id} inicial={op} prestatarios={prestatarios} />;
+  return (
+    <OportunidadForm
+      portal={portal}
+      oportunidadId={op.id}
+      inicial={op}
+      prestatarios={prestatarios}
+    />
+  );
 }

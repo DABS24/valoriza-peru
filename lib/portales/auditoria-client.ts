@@ -176,11 +176,19 @@ export async function verificarCadenaPortal(portal: PortalSlug): Promise<Integri
     return { revisados: 0, rotos: [], ok: false, total: 0, completa: false, noVerificable: true };
   }
 
-  const filas = (data ?? []) as unknown as { seq: number | null; hash: string | null; prev_hash: string | null }[];
+  const filas = (data ?? []) as unknown as {
+    seq: number | null;
+    hash: string | null;
+    prev_hash: string | null;
+  }[];
   const total = count ?? filas.length;
   // La consulta vuelve de la más nueva a la más vieja; la cadena se lee al revés.
   const eslabones: EslabonAuditoria[] = filas
-    .map((r) => ({ seq: r.seq != null ? Number(r.seq) : null, hash: r.hash, prevHash: r.prev_hash }))
+    .map((r) => ({
+      seq: r.seq != null ? Number(r.seq) : null,
+      hash: r.hash,
+      prevHash: r.prev_hash,
+    }))
     .reverse();
   const completa = filas.length >= total;
 

@@ -7,7 +7,13 @@ import { PPill } from "@/components/portales/ui/PPill";
 import { COPY } from "@/lib/copy";
 import { toMoneda, toMonedaKpi } from "@/lib/formatters";
 import { PORTALES, type CampoDef } from "@/lib/portales/config";
-import { tasasDerivadas, pctTasa, gananciaAlPlazo, coberturaGarantia, coberturaTexto } from "@/lib/portales/tasas";
+import {
+  tasasDerivadas,
+  pctTasa,
+  gananciaAlPlazo,
+  coberturaGarantia,
+  coberturaTexto,
+} from "@/lib/portales/tasas";
 import type { OportunidadFull } from "@/lib/portales/data";
 import { RiesgoBadge } from "@/components/portales/RiesgoBadge";
 import { MetodologiaRiesgo } from "@/components/portales/MetodologiaRiesgo";
@@ -18,7 +24,13 @@ import { RecuperacionImpago } from "@/components/portales/RecuperacionImpago";
 import { FlujoDinero } from "@/components/portales/FlujoDinero";
 import { DocsRespaldo } from "@/components/portales/DocsRespaldo";
 import { SimuladorInversion } from "@/components/portales/SimuladorInversion";
-import { numDato, strDato, labelOpcion, plazoTexto, conSufijo } from "@/lib/portales/oportunidadResumen";
+import {
+  numDato,
+  strDato,
+  labelOpcion,
+  plazoTexto,
+  conSufijo,
+} from "@/lib/portales/oportunidadResumen";
 
 /** Formatea el valor de un campo de la ficha según su tipo. null si vacío. */
 function valorCampo(op: OportunidadFull, campo: CampoDef): string | null {
@@ -28,7 +40,7 @@ function valorCampo(op: OportunidadFull, campo: CampoDef): string | null {
   const n = numDato(raw);
   if (n == null) return null;
   if (campo.tipo === "moneda") return toMoneda(n, op.moneda);
-  if (campo.tipo === "porcentaje") return `${n}%`;
+  if (campo.tipo === "porcentaje") return pctTasa(n) ?? `${n}%`;
   return conSufijo(n, campo.sufijo);
 }
 
@@ -108,12 +120,17 @@ export function FichaDetalle({
     : null;
 
   // Cobertura de garantía (stat).
-  const cobertura = coberturaGarantia(op.garantias, op.montoSolicitado);
+  const cobertura = coberturaGarantia(op.garantias, op.montoSolicitado, op.moneda);
   const coberturaVecesTxt = coberturaTexto(cobertura.veces);
 
-
   // Stats secundarias (monto, cobertura, LTV, plazo).
-  const stats: { label: string; value: string; tone?: "ink" | "positive" | "primary"; title?: string; wrap?: boolean }[] = [];
+  const stats: {
+    label: string;
+    value: string;
+    tone?: "ink" | "positive" | "primary";
+    title?: string;
+    wrap?: boolean;
+  }[] = [];
   if (op.montoSolicitado != null)
     stats.push({
       label: L.montoSolicitado,
@@ -147,7 +164,7 @@ export function FichaDetalle({
           {op.prestatario && (
             <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
               <span className="font-semibold text-portal-ink">{op.prestatario.nombre}</span>
-              <span className="rounded-chip bg-portal-primary-soft px-2 py-0.5 text-[11px] font-bold text-portal-primary-ink">
+              <span className="rounded-chip bg-portal-primary-soft px-2 py-0.5 text-2xs font-bold text-portal-primary-ink">
                 {T.card.operacionOrdinal(op.prestatario.ordinal)}
               </span>
               <span className="text-portal-muted">
@@ -173,13 +190,17 @@ export function FichaDetalle({
         </div>
 
         <GaleriaFotos
-          fotos={op.fotos.filter((f) => f.garantiaId == null).map((f) => ({ id: f.id, url: f.url }))}
+          fotos={op.fotos
+            .filter((f) => f.garantiaId == null)
+            .map((f) => ({ id: f.id, url: f.url }))}
           alt={op.titulo}
         />
 
         {op.descripcion && (
           <PCard>
-            <h2 className="font-portal text-lg font-bold text-portal-ink">{T.cliente.detalleTitulo}</h2>
+            <h2 className="font-portal text-lg font-bold text-portal-ink">
+              {T.cliente.detalleTitulo}
+            </h2>
             <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-portal-ink2">
               {op.descripcion}
             </p>
@@ -204,7 +225,9 @@ export function FichaDetalle({
         {lateralTop}
 
         <PCard>
-          <h2 className="font-portal text-lg font-bold text-portal-ink">{T.cliente.financierosTitulo}</h2>
+          <h2 className="font-portal text-lg font-bold text-portal-ink">
+            {T.cliente.financierosTitulo}
+          </h2>
 
           {/* Ganancia estimada AL PLAZO — lidera. */}
           {gananciaMontoTxt && (
@@ -230,7 +253,14 @@ export function FichaDetalle({
           {stats.length > 0 && (
             <div className="mt-4 grid grid-cols-2 gap-3">
               {stats.map((s, i) => (
-                <PStat key={i} label={s.label} value={s.value} tone={s.tone} title={s.title} wrap={s.wrap} />
+                <PStat
+                  key={i}
+                  label={s.label}
+                  value={s.value}
+                  tone={s.tone}
+                  title={s.title}
+                  wrap={s.wrap}
+                />
               ))}
             </div>
           )}
@@ -243,13 +273,21 @@ export function FichaDetalle({
               </p>
               <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                 <span className="text-portal-ink2">
-                  {T.cliente.labels.tna}: <span className="font-bold tabular-nums text-portal-ink">{pctTasa(derivadas.tnaPct)}</span>
+                  {T.cliente.labels.tna}:{" "}
+                  <span className="font-bold tabular-nums text-portal-ink">
+                    {pctTasa(derivadas.tnaPct)}
+                  </span>
                 </span>
                 <span className="text-portal-ink2">
-                  {T.cliente.labels.tea}: <span className="font-bold tabular-nums text-portal-ink">{pctTasa(derivadas.teaPct)}</span>
+                  {T.cliente.labels.tea}:{" "}
+                  <span className="font-bold tabular-nums text-portal-ink">
+                    {pctTasa(derivadas.teaPct)}
+                  </span>
                 </span>
               </div>
-              <p className="mt-2 text-xs leading-relaxed text-portal-muted">{L.equivalenteAnualNota}</p>
+              <p className="mt-2 text-xs leading-relaxed text-portal-muted">
+                {L.equivalenteAnualNota}
+              </p>
             </div>
           )}
         </PCard>
@@ -266,7 +304,9 @@ export function FichaDetalle({
 
         {campos.length > 0 && (
           <PCard>
-            <h2 className="font-portal text-lg font-bold text-portal-ink">{T.cliente.fichaTitulo}</h2>
+            <h2 className="font-portal text-lg font-bold text-portal-ink">
+              {T.cliente.fichaTitulo}
+            </h2>
             <dl className="mt-3 divide-y divide-portal-line">
               {campos.map(({ campo, valor }) => (
                 <div key={campo.key} className="flex items-start justify-between gap-4 py-2.5">
@@ -295,7 +335,9 @@ export function FichaDetalle({
 
         {/* Disclaimer de capital en riesgo (SSOT). */}
         <div className="rounded-portal-sm border border-portal-line bg-portal-subtle/50 p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-portal-muted">{T.disclaimerTitulo}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-portal-muted">
+            {T.disclaimerTitulo}
+          </p>
           <p className="mt-1 text-xs leading-relaxed text-portal-ink2">{T.disclaimerCapital}</p>
         </div>
 

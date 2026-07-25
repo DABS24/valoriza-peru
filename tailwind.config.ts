@@ -89,6 +89,11 @@ const config: Config = {
         portal: ["var(--font-portal-sans)", "system-ui", "sans-serif"],
       },
       fontSize: {
+        // Peldaños bajo `xs`. Existían de hecho como text-[11px]/[10px] en 21
+        // lugares —incluido el propio PStat—: eso no era descuido, era un tamaño
+        // real que nadie había declarado.
+        "3xs": ["10px", { lineHeight: "1.3" }],
+        "2xs": ["11px", { lineHeight: "1.45" }],
         xs: ["clamp(11px, 0.7rem + 0.1vw, 13px)", { lineHeight: "1.4" }],
         sm: ["clamp(13px, 0.8rem + 0.1vw, 14px)", { lineHeight: "1.5" }],
         base: ["clamp(15px, 0.92rem + 0.15vw, 17px)", { lineHeight: "1.55" }],

@@ -180,7 +180,9 @@ export function AlertasAsesor({
                     className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 p-5"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-semibold text-portal-ink">{c.oportunidadTitulo}</p>
+                      <p className="truncate font-semibold text-portal-ink">
+                        {c.oportunidadTitulo}
+                      </p>
                       <p className="truncate text-xs text-portal-muted">{c.clienteNombre}</p>
                     </div>
                     <div className="text-right">
@@ -220,7 +222,9 @@ export function AlertasAsesor({
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold text-portal-ink">{n.clienteNombre}</p>
-                      <p className="line-clamp-2 break-words text-xs text-portal-muted">{n.texto}</p>
+                      <p className="line-clamp-2 break-words text-xs text-portal-muted">
+                        {n.texto}
+                      </p>
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                       <PPill tone="alert">{T.recordatorioPara(toDate(n.recordarEn))}</PPill>

@@ -32,28 +32,26 @@ export interface PortalMiembro {
  * dos viajes de red por navegación. Una fila inactiva se trata como null (no
  * tiene acceso), igual que el helper SQL `portal_mi_rol` (filtra estado='activo').
  */
-const leerMiembro = cache(
-  async (portal: PortalSlug): Promise<PortalMiembro | null> => {
-    const user = await getUser();
-    if (!user) return null;
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from("portal_miembros")
-      .select("portal, user_id, rol, nombre, asesor_id, estado")
-      .eq("portal", portal)
-      .eq("user_id", user.id)
-      .maybeSingle();
-    if (!data || data.estado !== "activo") return null;
-    return {
-      portal: data.portal as PortalSlug,
-      userId: data.user_id as string,
-      rol: data.rol as PortalRol,
-      nombre: data.nombre as string,
-      asesorId: (data.asesor_id as string | null) ?? null,
-      estado: "activo",
-    };
-  },
-);
+const leerMiembro = cache(async (portal: PortalSlug): Promise<PortalMiembro | null> => {
+  const user = await getUser();
+  if (!user) return null;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("portal_miembros")
+    .select("portal, user_id, rol, nombre, asesor_id, estado")
+    .eq("portal", portal)
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (!data || data.estado !== "activo") return null;
+  return {
+    portal: data.portal as PortalSlug,
+    userId: data.user_id as string,
+    rol: data.rol as PortalRol,
+    nombre: data.nombre as string,
+    asesorId: (data.asesor_id as string | null) ?? null,
+    estado: "activo",
+  };
+});
 
 /** Lectura pública (cacheada) de la membresía activa; null si no la hay. */
 export function getPortalMiembro(portal: PortalSlug): Promise<PortalMiembro | null> {
