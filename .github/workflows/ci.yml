@@ -11,9 +11,17 @@
 # mano cada tanto:
 #     bash ~/.claude/skills/balarezo-web/scripts/gate.sh
 #
-# ⚠️ Esto AVISA, no bloquea, hasta que se marque como *required status check*
-# para `main` en Settings → Branches. Un semáforo que se puede cruzar en rojo no
-# es una barrera.
+# 🔴 AVISA, NO BLOQUEA — y es a propósito (decisión de Diego, 2026-07-25).
+#
+# GitHub permite volverlo obligatorio (Settings → Branches → required status
+# check) y así impedir el merge. Acá NO se usa: el valor está en enterarse
+# temprano, mientras se trabaja en `desarrollo`, no en que una herramienta
+# decida cuándo se puede publicar.
+#
+# La contracara, dicha sin vueltas: se puede mergear a `main` con el CI en rojo.
+# Por eso la verificación antes de un merge a producción sigue siendo una
+# responsabilidad de quien mergea, no del CI:
+#     bash scripts/precommit-checks.sh
 name: CI
 
 on:
