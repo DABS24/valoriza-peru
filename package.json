@@ -21,9 +21,9 @@
     "precommit": "bash scripts/precommit-checks.sh && npm run check",
     "test": "vitest run",
     "test:watch": "vitest"
-
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.1",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.2",
     "clsx": "^2.1.1",
