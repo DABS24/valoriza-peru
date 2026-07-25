@@ -1,0 +1,67 @@
+# CI de ValorizaPeru.
+#
+# Por qué existe: el estándar dice que "una regla sin script que la valide se
+# rompe" — y su corolario, que se descubrió después: un script que nadie ejecuta
+# tampoco vale. Hasta hoy el gate dependía de que alguien se acordara de correrlo.
+#
+# El gate del estándar vive en ~/.claude/skills/balarezo-web (repo privado
+# DABS24/balarezo-web-skill). Acá se clona con un token de solo lectura; si no
+# está configurado, ese paso se salta con aviso y el resto del CI igual corre.
+name: CI
+
+on:
+  push:
+    branches: [main, desarrollo]
+  pull_request:
+    branches: [main, desarrollo]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      # --ignore-scripts: un paquete transitivo comprometido lee las variables
+      # de entorno en un script de post-instalación (OWASP A03:2025).
+      - name: Instalar dependencias
+        run: npm ci --ignore-scripts
+
+      - name: Gate del repo
+        run: bash scripts/precommit-checks.sh
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # El gate universal del estándar: léxico, voceo, YMYL, líneas rojas,
+      # obligaciones legales, a11y, idioma del código.
+      - name: Gate del estándar (balarezo-web)
+        if: ${{ env.SKILL_TOKEN != '' }}
+        env:
+          SKILL_TOKEN: ${{ secrets.BALAREZO_WEB_SKILL_TOKEN }}
+        run: |
+          git clone --depth 1 \
+            "https://x-access-token:${SKILL_TOKEN}@github.com/DABS24/balarezo-web-skill.git" \
+            /tmp/skill
+          bash /tmp/skill/scripts/gate.sh "$GITHUB_WORKSPACE"
+
+      - name: Aviso si el gate del estándar no corrió
+        if: ${{ env.SKILL_TOKEN == '' }}
+        env:
+          SKILL_TOKEN: ${{ secrets.BALAREZO_WEB_SKILL_TOKEN }}
+        run: |
+          echo "::warning::El gate del estándar NO corrió: falta el secret BALAREZO_WEB_SKILL_TOKEN."
+          echo "Un CI que dice OK sin haber chequeado todo es peor que no tenerlo."
