@@ -95,6 +95,35 @@ plantilla a la realidad del repo antes de dejarla.
    `lib/portales/config.ts`. Las rutas salen de `lib/portales/rutas.ts` (el portal
    está montado en la raíz del dominio, y ese es el único lugar que lo sabe).
 
+## 🌿 Git — TODO va a `desarrollo` (regla, no preferencia)
+
+Dos ramas, y una sola dirección de tráfico:
+
+- **`desarrollo`** — donde se trabaja. Todo commit y todo push van acá, siempre,
+  sin preguntar. Es la rama por defecto para cualquier cambio.
+- **`main`** — lo que sale a la web. Solo recibe merges de `desarrollo`, y **solo
+  con un OK explícito de Diego para ESE cambio**. Una autorización no se extiende
+  al cambio siguiente.
+
+```bash
+git checkout desarrollo && git push origin desarrollo
+```
+
+Y solo tras un "sí, sube a main" para ese cambio puntual:
+
+```bash
+git checkout main && git merge desarrollo --ff-only && git push origin main
+```
+
+**Por qué:** `main` es la rama que se conecta al hosting, así que mergear ahí es
+publicar. Diego decide qué se publica y cuándo, después de probarlo en desarrollo.
+
+⚠️ **"Ya corrí la migración" NO es autorización para subir a `main`.** El SQL se
+corre para poder PROBAR el cambio; el visto bueno del deploy es aparte y explícito.
+Ante la duda: queda en `desarrollo` y se pregunta.
+
+**Sin pull requests** — el merge es local (`desarrollo` → `main`).
+
 ## 👤 Sobre Diego (owner)
 
 - No es desarrollador profesional pero entiende lógica de programación.
