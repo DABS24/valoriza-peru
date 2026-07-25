@@ -2,16 +2,18 @@
 #
 # Por qué existe: el estándar dice que "una regla sin script que la valide se
 # rompe" — y su corolario, que se descubrió después: un script que nadie ejecuta
-# tampoco vale. Hasta hoy el gate dependía de que alguien se acordara de correrlo.
-#
-# Acá corre lo que tiene que pasar en CADA push: el gate del repo, tipos, lint,
-# tests y build.
+# tampoco vale. El gate dependía de que alguien se acordara de correrlo, y el
+# 2026-07-25 no se corrió: se mergeó a main con voceo adentro. Esto lo cierra.
 #
 # El gate del estándar (balarezo-web) NO corre acá a propósito: lo que revisa
 # —líneas rojas SMV, páginas legales, accesibilidad, idioma del código— no cambia
 # entre un commit y otro. Es auditoría, no verificación por commit, y se corre a
 # mano cada tanto:
 #     bash ~/.claude/skills/balarezo-web/scripts/gate.sh
+#
+# ⚠️ Esto AVISA, no bloquea, hasta que se marque como *required status check*
+# para `main` en Settings → Branches. Un semáforo que se puede cruzar en rojo no
+# es una barrera.
 name: CI
 
 on:
@@ -19,6 +21,14 @@ on:
     branches: [main, desarrollo]
   pull_request:
     branches: [main, desarrollo]
+
+# Dos pushes seguidos a la misma rama: se cancela la corrida vieja. Sin esto,
+# cada corrección de un typo deja corriendo la anterior, que ya no importa.
+# ⚠️ En `main` NO se cancela: ahí cada commit es un deploy, y querés el
+# resultado de cada uno aunque llegue tarde.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   verificar:
@@ -36,6 +46,11 @@ jobs:
       - name: Instalar dependencias
         run: npm ci --ignore-scripts
 
+      # ── Orden por COSTO: primero lo que tarda segundos. ──────────────────
+      # Si el gate falla, no tiene sentido haber esperado el build.
+
+      # ⚠️ El gate usa GNU grep (acá) y en una Mac es BSD: los patrones se
+      # comportan distinto. Si algo pasa local y falla acá, empezá por ahí.
       - name: Gate del repo
         run: bash scripts/precommit-checks.sh
 
@@ -48,5 +63,21 @@ jobs:
       - name: Tests
         run: npm test
 
+      # Reusa la compilación anterior. Sin esto, cada corrida compila de cero.
+      # La clave incluye el hash de los fuentes: si cambiaron, se invalida sola.
+      - name: Caché de build
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
+
       - name: Build
         run: npm run build
+
+      # Informativo: avisa de vulnerabilidades conocidas sin frenar el deploy.
+      # 🔴 No se sube a bloqueante sin antes limpiar lo que ya reporta — un
+      # chequeo que falla siempre se ignora, y deja de servir para cuando
+      # aparezca la vulnerabilidad que sí importa.
+      - name: Auditoría de dependencias (informativa)
+        run: npm audit --audit-level=high || true
