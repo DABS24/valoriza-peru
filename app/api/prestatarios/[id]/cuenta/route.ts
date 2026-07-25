@@ -31,10 +31,7 @@ const bodySchema = z.object({
   telefono: z.string().trim().regex(TELEFONO_REGEX).optional().or(z.literal("")),
 });
 
-export async function POST(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
   if (!portalPorSlug(portal)?.prestatarios) return err("no_aplica", 404);
@@ -46,7 +43,8 @@ export async function POST(
   const parsed = bodySchema.safeParse(await req.json().catch(() => ({})));
   if (!parsed.success) return err("body_invalido");
   const email = parsed.data.email.toLowerCase();
-  const telefono = parsed.data.telefono && parsed.data.telefono.length ? parsed.data.telefono : null;
+  const telefono =
+    parsed.data.telefono && parsed.data.telefono.length ? parsed.data.telefono : null;
 
   const admin = createAdminClient();
 

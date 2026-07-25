@@ -18,20 +18,13 @@ import { z } from "zod";
 import { requirePortalAdminApi, requirePortalEmpresarioApi } from "@/lib/portales/apiGuards";
 import { PORTAL_SLUG } from "@/lib/portales/config";
 import { resolverSolicitudSchema, solicitudBodySchema } from "@/lib/portales/schema";
-import {
-  resolverSolicitudStaff,
-  editarMiSolicitud,
-  retirarMiSolicitud,
-} from "@/lib/portales/data";
+import { resolverSolicitudStaff, editarMiSolicitud, retirarMiSolicitud } from "@/lib/portales/data";
 import { notificarResolucionAlEmpresario } from "@/lib/portales/notificaciones";
 import { registrarEventoPortal } from "@/lib/portales/auditoria";
 
 const err = (code: string, status = 400) => NextResponse.json({ error: code }, { status });
 
-export async function PATCH(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
   if (!z.string().uuid().safeParse(id).success) return err("id_invalida", 404);
@@ -72,10 +65,7 @@ export async function PATCH(
  * de `editarMiSolicitud`. 0 filas ⇒ 409 (no es suya o ya se resolvió): un 404/409
  * uniforme no le dice a nadie si la solicitud existe.
  */
-export async function PUT(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function PUT(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
   if (!z.string().uuid().safeParse(id).success) return err("id_invalida", 404);
@@ -109,10 +99,7 @@ export async function PUT(
  * documentos: queda el rastro para el staff y para auditoría. Solo desde
  * 'en_evaluacion' (lo garantiza el UPDATE condicional de `retirarMiSolicitud`).
  */
-export async function DELETE(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function DELETE(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
   if (!z.string().uuid().safeParse(id).success) return err("id_invalida", 404);

@@ -17,10 +17,7 @@ import { registrarEventoPortal } from "@/lib/portales/auditoria";
 
 const err = (code: string, status = 400) => NextResponse.json({ error: code }, { status });
 
-export async function PATCH(
-  req: NextRequest,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const portal = PORTAL_SLUG;
   const { id } = await ctx.params;
 

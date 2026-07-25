@@ -24,10 +24,7 @@ import { registrarEventoPortal } from "@/lib/portales/auditoria";
 const err = (code: string, status = 400) => NextResponse.json({ error: code }, { status });
 const bodySchema = z.object({ accion: z.enum(["confirmar", "liberar"]) });
 
-export async function PATCH(
-  req: NextRequest,
-  ctx: { params: Promise<{ op: string }> },
-) {
+export async function PATCH(req: NextRequest, ctx: { params: Promise<{ op: string }> }) {
   const portal = PORTAL_SLUG;
   const { op } = await ctx.params;
   if (!z.string().uuid().safeParse(op).success) return err("op_invalida", 404);

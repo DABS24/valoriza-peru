@@ -21,10 +21,7 @@ import { registrarEventoPortal } from "@/lib/portales/auditoria";
 
 const err = (code: string, status = 400) => NextResponse.json({ error: code }, { status });
 
-export async function GET(
-  req: NextRequest,
-  ctx: { params: Promise<{ op: string }> },
-) {
+export async function GET(req: NextRequest, ctx: { params: Promise<{ op: string }> }) {
   const portal = PORTAL_SLUG;
   const { op } = await ctx.params;
   if (!z.string().uuid().safeParse(op).success) return err("no_existe", 404);

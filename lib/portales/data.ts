@@ -212,8 +212,8 @@ function mapLite(r: Row, portadaUrl: string | null, numFotos: number): Oportunid
  * Portadas (orden 0, sin garantia) de un set de oportunidades + conteo total.
  * Firma con el client que se le pase (sesión staff o admin para el cliente).
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function portadasDe(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   ids: string[],
 ): Promise<{

@@ -19,6 +19,7 @@
 
 import { NextResponse } from "next/server";
 
+import { SESS_COOKIE } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 
 export async function POST() {
@@ -30,5 +31,10 @@ export async function POST() {
     // sesión que el helper haya podido tocar. Nunca devolvemos error: dejar al
     // usuario "adentro" por un fallo de red sería lo peor de los dos mundos.
   }
-  return NextResponse.json({ ok: true });
+  // Borrar la marca de sesión. Sin esto sobrevivía al signOut, y el siguiente
+  // login más de una hora después rebotaba con "tu sesión expiró" apenas entrar
+  // — que en un portal por invitación se lee como cuenta bloqueada.
+  const res = NextResponse.json({ ok: true });
+  res.cookies.set(SESS_COOKIE, "", { maxAge: 0, path: "/" });
+  return res;
 }
