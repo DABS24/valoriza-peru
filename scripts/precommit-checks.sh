@@ -26,6 +26,27 @@ WARNINGS=0
 echo -e "${BLUE}▶ ValorizaPeru precommit checks${RESET}"
 echo ""
 
+# ─── LOCALE: sin esto el gate marca español neutro como voceo ────────────────
+# Sin un locale UTF-8, BSD grep (el de /usr/bin, que es el que corre acá dentro)
+# compara BYTES: el `\b` que cierra `salí` cae DENTRO de `salía` y el scan
+# bloquea un imperfecto correcto. Igual con elegí/elegía y seguí/seguía. Falla
+# solo cuando el término del patrón TERMINA en vocal acentuada y el texto sigue
+# con letras — por eso pasa desapercibido durante meses.
+#
+# Verificado el 2-ago-2026 en don-gato, que tenía el mismo hueco: con
+# LC_ALL=en_US.UTF-8 el hit desaparece; con LC_ALL=C reaparece.
+#
+# ⚠️ Reproducirlo en la terminal puede dar vacío y no significa que no exista:
+# ahí `grep` suele ser ugrep (Homebrew, o el shim de Claude Code), que maneja
+# UTF-8 bien. El binario que corre acá dentro es otro.
+LOCALES=$(locale -a 2>/dev/null || true)
+if grep -qi '^en_US\.UTF-*8$' <<<"$LOCALES"; then
+  export LC_ALL=en_US.UTF-8
+else
+  UTF=$(grep -i 'UTF-*8$' <<<"$LOCALES" | head -1)
+  [ -n "$UTF" ] && export LC_ALL="$UTF"
+fi
+
 # ─── AVISO: este gate NO es igual en todas las máquinas ──────────────────────
 # Los scans usan `\b` con vocales acentuadas, y ahí GNU grep (el del CI, Ubuntu)
 # y ugrep (el que trae Homebrew en varias Mac) NO coinciden: el mismo patrón da
@@ -47,11 +68,11 @@ VOCEO_WORDS='tenés|tené|sumá|sumás|cargá|cargás|podés|podé|querés|quer�
 
 # Buscamos las palabras case-insensitive (-i) pero con tildes específicas
 # `--include="*.tsx"` y `--include="*.ts"` solo, excluyendo precommit y docs-internal
-# ⚠️ OJO al depurar este scan: en esta máquina `grep` es **ugrep**, no BSD/GNU
-# grep. Su manejo de \b con vocales acentuadas NO coincide con el de un grep
-# normal, y el mismo patrón da distinto resultado corriéndolo sobre un archivo
-# suelto que en modo recursivo. O sea: reproducir un hit archivo por archivo
-# puede dar vacío aunque el gate lo reporte. Confiar en la salida del gate.
+# ⚠️ OJO al depurar este scan: son DOS greps distintos, y por eso un hit no se
+# reproduce a mano. En la terminal, `grep` suele ser ugrep (Homebrew, o el shim
+# de Claude Code), que maneja UTF-8 bien y no marca nada. Acá adentro corre
+# /usr/bin/grep (BSD), que sin el LC_ALL de arriba compara bytes y SÍ marca.
+# Para reproducir un hit: `LC_ALL=C /usr/bin/grep -Eni ...`.
 #
 # Algunas formas son AMBIGUAS: "conseguí", "escribí", "seguí", "salí", "elegí"
 # son a la vez imperativo voseante Y pretérito de 1ª persona, que es español
@@ -61,7 +82,7 @@ VOCEO_WORDS='tenés|tené|sumá|sumás|cargá|cargás|podés|podé|querés|quer�
 # el permiso explícito, visible en el diff y auditable.
 VOCEO_HITS=$(grep -rEni --include="*.tsx" --include="*.ts" \
     --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=docs-internal \
-    --exclude-dir=_backup --exclude="precommit-checks.sh" \
+    --exclude-dir=_backup --exclude-dir=.claude --exclude="precommit-checks.sh" \
     "\b(${VOCEO_WORDS})\b" . 2>/dev/null | grep -vE 'gate-ok:voceo' || true)
 
 if [ -n "$VOCEO_HITS" ]; then
@@ -117,7 +138,7 @@ fi
 LEXICO_PROHIBIDO='ruletear|ruleteo|cash advance|monetizar (tu|la) línea|monetizar (tu|la) linea|avance (de|en) efectivo|\bplata\b|\bplatas\b'
 LEXICO_HITS=$(grep -rEni --include="*.tsx" --include="*.ts" --include="*.sql" \
     --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=docs-internal \
-    --exclude-dir=_backup --exclude="precommit-checks.sh" \
+    --exclude-dir=_backup --exclude-dir=.claude --exclude="precommit-checks.sh" \
     "(${LEXICO_PROHIBIDO})" . 2>/dev/null || true)
 
 if [ -n "$LEXICO_HITS" ]; then
